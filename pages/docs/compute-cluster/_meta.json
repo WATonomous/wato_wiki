@@ -1,0 +1,12 @@
+{
+    "overview": {
+        "display": "hidden"
+    },
+    "getting-access": "Getting Access",
+    "machine-usage-guide": "Machine Usage Guide",
+    "ssh": "SSH",
+    "slurm": "SLURM",
+    "firewall": "Firewall",
+    "quotas": "Quotas",
+    "support-resources": "Support Resources"
+}

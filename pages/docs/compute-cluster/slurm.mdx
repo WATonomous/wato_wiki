@@ -1,0 +1,599 @@
+# SLURM
+
+SLURM (Simple Linux Utility for Resource Management)[^slurm] is an open-source job scheduler that handles the allocation of resources in a compute cluster.
+It is commonly used in HPC (High Performance Computing) environments. WATcloud uses SLURM to manage most of its compute resources.
+
+[^slurm]: https://slurm.schedmd.com/
+
+This page provides an introduction to SLURM and any WATcloud-specific details[^watcloud-specific] to get you started quickly.
+For more advanced usage beyond the basics, please refer to the [official SLURM documentation](https://slurm.schedmd.com/).
+
+[^watcloud-specific]: Some WATcloud-specific details include the available resources (e.g. how GPUs are requested using `shard` and `gpu` GRES),
+    the temporary disk setup (requested using the `tmpdisk` GRES, mounted at `/tmp`), and software availability (e.g. docker rootless and Compute Canada CVMFS).
+
+import { Callout } from 'nextra/components'
+
+<Callout type="info">
+WATcloud SLURM is currently in beta. If you encounter any issues, Please review the [troubleshooting](#troubleshooting) section
+or [let us know](/docs/compute-cluster/support-resources).
+</Callout>
+
+## Terminology
+
+Before we dive into the details, let's define some common terms used in SLURM:
+
+- **Login node**: A node that users log into to submit jobs to the SLURM cluster. This is where you will interact with the SLURM cluster.
+- **Compute node**: A node that runs jobs submitted to the SLURM cluster. This is where your job will run. Compute nodes are not directly accessible by users.
+- **Partition**: A logical grouping of nodes in the SLURM cluster. Partitions can have different properties (e.g. different resource limits) and are used to organize resources.
+- **Job**: A unit of work submitted to the SLURM cluster. A job can be interactive or batch.
+- **Interactive job**: A job that runs interactively on a compute node. This is useful for debugging or running short tasks.
+- **Batch job**: A job that runs non-interactively on a compute node. This is useful for running long-running tasks like simulations or ML training.
+- **Job array**: A collection of jobs with similar parameters. This is useful for running parameter sweeps or other tasks that require running the same job multiple times with potentially different inputs.
+- **Resource**: A physical or logical entity that can be allocated to a job. Examples include CPUs, memory, GPUs, and temporary disk space.
+- **GRES (Generic Resource)**: A SLURM feature that allows for arbitrary resources to be allocated to jobs. Examples include GPUs and temporary disk space.
+
+## Quick Start
+
+To submit jobs to the SLURM cluster, you will need to log into one of the SLURM login nodes.
+During the beta, they are labelled `SL` in the [machine list](/machines).
+After the beta, all general-use machines will be SLURM login nodes.
+
+### Interactive shell
+
+Execute the following command to submit a job to the SLURM cluster:
+
+```bash copy
+srun --pty bash
+```
+
+This will start an interactive shell session on a compute node with the default resources.
+You can view the resources allocated to your job by running:
+
+```bash copy
+scontrol show job $SLURM_JOB_ID
+```
+
+An example output is shown below:
+
+```text {6,17}
+JobId=1305 JobName=bash
+   UserId=ben(1507) GroupId=ben(1507) MCS_label=N/A
+   Priority=1 Nice=0 Account=watonomous-watcloud QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=0 Reboot=0 ExitCode=0:0
+   RunTime=00:00:04 TimeLimit=00:30:00 TimeMin=N/A
+   SubmitTime=2024-03-16T06:39:57 EligibleTime=2024-03-16T06:39:57
+   AccrueTime=Unknown
+   StartTime=2024-03-16T06:39:57 EndTime=2024-03-16T07:09:57 Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-03-16T06:39:57 Scheduler=Main
+   Partition=compute AllocNode:Sid=10.1.100.128:1060621
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=wato2-slurm1
+   BatchHost=wato2-slurm1
+   NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+   ReqTRES=cpu=1,mem=512M,node=1,billing=1,gres/tmpdisk=100
+   AllocTRES=cpu=1,mem=512M,node=1,billing=1,gres/tmpdisk=100
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=1 MinMemoryCPU=512M MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=bash
+   WorkDir=/home/ben
+   Power=
+   TresPerNode=gres/tmpdisk:100
+```
+
+In this example, the job is allocated 1 CPU, 512MiB of memory, and 100MiB of temporary disk space (mounted at `/tmp`),
+and is allowed to run for up to 30 minutes.
+
+To request for more resources, you can use the `--cpus-per-task`, `--mem`, `--gres`, and `--time` flags.
+For example, to request 4 CPUs, 4GiB of memory, 20GiB of temporary disk space, and 2 hours of running time, you can run:
+
+```bash copy
+srun --cpus-per-task 4 --mem 4G --gres tmpdisk:20480 --time 2:00:00 --pty bash
+```
+
+Note that the amount of requestable resources is limited by the resources available on the partition/node you are running on.
+You can view the available resources by referring to the [View available resources](#view-available-resources) section.
+
+### Cancelling a job
+
+To cancel a job, you can use the `scancel` command.
+You will need the job ID to cancel a job.
+You can find the job ID by running `squeue`.
+If you are in a job, you can also use the `$SLURM_JOB_ID` environment variable.
+
+For example, you can see a list of your jobs by running:
+
+```bash copy
+squeue -u $(whoami)
+```
+
+Example output:
+
+```text
+JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+4022   compute     bash      ben  R       0:03      1 thor-slurm1
+```
+
+To cancel the job with ID `4022`, you can run:
+
+```bash copy
+scancel 4022
+```
+
+### Using Docker
+
+Unlike general use machines, the SLURM environment does not provide user-space systemd for managing background processes like the Docker daemon.
+To use Docker, you will need to start the Docker daemon manually. We have provided a convenience script to do this:
+
+```bash copy
+slurm-start-dockerd.sh
+```
+
+If successful, you should see the following output:
+
+```text
+Dockerd started successfully!
+
+Test it with:
+docker run --rm hello-world
+```
+
+Note that `slurm-start-dockerd.sh` places the Docker data directory in `/tmp`.
+You can request for more space using the `--gres tmpdisk:<size_in_MiB>` flag.
+
+
+### Using GPUs
+
+You can request access to GPUs by using the `--gres shard:<size_in_MiB>` flag. For example, if your workload requires 4 GiB of VRAM, you can run:
+
+```bash copy
+srun --gres shard:4096 --pty bash
+```
+
+Your job will be allocated a GPU with at least 4 GiB of unreserved VRAM.
+Please note that the amount of VRAM requested is not enforced, and you should ensure that the amount requested is appropriate for your workload.
+
+Using `shard` is the preferred way to request for GPU resources because it allows multiple jobs to share the same GPU.
+
+It's common to request extra tmpdisk space along with GPUs. To do this, you can append `,tmpdisk:<size_in_MiB>` to the `--gres` flag. For example:
+
+```bash copy
+srun --gres shard:4096,tmpdisk:20480 --pty bash
+```
+
+If your workload requires exclusive access to a GPU, you can use the `--gres gpu` flag instead:
+
+<Callout type="warning">Because the cluster is GPU-constrained, requesting whole GPUs is not recommended unless your workload can
+make efficient use of the entire GPU.</Callout>
+
+```bash copy
+srun --gres gpu:1 --pty bash
+```
+
+This will allocate a whole GPU to your job. Note that this will prevent other jobs from using the GPU until your job is finished.
+
+### Using CUDA
+
+If your workload requires CUDA, you have a few options (not exhaustive):
+
+#### Using the `nvidia/cuda` Docker image
+
+You can use the `nvidia/cuda` Docker image to run CUDA workloads.
+Assuming you have started the Docker daemon (see [Using Docker](#using-docker)), you can run the following command to start a CUDA container:
+
+```bash copy
+docker run --rm -it --gpus all -v $(pwd):/workspace nvidia/cuda:12.0.0-devel-ubuntu22.04 nvcc --version
+```
+
+Note that the version of the Docker image must be compatible with (usually this means lower than or equal to) the driver version installed on the compute node.
+You can check the driver version by running `nvidia-smi`. If the driver version is not compatible with the Docker image, you will get an error that looks like this:
+
+```text
+> docker run --rm -it --gpus all -v $(pwd):/workspace nvidia/cuda:12.1.0-runtime-ubuntu22.04
+docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'
+nvidia-container-cli: requirement error: unsatisfied condition: cuda>=12.1, please update your driver to a newer version, or use an earlier cuda container: unknown.
+```
+
+#### Using the Compute Canada CUDA module
+
+The Compute Canada CVMFS[^cc-cvmfs] is mounted on the compute nodes. You can access CUDA by loading the appropriate module:
+
+```bash
+# Set up the module environment
+source /cvmfs/soft.computecanada.ca/config/profile/bash.sh
+# Load the appropriate environment
+module load StdEnv/2023
+# Load the CUDA module
+module load cuda/12.2
+# Check the nvcc version
+nvcc --version
+```
+
+Compute Canada only provides select versions of CUDA, and does not provide an easy way to list all available versions.
+A trick you can use is to run `which nvcc{:bash}` and trace back along the directory tree to find sibling directories
+that contain other CUDA versions.
+
+Note that the version of CUDA must be compatible with the driver version installed on the compute node.
+You can check the driver version by running `nvidia-smi`.
+You can find the CUDA compatibility matrix [here](https://docs.nvidia.com/deploy/cuda-compatibility/index.html).
+
+[^cc-cvmfs]: The [Compute Canada CVMFS](https://docs.alliancecan.ca/wiki/Accessing_CVMFS) is mounted at `/cvmfs/soft.computecanada.ca` on the compute nodes. It provides access to a wide variety of software via [Lmod modules](https://docs.alliancecan.ca/wiki/Utiliser_des_modules/en).
+
+### Batch jobs
+
+The real power of SLURM comes from batch jobs.
+Batch jobs are non-interactive jobs that start automatically when resources are available and release the resources when the job is finished.
+This helps to maximize resource utilization and allows you to easily run large numbers of jobs (e.g. parameter sweeps).
+
+To submit a batch job, create a script that looks like this:
+
+```bash copy filename="slurm_job.sh"
+#!/bin/bash
+#SBATCH --job-name=my_job
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1G
+#SBATCH --gres tmpdisk:1024
+#SBATCH --time=00:10:00
+#SBATCH --output=logs/%j-%x.out  # %j: job ID, %x: job name. Reference: https://slurm.schedmd.com/sbatch.html#lbAH
+
+echo "Hello, world! I'm running on $(hostname)"
+echo "Counting to 60..."
+for i in $(seq 60); do
+    echo $i
+    sleep 1
+done
+echo "Done!"
+```
+
+The `#SBATCH` lines are SLURM directives that specify the resources required by the job[^sbatch].
+They are the same as the flags you would pass to `srun`.
+
+To submit the job, run:
+
+```bash copy
+sbatch slurm_job.sh
+```
+
+This submits the job to the SLURM cluster, and you will receive a job ID in return.
+After the job is submitted, it will be queued until resources are available.
+
+You can see a list of your queued and in-progress jobs by running[^squeue]:
+
+```bash copy
+squeue -u $(whoami) --format="%.18i %.9P %.30j %.20u %.10T %.10M %.9l %.6D %R"
+```
+
+After the job starts, the output of the job is written to the file specified in the `--output` directive.
+In the example above, you can view the output of the job by running:
+
+```bash copy
+tail -f logs/*-my_job.out
+```
+
+After the job finishes, it disappears from the queue.
+You can retrieve useful information about the job (exit status, running time, etc.) by running[^sacct]:
+
+```bash copy
+sacct --format=JobID,JobName,State,ExitCode
+```
+
+[^sbatch]: `sbatch` is used to submit batch jobs to the SLURM cluster. For a full list of SLURM directives for `sbatch`, see the [sbatch documentation](https://slurm.schedmd.com/sbatch.html).
+[^squeue]: `squeue` displays information about jobs in the queue. For a full list of formatting options, see the [squeue documentation](https://slurm.schedmd.com/squeue.html#OPT_format).
+[^sacct]: `sacct` displays accounting data for jobs and job steps. For more information, see the [sacct documentation](https://slurm.schedmd.com/sacct.html).
+
+#### Job arrays
+
+Job arrays are a way to submit multiple jobs with similar parameters.
+This is useful for running parameter sweeps or other tasks that require running the same job multiple times with potentially different inputs.
+
+To submit a job array, create a script that looks like this:
+
+```bash copy filename="slurm_job_array.sh" {7-8,10}
+#!/bin/bash
+#SBATCH --job-name=my_job_array
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1G
+#SBATCH --gres tmpdisk:1024
+#SBATCH --time=00:10:00
+#SBATCH --output=logs/%A-%a-%x.out # %A: job array master job allocation number, %a: Job array index, %x: job name. Reference: https://slurm.schedmd.com/sbatch.html#lbAH
+#SBATCH --array=1-10
+
+echo "Hello, world! I'm job $SLURM_ARRAY_TASK_ID, running on $(hostname)"
+echo "Counting to 60..."
+for i in $(seq 60); do
+    echo $i
+    sleep 1
+done
+echo "Done!"
+```
+
+The `--array` directive specifies the range of the job array (in this case, from 1 to 10, inclusive).
+
+To submit the job array, run:
+
+```bash copy
+sbatch slurm_job_array.sh
+```
+
+This will submit 10 jobs with IDs ranging from 1 to 10.
+You can view the status of the job array by running:
+
+```bash copy
+squeue -u $(whoami) --format="%.18i %.9P %.30j %.20u %.10T %.10M %.9l %.6D %R"
+```
+
+After jobs in the array start, the output of each job is written to a file specified in the `--output` directive.
+In the example above, you can view the output of each job by running:
+
+```bash copy
+tail -f logs/*-my_job_array.out
+```
+
+To learn more about job arrays, including environment variables available to job array scripts,
+see the [official documentation](https://slurm.schedmd.com/job_array.html).
+
+#### Long-running jobs
+
+Each job submitted to the SLURM cluster has a time limit.
+The time limit can be set using the `--time` directive.
+The maximum time limit is determined by the partition you are running on.
+You can view a list of partitions, including the default partition, by running `sinfo`[^view-available-resources]:
+
+```text
+> sinfo
+PARTITION     AVAIL  TIMELIMIT  NODES  STATE NODELIST
+compute*         up 1-00:00:00      5   idle thor-slurm1,tr-slurm1,trpro-slurm[1-2],wato2-slurm1
+compute_dense    up 7-00:00:00      5   idle thor-slurm1,tr-slurm1,trpro-slurm[1-2],wato2-slurm1
+```
+
+In the output above, the cluster has 2 partitions, `compute` (default) and `compute_dense`, with time limits of 1 day and 7 days, respectively.
+If your job requires more than the maximum time limit for the default partition, you can specify a different partition using the `--partition` flag.
+For example:
+
+```bash copy filename="slurm_compute_dense_partition.sh"
+#!/bin/bash
+#SBATCH --job-name=my_dense_job
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1G
+#SBATCH --gres tmpdisk:1024
+#SBATCH --partition=compute_dense
+#SBATCH --time=2-00:00:00
+#SBATCH --output=logs/%j-%x.out  # %j: job ID, %x: job name. Reference: https://slurm.schedmd.com/sbatch.html#lbAH
+
+echo "Hello, world! I'm allowed to run for 2 days!"
+for i in $(seq $((60*60*24*2))); do
+    echo $i
+    sleep 1
+done
+echo "Done!"
+```
+
+[^view-available-resources]: For more information on viewing available resources, see the [View available resources](#view-available-resources) section.
+
+## Extra details
+
+### SLURM v.s. general-use machines
+
+The SLURM environment is configured to be as close to the general-use environment as possible.
+All of the same network drives and software are available. However, there are some differences:
+
+- The SLURM environment uses a `/tmp` drive for temporary storage instead of `/mnt/scratch` on general-use machines.
+    Temporary storage can be requested using the `--gres tmpdisk:<size_in_MiB>` flag.
+- The SLURM environment does not have a user-space systemd for managing background processes like the Docker daemon.
+    Please follow the instructions in the [Using Docker](#using-docker) section to start the Docker daemon.
+
+### View available resources
+
+There are a few ways to view the available resources on the SLURM cluster:
+
+#### View a summary of available resources
+
+```bash copy
+sinfo
+```
+
+Example output:
+
+```text
+PARTITION     AVAIL  TIMELIMIT  NODES  STATE NODELIST
+compute*         up 1-00:00:00      5   idle thor-slurm1,tr-slurm1,trpro-slurm[1-2],wato2-slurm1
+compute_dense    up 7-00:00:00      5   idle thor-slurm1,tr-slurm1,trpro-slurm[1-2],wato2-slurm1
+```
+
+#### View available partitions
+
+```bash copy
+scontrol show partitions
+```
+
+Example output:
+
+```text
+PartitionName=compute
+   AllowGroups=ALL AllowAccounts=ALL AllowQos=ALL
+   AllocNodes=ALL Default=YES QoS=N/A
+   DefaultTime=00:30:00 DisableRootJobs=NO ExclusiveUser=NO GraceTime=0 Hidden=NO
+   MaxNodes=UNLIMITED MaxTime=1-00:00:00 MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED
+   Nodes=thor-slurm1,tr-slurm1,trpro-slurm[1-2],wato2-slurm1
+   PriorityJobFactor=1 PriorityTier=1 RootOnly=NO ReqResv=NO OverSubscribe=NO
+   OverTimeLimit=NONE PreemptMode=OFF
+   State=UP TotalCPUs=240 TotalNodes=5 SelectTypeParameters=NONE
+   JobDefaults=(null)
+   DefMemPerNode=UNLIMITED MaxMemPerNode=UNLIMITED
+   TRES=cpu=233,mem=707441M,node=5,billing=233,gres/gpu=10,gres/shard=216040,gres/tmpdisk=921600
+
+PartitionName=compute_dense
+   AllowGroups=ALL AllowAccounts=ALL AllowQos=ALL
+   AllocNodes=ALL Default=NO QoS=N/A
+   DefaultTime=00:30:00 DisableRootJobs=NO ExclusiveUser=NO GraceTime=0 Hidden=NO
+   MaxNodes=UNLIMITED MaxTime=7-00:00:00 MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED
+   Nodes=thor-slurm1,tr-slurm1,trpro-slurm[1-2],wato2-slurm1
+   PriorityJobFactor=1 PriorityTier=1 RootOnly=NO ReqResv=NO OverSubscribe=NO
+   OverTimeLimit=NONE PreemptMode=OFF
+   State=UP TotalCPUs=240 TotalNodes=5 SelectTypeParameters=NONE
+   JobDefaults=(null)
+   DefMemPerNode=UNLIMITED MaxMemPerNode=UNLIMITED
+   TRES=cpu=233,mem=707441M,node=5,billing=233,gres/gpu=10,gres/shard=216040,gres/tmpdisk=921600
+```
+
+#### View available nodes
+
+```bash copy
+scontrol show nodes
+```
+
+Example output:
+
+```text
+NodeName=trpro-slurm1 Arch=x86_64 CoresPerSocket=1 
+   CPUAlloc=0 CPUEfctv=98 CPUTot=100 CPULoad=0.06
+   AvailableFeatures=(null)
+   ActiveFeatures=(null)
+   Gres=gpu:rtx_3090:4(S:0),shard:rtx_3090:96K(S:0),tmpdisk:300K
+   NodeAddr=trpro-slurm1.cluster.watonomous.ca NodeHostName=trpro-slurm1 Version=23.11.4
+   OS=Linux 5.15.0-101-generic #111-Ubuntu SMP Tue Mar 5 20:16:58 UTC 2024 
+   RealMemory=423020 AllocMem=0 FreeMem=419161 Sockets=100 Boards=1
+   CoreSpecCount=2 CPUSpecList=98-99 MemSpecLimit=2048
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=compute 
+   BootTime=2024-03-24T00:17:08 SlurmdStartTime=2024-03-24T02:27:46
+   LastBusyTime=2024-03-24T02:27:46 ResumeAfterTime=None
+   CfgTRES=cpu=98,mem=423020M,billing=98,gres/gpu=4,gres/shard=98304,gres/tmpdisk=307200
+   AllocTRES=
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/a ExtSensorsWatts=0 ExtSensorsTemp=n/a
+
+...
+```
+
+In this example, the node `trpro-slurm1` has the following allocable resources:
+98 CPUs, around 413 GiB of RAM, 4 RTX 3090 GPUs, 98304 MiB of VRAM, and 300GiB of temporary disk space.
+
+### GRES
+
+GRES (Generic Resource)[^gres] is a SLURM feature that allows for arbitrary resources to be allocated to jobs.
+The WATcloud cluster provides the following GRES:
+
+[^gres]: https://slurm.schedmd.com/gres.html
+
+#### `gres/tmpdisk`
+
+`tmpdisk` is a GRES that represents temporary disk space. This resource is provisioned using a combination
+of `job_container/tmpfs`[^job-container-tmpfs] and custom scripts. The temporary disk space is mounted at `/tmp` and is automatically
+cleaned up when the job finishes. You can request for temporary disk space using the `--gres tmpdisk:<size_in_MiB>` flag.
+Below is an example:
+
+```bash
+# Request 1 GiB of temporary disk space
+srun --gres tmpdisk:1024 --pty bash
+```
+
+To see the total amount of temporary disk space available on a node, please refer to the [View available resources](#view-available-resources) section.
+
+[^job-container-tmpfs]: https://slurm.schedmd.com/job_container_tmpfs.html
+
+#### `gres/shard` and `gres/gpu`
+
+`shard` and `gpu` are GRES that represent GPU resources.
+Allocation of these resources is managed by built-in SLURM plugins that interface with various GPU libraries.
+
+The `shard` GRES is used to request access to a portion of a GPU.
+In the WATcloud cluster, the amount of allocable `shard` equals the amount of VRAM (in MiB) on each GPU.
+This representation is chosen because it is a concrete metric that works across different GPU models.
+The amount of resources requested using `shard` is not enforced, so please ensure that the `shard` requested is appropriate for your workload.
+To request for `shard`, use the `--gres shard[:type]:<size_in_MiB>`[^shard-restriction] flag, where `type` is optional and can be used
+to specify a specific GPU type. Below are some examples:
+
+```bash
+# Request 2 GiB of VRAM on any available GPU
+srun --gres shard:2048 --pty bash
+
+# Request 4 GiB of VRAM on an RTX 3090 GPU
+srun --gres shard:rtx_3090:4096 --pty bash
+```
+
+To see a list of available GPU types, please refer to the [View available resources](#view-available-resources) section.
+
+[^shard-restriction]: Note that `size_in_MiB` must not exceed the amount of VRAM on a single GPU
+(can be determined by dividing the amount of `shard` available on a node by the number of GPUs on that node).
+If you require more VRAM than a single GPU can provide, please use the `--gres gpu` flag instead (see below).
+
+The `gpu` GRES is used to request exclusive access to GPUs[^gpu-management].
+This is not recommended unless your workload can make efficient use of the entire GPU.
+If you are unsure, please use the `shard` GRES instead.
+To request for `gpu`, use the `--gres gpu[:type]:<number_of_gpus>` flag, where `type` is optional and can be used
+to specify a specific GPU type. Below are some examples:
+
+```bash
+# Request access to any available GPU
+srun --gres gpu:1 --pty bash
+
+# Request access to a whole RTX 3090 GPU
+srun --gres gpu:rtx_3090:1 --pty bash
+```
+
+To see a list of available GPU types, please refer to the [View available resources](#view-available-resources) section.
+
+[^gpu-management]: For more information on GPU management, please refer to the [GPU Management](https://slurm.schedmd.com/gres.html#GPU_Management) SLURM documentation.
+
+#### Requesting multiple GRES
+
+You can request multiple GRES by separating them with a comma. For example, to request 1 GiB of `shard` and 2 GiB of `tmpdisk`, you can run:
+
+```bash copy
+srun --gres shard:1024,tmpdisk:2048 --pty bash
+```
+
+### CVMFS
+
+CVMFS (CernVM File System)[^cvmfs] is a software distribution system that is widely adopted in the HPC community.
+It provides a way to distribute software to compute nodes without having to install them on the nodes themselves.
+
+We make use of the [Compute Canada CVMFS](https://docs.alliancecan.ca/wiki/Accessing_CVMFS) to provide access to software available on Compute Canada clusters.
+For example, you can access CUDA by loading the appropriate module (see [Using CUDA](#using-cuda)).
+A list of all availalbe modules can be found via the [official documentation](https://docs.alliancecan.ca/wiki/Available_software).
+
+[^cvmfs]: https://cvmfs.readthedocs.io/en/stable/
+
+## Troubleshooting
+
+### Invalid Account
+
+You may encounter the following error when trying to submit a job:
+
+```text
+srun: error: Unable to allocate resources: Invalid account or account/partition combination specified
+```
+
+This error usually occurs when your user does not have an associated account. You can verify this by running:
+
+```bash copy
+sacctmgr show user $(whoami)
+```
+
+If the output is empty (as shown below), then you do not have an associated account.
+
+```text
+      User   Def Acct     Admin
+---------- ---------- ---------
+```
+
+A common reason for this is that your WATcloud profile is not associated with a registered affiliation[^registered-affiliation].
+You can confirm this by requesting a copy of your profile using the [Profile Editor](/docs/utilities/profile-editor) and
+checking whether the `general.affiliations` field contains a registered affiliation.
+If your affiliation is not registered, please have your group lead fill out the [registration form](/docs/registered-affiliations#registering-a-group).
+
+[^registered-affiliation]: Registered affiliations are distinct from "legacy" affiliations[^legacy-affiliation]. More information
+    about registered affiliations can be found [here](/docs/registered-affiliations).
+[^legacy-affiliation]: Legacy affiliations have the prefix `[Legacy]`. We don't have sufficient information from these affiliations
+    to support them in the SLURM environment.
+
+{
+// Separate footnotes from the main content
+}
+import { Separator } from "@/components/ui/separator"
+
+<Separator className="mt-6" />
