@@ -17,6 +17,15 @@ to_pascale_case() {
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
+echo "Preparing workspace..."
+# Clean up any previous fixtures
+git worktree remove "$PROJECT_DIR/build/data" 2>/dev/null || true
+rm -rf "$PROJECT_DIR/build/data"
+rm -rf "$PROJECT_DIR/build/fixtures"
+
+# Create the fixture directory
+mkdir -p "$PROJECT_DIR/build/fixtures"
+
 echo "Processing images..."
 # Convert AVIF images to WebP and JPEG for browsers that don't support AVIF
 "$PROJECT_DIR"/node_modules/.bin/sharp --format webp --input "$PROJECT_DIR"'/public/assets/*.avif' --output "$PROJECT_DIR"'/public/assets/{name}.generated.webp'
