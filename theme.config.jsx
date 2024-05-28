@@ -1,6 +1,5 @@
 import { DiscordIcon } from 'nextra/icons'
 import { Bot, Heart, Code2 } from "lucide-react"
-import websiteConfig from '@/build/fixtures/website-config.json'
 import { Link } from "nextra-theme-docs"
 
 const logo = (
@@ -48,7 +47,6 @@ const logo = (
 
 const themeConfig = {
   logo,
-  docsRepositoryBase: websiteConfig.docs_repository_base,
   feedback: {
     labels: "website"
   },
@@ -59,7 +57,7 @@ const themeConfig = {
         <span className="nx-sr-only">Discord</span>
       </>
     ),
-    link: `https://discord.gg/${websiteConfig.discord_invite_code}`
+    link: `https://discord.gg/`
   },
   useNextSeoProps() {
     return {

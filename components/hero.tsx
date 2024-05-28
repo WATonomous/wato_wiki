@@ -1,32 +1,18 @@
-import { Button } from "@/components/ui/button"
 import { Link } from "nextra-theme-docs"
 import {
-    bytesToSize,
-    pluralizeWithCount,
     cn,
 } from '@/lib/utils'
 import heroStyles from '@/styles/hero.module.css'
-import { machineInfo } from '@/lib/data'
-
-const DEV_MACHINES = [
-    ...machineInfo.slurm_compute_nodes,
-    ...machineInfo.dev_vms,
-]
 
 export function Hero() {
-    const vCPUs = DEV_MACHINES.reduce((acc, m) => acc + parseInt(m.cpu_info.logical_processors || "0"), 0)
-    const ramBytes = DEV_MACHINES.reduce((acc, m) => acc + parseInt(m.memory_info.memory_total_kibibytes || "0") * 1024, 0)
-    const redundantStorageBytes = machineInfo.bare_metals.flatMap(m => m.hosted_storage.map(s => parseInt(s.size_bytes || "0"))).reduce((acc, size) => acc + size, 0)
-    const gpuCount = DEV_MACHINES.reduce((acc, m) => acc + m.gpus.length, 0)
-
     return (
         <div className="hero">
             <div className="hero-inner">
                 <h1 className="hero-title">
-                    {vCPUs} vCPUs<br />
-                    {bytesToSize(ramBytes,0)} RAM<br />
-                    {bytesToSize(redundantStorageBytes,0)} Storage<br />
-                    {pluralizeWithCount(gpuCount, "GPU")}<br />
+                    999 vCPUs<br />
+                    999 RAM<br />
+                    999 Storage<br />
+                    999 GPUs<br />
                     {"10/40 Gbps Network"}
                 </h1>
                 <p className="hero-subtitle">Welcome to WATcloud. We make powerful computers <br className='sm:block hidden'/>easily accessible to students and researchers.</p>

@@ -4,9 +4,6 @@ title: "Introduction"
 
 # WATcloud
 
-import { Link } from 'nextra-theme-docs'
-import websiteConfig from '@/build/fixtures/website-config.json'
-
 WATcloud is a student-run cloud infrastructure group at the University of Waterloo.
 Our main service is the [WATcloud compute cluster](/docs/compute-cluster) (sometimes referred to as "the compute cluster" or "WATcloud"),
 where we provide compute (CPU and GPU), storage, and networking resources to student teams, clubs, and labs at the university and partnering organizations.
@@ -17,32 +14,6 @@ We could list total users and the number of users in the past term and the curre
 */}
 
 ## Quickstart
-
-import { Cards } from 'nextra/components'
-import Picture from '@/components/picture'
-import {
-  ComputerDark,
-  ComputerLight,
-  RobotDark,
-  RobotLight,
-  CloudDark,
-  CloudLight,
-} from '@/build/fixtures/images'
-
-<Cards num={3}>
-  <Cards.Card image arrow title="Get Access" href="/docs/compute-cluster/getting-access">
-    <span className="hidden dark:block"><Picture alt="Abstract Computer (Dark)" image={ComputerDark} /></span>
-    <span className="dark:hidden"><Picture alt="Abstract Computer (Light)" image={ComputerLight} /></span>
-  </Cards.Card>
-  <Cards.Card image arrow title="View Specs" href="/machines">
-    <span className="hidden dark:block"><Picture alt="Robot with GPU (Dark)" image={RobotDark} /></span>
-    <span className="dark:hidden"><Picture alt="Robot with GPU (Light)" image={RobotLight} /></span>
-  </Cards.Card>
-  <Cards.Card image arrow title="Get Involved" href="/get-involved">
-    <span className="hidden dark:block"><Picture alt="Constructing the Cloud (Dark)" image={CloudDark} /></span>
-    <span className="dark:hidden"><Picture alt="Constructing the Cloud (Light)" image={CloudLight} /></span>
-  </Cards.Card>
-</Cards>
 
 ## Brief History
 
@@ -64,7 +35,7 @@ WATcloud compute cluster to develop software, run simulations, and train ML mode
 
 
 ## Join Our Community
-For real-time server status updates and getting help, join us in our <Link href={`https://discord.gg/${websiteConfig.discord_invite_code}`}>Discord server</Link>. And stay tuned for our upcoming workshops and training sessions!
+For real-time server status updates and getting help, join us in our. And stay tuned for our upcoming workshops and training sessions!
 
 ## FAQ
 
