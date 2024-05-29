@@ -1,16 +1,14 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 import { Bot, Heart, Code2 } from "lucide-react"
+import Logo from './components/logo';
 
 const config: DocsThemeConfig = {
-  logo: <span>WATonomous Wiki</span>,
+  logo: Logo,
   project: {
     link: 'https://github.com/WATonomous/wato_wiki',
   },
-  chat: {
-    link: 'https://discord.com',
-  },
-  docsRepositoryBase: 'https://github.com/WATonomous/wato_wiki',
+  docsRepositoryBase: 'https://github.com/WATonomous/wato_wiki/tree/main',
   footer: {
     text: (
       // Maybe create a footer component instead?
