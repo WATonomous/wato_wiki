@@ -7,7 +7,7 @@ module.exports = withNextra()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/wato_wiki"
+  basePath: "/wato_wiki",
   output: "export",
   reactStrictMode: true,
 };
