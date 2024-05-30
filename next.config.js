@@ -4,3 +4,12 @@ const withNextra = require('nextra')({
 })
 
 module.exports = withNextra()
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  basePath: "/wato_wiki"
+  output: "export",
+  reactStrictMode: true,
+};
+
+module.exports = nextConfig;
