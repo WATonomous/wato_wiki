@@ -16,10 +16,10 @@ jobs:
       with:
         node-version: '22'
 
-    - name: Run export
+    - name: Run install and export
       run: |
-      npm install
-      npm run export
+        npm install
+        npm run export
 
     - name: Deploy to GitHub Pages
       if: success()

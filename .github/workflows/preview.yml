@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: '22' # Specify the version of Node.js you need
 
-      - name: Run export
+      - name: Run install and export
         run: |
-        npm install
-        npm run export
+          npm install
+          npm run export
 
       - name: Deploy to GitHub Pages Preview
         uses: peaceiris/actions-gh-pages@v4
