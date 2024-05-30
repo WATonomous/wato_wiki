@@ -10,7 +10,7 @@ jobs:
       PR_PATH: pull/${{github.event.number}}
     steps:
       - name: make empty dir
-        run: mkdir public
+        run: mkdir out
 
       - name: delete folder
         uses: peaceiris/actions-gh-pages@v3
