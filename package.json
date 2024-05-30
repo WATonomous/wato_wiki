@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A website for WATonomous Wiki",
   "scripts": {
+    "export": "next build && next export",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
