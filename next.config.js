@@ -3,13 +3,9 @@ const withNextra = require('nextra')({
   themeConfig: './theme.config.tsx',
 })
 
-module.exports = withNextra()
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  basePath: "/wato_wiki",
-  output: "export",
-  reactStrictMode: true,
+module.exports = {
+  ...withNextra(),
+  images: {
+    unoptimized: true,
+  },
 };
-  
-module.exports = nextConfig;
