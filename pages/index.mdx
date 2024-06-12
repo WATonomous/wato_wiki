@@ -1,11 +1,22 @@
-# Introduction
+# Welcome to the Wiki
  
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+Welcome to the WATonomous Wiki! This is an open-source wiki for all things WATonomous.
 
-## What is Nextra?
+![](../public/assets/about_pic.jpg)
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
+## New Here?
 
-## Documentation
+import { Cards, Card } from 'nextra/components'
+import { CarTaxiFront, NotebookPen } from 'lucide-react'
 
-The documentation is available at [https://nextra.site](https://nextra.site).
+<Cards num={2}>
+    <Card icon={<CarTaxiFront />} title="Read up on who we are!" href="/about" />
+    <Card icon={<NotebookPen />} title="Take a look at our Onboarding Guides" href="/onboarding" />
+</Cards>
+
+## How to Edit
+
+Editing the WATonomous wiki is easy. Simple click `Edit this page` on the far right of each page. Note, you must be part of the WATonomous Organization to be able to edit.
+
+You can use regular react components, or choose from a plethora of pre-built components and tools [here](https://nextra.site/docs).
+

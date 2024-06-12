@@ -1,15 +1,17 @@
 {
-  "index": "Introduction",
-  "another": "Another Page",
-  "advanced": "Advanced (A Folder)",
-  "about": {
-    "title": "About",
-    "type": "page"
-  },
-  "contact": {
-    "title": "Contact ↗",
+  "index": "Welcome to the Wiki",
+  "about": "About WATonomous",
+  "onboarding": "Onboarding",
+  "Official Website": {
+    "title": "Official Website ↗",
     "type": "page",
-    "href": "https://twitter.com/shuding_",
+    "href": "https://www.watonomous.ca",
+    "newWindow": true
+  },
+  "WATcloud Website": {
+    "title": "WATcloud Website ↗",
+    "type": "page",
+    "href": "https://cloud.watonomous.ca/docs",
     "newWindow": true
   }
 }
