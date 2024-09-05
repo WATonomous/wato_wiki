@@ -395,3 +395,211 @@ int main(int argc, char ** argv)
 ```
 
 **Let’s break it down.**
+
+First, we have the constructor of our node, which inherits the Node class from the ROS library (rclcpp). There we pass the name of our node, “example_node”.
+
+``` c++
+ExampleNode::ExampleNode() : Node("example_node"){
+ …
+}
+
+```
+
+### Publisher:
+
+Inside the constructor, we initialize our publishers and subscribers. Here is the syntax to create a publisher with the rclcpp library:
+``` c++
+// In header file:
+rclcpp::Publisher<MESSAGE_TYPE>::SharedPtr publisher_;
+
+// In node constructor:
+publisher_ = this->create_publisher<MESSAGE_TYPE>("/TOPIC", 20);
+
+```
+
+Where MESSAGE_TYPE is the message you are publishing (i.e. geometry_msgs::msg::Pose for a Pose message) and “/TOPIC” is the topic you are publishing to. The 20 at the end is the buffer size, 20 is a good number for that. 
+You can then publish a message to the publisher using:
+``` c++
+publisher_->publish(msg);
+
+```
+
+Where msg is an object of the type you specified (i.e. geometry_msgs::msg::Pose()). 
+
+### Subscriber
+Next, here is the syntax to create a subscriber:
+
+``` c++
+// In header file:
+rclcpp::Subscription<MESSAGE_TYPE>::SharedPtr subscriber_;
+
+
+// In node constructor:
+subscriber_= this->create_subscription<MESSAGE_TYPE>(
+    "/TOPIC", 20, 
+std::bind(&CALLBACK, this, 
+std::placeholders::_1));
+
+```
+
+Where MESSAGE_TYPE is the message in the topic you want to subscribe to (i.e. geometry_msgs::msg::Pose), “/TOPIC” is the topic to subscribe to, and CALLBACK is a reference to a member function that will get called when a new message comes in (i.e. ExampleNode::subscription_callback). Again, the 20 is the buffer size, and std::placeholders::_1 is boilerplate code for calling the callback with an argument. 
+
+When a message is received by the subscriber, it calls the callback function with a pointer to the message. Here is an example callback function you would define in your node class:
+
+``` c++
+// In header file:
+void ExampleNode::subscription_callback(const geometry_msgs::msg::Pose::SharedPtr msg);
+
+
+//Implementation:
+void ExampleNode::subscription_callback(const geometry_msgs::msg::Pose::SharedPtr msg)
+{
+ …
+}
+
+```
+
+The ::SharedPtr is a special type of smart pointer, but it is functionally the same as a normal pointer and can be dereferenced and accessed using ->. Values of the message can be accessed just like a normal C++ object, such as “msg->position.x, msg->position.y, msg->position.z” to access the coordinates of the Pose message. 
+
+You can reference the property names of any message by searching up the message followed by “ros2” on google. For example, here are the docs for the Pose message: [docs for message](http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Pose.html), and you can see all the variables you can access in it.
+
+### Timers:
+Timers are tasks that execute in a repeated loop. Example use cases for timers are control loops which consistently update motor commands based on observations. The syntax to create a timer is the following:
+
+``` c++
+//In header file:
+rclcpp::TimerBase::SharedPtr timer_;
+void timer_callback();
+
+
+//In node constructor:
+timer_ = this->create_wall_timer(std::chrono::milliseconds(delay_ms), std::bind(&YourNode::timer_callback, this));
+
+
+//Callback implementation:
+void YourNode::timer_callback(){
+
+}
+
+```
+
+Where delay_ms is the time between timer calls in milliseconds, and YourNode::timer_callback is the callback function that is called when the timer executes. 
+
+### Printing
+To print to the console, use RCLCPP_INFO followed by a string. You can pass additional parameters to the RCLCPP_INFO and they get added to the string using c++ sprintf [format](https://www.tutorialspoint.com/c_standard_library/c_function_sprintf.htm). For example, adding %f to the string will add in a floating point number to the print, which is passed in as a parameter to RCLCPP_INFO. The following code segment shows printing position.x to the console.
+
+``` c++
+RCLCPP_INFO(this->get_logger(), "Received message… x=%f", msg->position.x);
+// Will output “Received message… x=10.5” or whatever position.x is
+
+```
+
+These are all of the core functionalities to writing a node in ROS! As an exercise, try implementing a publisher and subscriber in C++ using one of the empty nodes available in the training repo, such as <span style={{ color: 'blue' }}>src/robot/control/src/control_node.cpp</span>
+
+<mark>**Deliverable 5.1**</mark> Write a timer that executes every second that will call a callback function and print out a message of your choice to the console. Verify that it works by running ./watod up and viewing the console printouts.
+
+<mark>**Deliverable 5.2**</mark> Create a publisher that publishes a std_msgs::msg::String message to the “/example_string” topic. Modify the timer callback function you wrote in Deliverable 5.1 to include publishing of a string message to your publisher with a message of your choice. Verify the messages are being sent by adding a “raw message” widget to foxglove and set it to your new topic name. Congratulations, you published your first message!
+
+
+<mark>**Deliverable 5.3**</mark> Write a subscriber that receives nav_msgs::msg::Odometry messages from the “/model/robot/odometry” topic (should be automatically available via Gazebo when you run the training repo) and prints its x,y,z coordinates to the console. Reference the ros2 documentation for the Odometry message properties. Congratulations, you subscribed to your first message! 
+
+You have now successfully written a node to publish and subscribe to messages, which is the core functionality of ROS! You can now write nodes to interact with robots via subscribing and publishing ROS messages. 
+
+### Control
+Now it’s time to implement your first node to interact with the robot! This node will be responsible for receiving a goal position to drive towards and send motor commands to the robot to drive towards it. 
+
+To set a position for the robot to drive to, we will be using Foxglove’s 3D panel publish feature, which allows you to click on the 3D map and publish a message. In Foxglove under panel settings for the 3D panel, you should see the following listed under the Publish tab:
+
+![](../../public/assets/publish.jpg)
+
+This is where you select the message type and topic to publish to when you click on the 3D map. If you use our configuration file, these will be automatically selected to geometry_msgs::msg::Point and “/goal_point” topic. 
+
+In order to publish that message, click on the circle icon at the top right of the 3D panel (shown below) and click on a point on the map. 
+
+![](../../public/assets/goal_pose.jpg)
+
+You can verify that your point is published by adding a Raw Message widget and point it to the “/goal_pose” topic and watch as a message appears when you click on the circle icon and click on the map.
+
+![](../../public/assets/data.jpg)
+
+The purpose of the control node is to subscribe to this topic and drive the robot towards the point you clicked on the map.
+You will be writing code in the control node, so go ahead open up <span style={{ color: 'blue' }}>src/robot/control/src/control_node.cpp</span> in the wato_asd_training repo. Now, to receive these messages, create a new subscriber in the Control node (a blank node called Control has been setup already in the repo, you may edit that node) and make it subscribe to geometry_msgs::msg::PointStamped messages in the “/goal_point” message. Then, create a callback and print out the x,y,z values of that [PointStamped](https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PointStamped.html) message (reference link) using RCLCPP_INFO. 
+
+<mark>**Deliverable 6.1**</mark> Create a subscriber that receives geometry_msgs::msg::PointStamped messages from the “/goal_point” topic. Verify you receive the messages by printing out the x,y,z coordinates to the console. 
+
+Now that you can receive the goal pose, the next step is to control the robot. Firstly, we need a timer callback that will run the control loop on repeat. To do this, create a timer that runs every 100ms and calls a blank function for now.
+
+<mark>**Deliverable 6.2**</mark> Create a timer that calls a blank callback function every 100ms for control. You can verify it works by printing a random message using RCLCPP_INFO.
+
+Inside this timer, we will be using a simple proportional controller. A proportional controller is the first term in PID control, which simply multiplies a constant scalar to the error, where error is the distance between your current point and desired point.
+
+Command = Kp * error
+
+In this case, we have two error terms: x and y. The x error will define forward movement, and the y error will define angular movement. 
+
+However, there is one problem. Currently, the point message is defined in the world coordinate frame, while we want the error in the robot’s relative coordinate frame to do relative movements. In order to do this, we will take advantage of ROS2’s transform system: TF2
+
+### Transforms
+Transforms define coordinate frames for geometry objects. One example could be a coordinate relative to the world versus relative to the robot, or a coordinate relative to an arm of the robot versus the base of the robot. Here is an illustration of a complex robot with multiple transforms (shown by red,blue,green axis markers): 
+![](../../public/assets/transforms.jpg)
+
+Luckily, the ROS2 library has an easy way for dealing with transforms. The gazebo environment we provided automatically publishes the transform of the robot, which allows us to easily convert 
+
+a point in world space to robot space. Once the point is in robot space, we can get the relative x and y offset from the robot’s position to the point.
+
+To access ROS2’s transform system, you must create a tf_buffer and tf_listener using the following syntax:
+
+``` c++
+// In header file   
+std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
+std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
+  
+// In node constructor
+tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
+tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
+```
+
+Then, to access the transform between two frames, use the following syntax:
+
+``` c++
+geometry_msgs::msg::TransformStamped transform;
+
+
+try {
+    transform = tf_buffer_->lookupTransform("TO_FRAME", "FROM_FRAME", tf2::TimePointZero);
+} catch (const tf2::TransformException & ex) {
+    RCLCPP_INFO(this->get_logger(), "Could not transform %s", ex.what());
+}
+
+```
+
+Where “TO_FRAME” is the frame you want to transform the point into, and “FROM_FRAME” is the frame the point originated in.
+
+Then to transform a point using that frame:
+
+``` c++
+auto transformed_point = geometry_msgs::msg::PointStamped();
+
+ tf2::doTransform(original_point, transformed_point, transform);
+
+```
+
+Where original_point is the point in the FROM_FRAME and transformed_point is that same point in the TO_FRAME.
+
+We will be leveraging this code to transform our global point published to /goal_point into the robot’s frame. The goal_point will be in the frame “sim_world” (which is our global frame in this case) and the robot’s frame is “robot”.
+
+<mark>**Deliverable 6.2**</mark> Create a tf_buffer and tf_listener in your control node. Then, in the control callback, get the transform from “sim_world” to “robot” and transform the goal_point to the robot frame. You may need to store goal_point in an instance variable in the Node class to access it in the timer callback after it has been received from the subscriber.
+
+Now that the point is transformed, the x coordinate relates to the robot’s forward motion while the y coordinate relates to the robot’s side to side motion (angular). Therefore, an easy proportional control loop may be derived where the linear command is proportional to the X component and the angular command is proportional to the Y component.
+
+<mark>**Deliverable 6.3**</mark> Create two variables called Kp_linear and Kp_angular which will be the scalars for the proportional loop, initialize them to 0.5 as a good starting guess (these can be tuned later). Multiply Kp_linear by the X component of the goal_point transformed in the robot frame and Kp_angular by the Y component of the goal_point transformed in the robot frame. These will be your control signals to send to the robot.
+
+Now that you have the control signals, you must publish them to the robot.  By default, the robot takes in control signals in the form of a [geometry_msgs::msg::Twist](https://docs.ros.org/en/melodic/api/geometry_msgs/html/msg/Twist.html) message, which has a linear and angular velocity associated with it. The simulated robot is setup to receive Twist messages in the “/cmd_vel” topic, so you can directly send commands to the robot by creating a publisher in the control node that publishes geometry_msgs::msg::Twist messages to the “/cmd_vel” topic. Once the subscriber is made, you can then package up your linear and angular velocity commands inside of a Twist message (linear velocity will use the x component of the linear Vector3 of Twist and angular velocity will use the z component of the angular Vector3 of Twist. The rest will remain 0) and publish to the robot to control it!
+
+<mark>**Deliverable 6.4**</mark> Create a publisher that publishes geometry_msgs::msg::Twist messages to the “/cmd_vel” topic. In your control timer, create a new Twist message, set the linear x component to the result of the linear proportional loop and the angular z component to the result of the angular proportional loop. Then, your robot should drive towards the goal_point message when you publish in Foxglove!
+
+## Conclusion
+Congratulations, you have now successfully controlled a robot using ROS2! The fundamentals of publishers, subscribers, and a few tricks you learned like Foxglove and transforms will be extremely valuable in your development in the WATO ASD software stack. 
+
+Please contact the Director of ASD (Eddy Zhou) on discord, showing proof of completion and 2 subteams you are interested in joining. [Link to subteams here](https://www.watonomous.ca/roles). **Welcome to WATonomous :)**
