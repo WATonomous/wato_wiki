@@ -296,3 +296,102 @@ Reload your Foxglove, and you should see something like the following.
 <mark>**Deliverable 4.3.2**</mark> **BONUS:** View the list of Topics. What is a Topic? This can be a great opportunity to get an initial idea of ROS Topics.
 
 <mark>**Deliverable 4.3.2**</mark> **BONUS:** The visualized data is, in-reality, a bunch of numbers. Foxglove (and RViz) do some post processing to make it look intuitive. View the <span style={{ color: 'blue' }}>/lidar</span> topic’s raw data through a new Raw Message Panel.
+
+## Hands-on Training
+Now that your development environment is set up, we can begin hands-on training. You can always refer back to the previous steps for reference. **Kind reminder that our team is here to help, so if you ever have any questions, please feel free to ask in the ASD-Questions channel :).**
+
+Originally, the intent of this training was to code up a semi-complete navigation system to make the robot rather-intelligently navigate to a destination of your choice. However, for the sake of not blowing up your mind, we have trimmed the assignment down to at least touch all the fundamental concepts we would like you to learn. If you would like to do the whole assignment, feel free to reach out, and we can give you more info on how the robot should navigate the map.
+
+### The Basis of Robot navigation
+Robot navigation is a very large field of study, so let’s be more specific. The navigation problem we are most concerned with here at WATonomous is: **given an end position, and no prior knowledge of the environment, navigate to that end position.**
+
+In Foxglove Studio, you should see an environment that closely relates to the problem above.
+![](../../public/assets/grid_2.jpg)
+
+Here, the end position can be specified by the user to be anywhere on the map.
+
+In an ideal environment, where obstacles don’t move, robot navigation can be quite simple. A naive approach to this problem could be: Occupancy, Immediate Trajectory, and Execution. We provide a brief description of them below:
+
+**Occupancy:** A map of squares indicating where the robot can and cannot go.
+
+**Immediate Trajectory:** The planned trajectory to take to get to the end position. 
+
+**Execution:** Following the planned trajectory as best as we can.
+
+In this system, the occupancy around the robot is found continuously. Given this geometric representation, we can produce a trajectory using the Immediate Trajectory planner. This trajectory is then Executed for a period of time. The whole process repeats continuously until an endpoint is reached.
+
+This is not much different to the real autonomy stack of the car. A higher fidelity Occupancy is found using Perception. Immediate trajectories need to factor in the complexity of the road with Navigation. And we mist execute on this trajectory with Control.
+
+To formalize, Perception would receive sensor messages and do processing. Navigation would receive the processed sensor data and figure out a set of actions to take. Control would receive the actions and perform them, finally sending commands to the motor. In fact, WATonomous’s software stack follows a very similar architecture, but with more node subdivision within each group to perform more complex computations.
+
+### Goal
+The Foxglove simulation consists of a robot within an environment. The robot has three wheels, two motors, a camera, and a 1-dimensional laser scanner.
+
+![](../../public/assets/goal.jpg)
+
+You can freely control the robot’s movement within the environment using the Foxglove Teleop panel.
+
+As you may have noticed, the Teleop control of the robot is pretty terrible. It oversteers, stops late, and has a ton of inertia. **What if we could simply instruct the robot to move to a specific point on the map instead?**
+
+The goal of your hands-on training is to do just that! By specifying a goal on the foxglove map, your robot should naively navigate to that point on the map. 
+
+<Callout type="error" emoji="️❗">
+  Note: It is important to know that the node you are about to create does not allow the robot to avoid obstacles. It will simply follow the straight-line trajectory to the point you specified. 
+As naive as this sounds, this is actually the basis of robot control. You will see later how this simple control algorithm you’ll make is used with the rest of the navigation stack to achieve obstacle avoidance!
+</Callout>
+
+### ROS
+Robot Operating System (ROS) is a popular framework for robotics codebases. At its core, it is a message broker – a system which manages and passes data between programs. This allows for modularity, management of complex data types, and interoperability. What makes ROS so powerful is the ability to easily interface libraries and tools that were built on top of ROS to bring advanced capabilities and interactive visualizations to your software stack. Some examples that we will be using are:
+- Foxglove, a web-based ROS dashboard for visualizing data and interacting with the robot
+- Geometry messages, a ROS package which includes a lot of standard geometry data types like Pose, Point, Twist, Quaternion, etc.
+- Transforms 2 (Tf2), a ROS package which allows easy transformations between coordinate frames
+
+The basic building block of the ROS framework are nodes. Nodes are responsible for performing a specific set of tasks, and interact with other nodes by receiving (subscribing) or sending out (publishing) messages. You can think of ROS like a network, with many nodes interacting with each other through ROS to achieve the overall function of the software stack. 
+
+On the technical side, ROS nodes are just c++ or python programs with the ROS library. The ROS framework then manages the building, running, and message passing of each node behind the scenes. The ROS library provides the syntax for creating a node, subscribing to messages, sending out messages, and native objects for ROS messages.
+
+<Callout type="error" emoji="️❗">
+  Note: This document will give a quick overview of ROS2 code, however we highly recommend going through the ROS2 Getting Started documentation which is much more detailed and explains ROS2 from start to finish. There may be a steep learning curve, so if you are confused throughout these training modules, feel free to ask the team leads for an explanation on discord!
+</Callout>
+  
+
+Here is an example ROS node in C++:
+```c++
+#include "transformer_node.hpp"
+
+
+ExampleNode::ExampleNode() : Node("example_node"){
+  // Subscribe to a topic
+  subscription_ = this->create_subscription<geometry_msgs::msg::Pose>(
+    "/example_topic0", 20, 
+std::bind(&ExampleNode::subscription_callback, this, 
+std::placeholders::_1));
+  // Publish to a topic
+  publisher_ =
+ this->create_publisher<geometry_msgs::msg::Pose>("/example_topic1", 20);
+}
+
+
+// Subscription callback: gets called when a message from the subscription comes in
+void ExampleNode::subscription_callback(const geometry_msgs::msg::Pose::SharedPtr msg)
+{
+	// Print to the console
+RCLCPP_INFO(this->get_logger(), "Received message…");
+	…
+	// Publish a message
+   	publisher_->publish(msg);
+}
+
+
+// Boilerplate code for starting up the node (gets called by ROS   framework)
+int main(int argc, char ** argv)
+{
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<ExampleNode>());
+  rclcpp::shutdown();
+  return 0;
+}
+
+```
+
+**Let’s break it down.**
