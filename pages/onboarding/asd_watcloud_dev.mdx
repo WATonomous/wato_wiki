@@ -8,7 +8,7 @@ import { Callout } from 'nextra/components'
 
 Here, we discuss setting up WATcloud to be used for software development in the Autonomous Software Division.
 
-## Why WATcloud
+## Why WATcloud? What is WATcloud?
 Due to the high computational requirements of many aspects of the ASD stack, WATO has a large server infrastructure for remote development [WATcloud](https://cloud.watonomous.ca/). In this section, you will learn to connect to WATcloud on VS code. Connecting to a server to do remote development is not only a crucial aspect of software development at WATonomous, but is also a very common practice in the industry.
  
 <Callout type="info" emoji="ℹ️">
@@ -27,7 +27,8 @@ Remote development for a WATonomous member typically consists of a local machine
 
 - `Local Machine` Your personal computer. 
 - `Host Machine` The computer you connect to. In the case of WATcloud, this is the SLURM login node.
-- `SLURM Node` An "imaginary computer" that is created by WATcloud. You specify to WATcloud what compute you need by running commands in the SLURM login node.
+- `SLURM Node` Used to manage compute resources. It creates SLURM Jobs according to your needs.
+- `SLURM Job` An "imaginary computer" that is created by WATcloud. You specify to WATcloud what compute you need by running commands in the SLURM login node.
 - `Docker Container` An isolated coding environment.
 
 To do remote development in the Autonomous Software Division, the process can be summed up by the image below:
@@ -54,6 +55,8 @@ Dealing with SSH can be quite foreign to alot of new developers. Thankfully, we 
 ## General Setup
 
 import { Steps } from 'nextra/components'
+
+This section is required so that you have proper access to our server cluster.
  
 <Steps>
 ### [Local Machine] Clone the wato_asd_tooling repository
@@ -112,6 +115,55 @@ ssh -T git@github.com
   **Deliverable** Get SSH and SSH Agent Forwarding working.
 </Callout>
 
+## Setup for Interactive Development
+Unlike job scheduling, SLURM was not built to handle interactive development. Luckily we have a team of very talented individuals, and we managed to make interactive development work nonetheless :).
+
+Creating an interactive development environment entails starting an SSH server inside the SLURM node, some wacky SSH key sharing, a netcast proxycommand, as well as pointing docker to a persistent filesystem. You don't have to do that though. You just need to do the following.
+ 
+<Steps>
+
+### [Local Machine] Build the Computer you desire!
+Use your favorite text editor to edit `wato_asd_tooling/session_config.sh`.
+
+```bash
+cd wato_asd_tooling
+nano session_config.sh
+```
+
+The file itself contains descriptions of all of the parameters and how to set them.
+
+### [Local Machine] Start a SLURM Dev Session
+ 
+Run the helper script to startup a SLURM Dev Node. Follow all the prompts carefully.
+```bash
+cd wato_asd_tooling
+bash start_interactive_session.sh
+```
+
+<Callout type="error" emoji="🚫">
+  **DO NOT START MORE THAN ONE DEV NODE.** You have a chance of corrupting your docker filesystem. Starting more than one dev node is like building multiple computers. It is NOT the same as creating multiple terminals.
+</Callout>
+
+### [Local Machine] Setup SSH for SLURM
+Run this last helper script **LOCALLY**. Follow the prompts carefully.
+
+```bash
+cd wato_asd_tooling
+bash ssh_helpers/setup_slurm_ssh.sh
+```
+
+### [Local Machine] Connect to the SLURM Dev Session with VScode
+You can connect to the SLURM Dev Session using the VScode ssh extension. The remote host is called asd-dev-session by default.
+
+![](../../public/assets/slurm_dev.gif)
+
+</Steps>
+
+<Callout type="default">
+  And you're good to go! Whenever you want to startup a SLURM Dev Node, start one up by running `start_interactive_session.sh`, and then SSH into the SLURM node through VScode.
+</Callout>
+
+
 ## Setup for Job Scheduling
 There is no setup. Creating an SLURM job is really easy. It was what SLURM was designed for. You can view docs on SLURM in the [WATcloud documentation](https://cloud.watonomous.ca/docs/compute-cluster/slurm).
 
@@ -128,52 +180,3 @@ bash slurm_templates/custom_job_node.sh
 <Callout type="warning" emoji="⚠️">
   You need to have access to our docker registry to make this work. You can come back to this when you've learned about docker in the [General Onboarding](/onboarding/asd_general_onboarding)
 </Callout>
-
-## Setup for Interactive Development
-Unlike job scheduling, SLURM was not built to handle interactive development. Luckily we have a team of very talented individuals, and we managed to make interactive development work nonetheless :).
-
-Creating an interactive development environment entails starting an SSH server inside the SLURM node, some wacky SSH key sharing, a netcast proxycommand, as well as pointing docker to a persistent filesystem. You don't have to do that though. You just need to do the following.
- 
-<Steps>
-### SSH into a SLURM Login Node
- 
-Both `tr-ubuntu3` and `derek3-ubuntu2` are SLURM login nodes. You can connect to them by running either
-```bash
-ssh tr-ubuntu3
-ssh derek3-ubuntu2
-```
- 
-### Start a SLURM Dev Node
- 
-Run the helper script to startup a SLURM Dev Node. Follow all the prompts carefully.
-```bash
-cd wato_asd_tooling
-bash slurm_templates/small_dev_node.sh
-```
-
-We also have other dev node configurations (including a custom configurator) inside the tooling repo.
-```bash
-bash slurm_templates/medium_dev_node.sh
-bash slurm_templates/large_dev_node.sh
-bash slurm_templates/custom_dev_node.sh
-```
-
-<Callout type="error" emoji="🚫">
-  **DO NOT START MORE THAN ONE DEV NODE.** You have a chance of corrupting your docker filesystem. Starting more than one dev node is like building multiple computers. It is NOT the same as creating multiple terminals.
-</Callout>
-
-### [Local Machine] Setup SSH for SLURM
-Run this last helper script **LOCALLY**. Follow the prompts carefully.
-
-```bash
-cd wato_asd_tooling
-bash ssh_helpers/setup_slurm_ssh.sh
-```
-</Steps>
-
-<Callout type="default">
-  And you're good to go! Whenever you want to startup a SLURM Dev Node, start one up by running any of the SLURM Dev templates, and then SSH into the SLURM node through VScode.
-</Callout>
-
-![](../../public/assets/slurm_dev.gif)
-
