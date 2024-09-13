@@ -120,7 +120,20 @@ Unlike job scheduling, SLURM was not built to handle interactive development. Lu
 
 Creating an interactive development environment entails starting an SSH server inside the SLURM node, some wacky SSH key sharing, a netcast proxycommand, as well as pointing docker to a persistent filesystem. You don't have to do that though. You just need to do the following.
  
+### One-time Setup
+Follow these steps if you are setting up the SLURM dev sessions for the first time, or you were using past solutions for SLURM that WATO provided.
+
 <Steps>
+
+### [Host Machine] Add your public key into the SLURM node's authorized keys
+Copy your public key on your local computer and paste it into the authorized_keys file on the SLURM node.
+
+```bash
+your_local_machine$ cat ~/.ssh/your_key.pub (copy the output of this)
+your_local_machine$ ssh [tr-ubuntu3 or derek3-ubuntu2]
+watcloud_slurm_node$ touch ~/.ssh/authorized_keys
+watcloud_slurm_node$ nano ~/.ssh/authorized_keys (paste you rpublic key into here)
+```
 
 ### [Local Machine] Build the Computer you desire!
 Use your favorite text editor to edit `wato_asd_tooling/session_config.sh`.
@@ -152,6 +165,34 @@ cd wato_asd_tooling
 bash ssh_helpers/setup_slurm_ssh.sh
 ```
 
+### [Local Machine] Stop the SLURM Dev Session
+
+Stop the interactive session by hitting `Ctrl+C`.
+
+</Steps>
+
+### Starting a SLURM Dev Session Regularly
+
+Once you have done the one-time setup, connecting to a SLURM Dev Session is easy.
+
+<Steps>
+
+### [Local Machine][Optional] Build the Computer you desire!
+Use your favorite text editor to edit `wato_asd_tooling/session_config.sh`.
+
+```bash
+cd wato_asd_tooling
+nano session_config.sh
+```
+
+### [Local Machine] Start a SLURM Dev Session
+ 
+Run the helper script to startup a SLURM Dev Node. Follow all the prompts carefully.
+```bash
+cd wato_asd_tooling
+bash start_interactive_session.sh
+```
+
 ### [Local Machine] Connect to the SLURM Dev Session with VScode
 You can connect to the SLURM Dev Session using the VScode ssh extension. The remote host is called asd-dev-session by default.
 
@@ -162,7 +203,6 @@ You can connect to the SLURM Dev Session using the VScode ssh extension. The rem
 <Callout type="default">
   And you're good to go! Whenever you want to startup a SLURM Dev Node, start one up by running `start_interactive_session.sh`, and then SSH into the SLURM node through VScode.
 </Callout>
-
 
 ## Setup for Job Scheduling
 There is no setup. Creating an SLURM job is really easy. It was what SLURM was designed for. You can view docs on SLURM in the [WATcloud documentation](https://cloud.watonomous.ca/docs/compute-cluster/slurm).
