@@ -135,6 +135,22 @@ watcloud_slurm_node$ touch ~/.ssh/authorized_keys
 watcloud_slurm_node$ nano ~/.ssh/authorized_keys (paste you rpublic key into here)
 ```
 
+### [Host Machine] Add the following to your bashrc in your SLURM node
+
+```bash
+watcloud_slurm_node$ nano ~/.bashrc
+```
+
+Add the following to the end of your `~/.bashrc` file.
+
+```bash
+if [[ "$(hostname)" == *"slurm"* ]]; then 
+    export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/tmp/run}
+    export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-/tmp/config}
+    export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/docker.sock"
+fi
+```
+
 ### [Local Machine] Build the Computer you desire!
 Use your favorite text editor to edit `wato_asd_tooling/session_config.sh`.
 
