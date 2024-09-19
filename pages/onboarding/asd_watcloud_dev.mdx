@@ -96,11 +96,17 @@ To do this, download the `Remote - SSH` VScode Extension. After that, you should
 
 Agent forwarding lets us carry our identity onto other machines that we connect to. What this means is, you can use git commands on other machines without having to create an SSH key on each machine you connect to.
 
-Setup agent forwarding with our helper script. Follow the prompts whenever you get them.
+**Linux/Mac**: Setup agent forwarding with our helper script. Follow the prompts whenever you get them.
 
 ```bash
 cd wato_asd_tooling
 bash ssh_helpers/configure_agent_forwarding.sh
+```
+
+**Windows**: Open Powershell (as adminstrator) and run the following command,
+
+```
+Set-Service -Name ssh-agent -StartupType Automatic; Start-Service ssh-agent
 ```
 
 ### [Host Machine] Confirm Agent Forwarding Works
