@@ -102,6 +102,11 @@ Agent forwarding lets us carry our identity onto other machines that we connect 
 cd wato_asd_tooling
 bash ssh_helpers/configure_agent_forwarding.sh
 ```
+**Mac Users Beware:** Whenever you restart/shutdown your mac, your ssh keys are removed from your agent, so you’ll have to re-add them on startup.
+
+```
+ssh-add --apple-use-keychain $PATH_TO_PRIVATE_KEY
+```
 
 **Windows**: Open Powershell (as adminstrator) and run the following command,
 
