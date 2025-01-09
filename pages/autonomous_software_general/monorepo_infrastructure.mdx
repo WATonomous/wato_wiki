@@ -123,6 +123,22 @@ The Monorepo Infrastructure has the ability to automatically setup your VScode e
 
 Follow the steps prompted in the terminal and you are good to go. Use this method most of the time.
 
+To build your code and see changes, do:
+```bash
+./watod build
+./watod up
+```
+
+If you want to make changes to only one service while keeping the other services running:
+```bash
+./watod up
+
+# in a separate terminal
+./watod build <service_you_want_to_build>
+./watod down <service_you_want_to_build>
+./watod up <service_you_want_to_build>
+```
+
 To run ROS2 commands outside the container, use:
 ```bash
 ./watod run <service> <ros2_command>

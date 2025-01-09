@@ -1,0 +1,98 @@
+import { Callout } from 'nextra/components'
+import { Steps } from 'nextra/components'
+
+# ASD Admission Assignment
+
+The ASD Admission Assignment seeks to teach you all the relevant software tools and robotics knowledge you'll need for your future career in state-of-the-art robotics.
+
+<Callout type="warning" emoji="️⚠️">
+  This assignment can be a bit daunting, but we promise that with grit, you can complete this assignment regardless of your current capabilities. Feel free to ask any questions on Discord.
+</Callout>
+
+## Rules
+
+1. If you finished the assignment (or the deadline has been reached), submit a link to your code on github plus video proof to the `assignment-completions` discord channel.
+2. **You're allowed to work in groups of 3.** Be sure to credit your group members in the submission. You can look for group members in the `assignment-groups` discord channel.
+3. You are allowed to use AI tools such as LLMs.
+4. You are allowed to look at the answer. If you know how to find it. We'll know if you used the answer though ;)
+
+<Callout type="error" emoji="️‼️">
+  **Why so many loopholes?** It's because we aren't testing you. It's to give you a chance to really hold yourself accountable, and explore the interesting world of robotics. Sure you can copy your way through, but what's the point? Are you really becoming a better you by doing that? Do you care more about your own personal growth or more about superficially showing yourself off? 
+</Callout>
+
+## Goal of the Assignment
+In this assignment, you are tasked with giving a simulated robot the intelligence to navigate from point-to-point while avoiding static objects. The robot is [differential drive](https://en.wikipedia.org/wiki/Differential_wheeled_robot) and has a camera and laser scanner.
+
+<iframe
+    className="pt-4 w-full aspect-video"
+    src={`https://www.youtube.com/embed/bLf8vFsxAJ0`}
+    title="YouTube Video"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+></iframe>
+
+The code you will write, and the libraries you will use, are industry-standard. That means you will be writing code that could be transferable to companies you will be working for in the future! Here's a non-exhaustive list:
+
+- [Nvidia](https://developer.nvidia.com/isaac/ros)
+- [Google (Intrinsic)](https://www.intrinsic.ai/)
+- [Amazon (Amazon Robotics)](https://amazon.jobs/content/en/teams/ftr/amazon-robotics)
+- [Tesla](https://www.tesla.com/AI)
+- ... and MANY robotics startups
+
+Of course, we cannot cover everything. So feel free to use this assignment as a good starting point to get into the world of robotics. :)
+
+## Getting Started
+
+### Prerequisites
+We recommend you refresh your knowledge of the following before beginning the assignment:
+- [GitHub and git](https://docs.github.com/en/get-started/start-your-journey/hello-world)
+- [navigating the terminal](https://www.redhat.com/en/blog/navigating-filesystem-linux-terminal)
+- [C++ and Python](https://leetcode.com/)
+- Concurrent Programming and Interprocess Communication
+
+### Setup
+The ASD Admission Assignment is compatible with Linux, Windows ([WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), and MacOS. We utilize [docker](https://docs.docker.com/get-started/docker-overview/) for ease of reproducibility and deployability, so you'll barely need to install anything on your own computer to make this assignment work!
+
+In the terminal:
+1. [Download Docker Engine (or Docker Desktop if you have no choice)](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+2. Clone the WATonomous ASD Admissions Assignment
+```bash
+git clone git@github.com:WATonomous/wato_asd_training.git
+```
+3. You're ready to begin!
+
+## Warm Up: How to use the Repository
+The ASD Assignment utilizes our custom-built [Monorepo Infrastructure](../autonomous_software_general/monorepo_infrastructure). It is a Docker Compose wrapper that orchestrates various concurrent programs together. It also lets us build code, setup VScode Intellisense, and deploy to robots.
+
+In this warm up, you will learn how to use the infrastructure. More specifically, how to open Foxglove to visualize data, make changes to the code, build the code, and witness your changes on Foxglove. We highly recommend you reference the [Monorepo Infrastructure Docs](../autonomous_software_general/monorepo_infrastructure) while you go through this warm up and the rest of the assignment.
+
+### First Encounter with Foxglove
+1. Set your `watod-config.sh` to run `robot`, `gazebo`, and `vis_tools` as the active modules.
+```bash
+ACTIVE_MODULES="robot gazebo vis_tools"
+```
+2. Build these module images
+```bash
+./watod build
+```
+3. Up the module containers
+```bash
+./watod up
+```
+4. Figure out your Foxglove URL
+- If you are developing locally, this can be found in the logs after you run `./watod up`, it should look like something along the lines of `https://localhost:#####`
+- If you are developing on watcloud, it should act the same as deving locally. If not, check that the port is being forwarded by looking at the `PORTS` tab in VScode
+5. Open up [Foxglove](https://foxglove.dev/ros) (web app or desktop app). Click **Open Connection** and enter the URL you found previously. The Foxglove dashboard should open.
+6. Import the pre-made Foxglove layout located in `config/wato_asd_training_foxglove_config.json` into the Foxglove Dashboard.
+- You should see the following:
+
+![](../../public/assets/assignment_foxglove_init.png)
+
+You can move the robot around using the Teleop Panel.
+
+### Coding the Robot and Propagating the change into Foxglove
+0. Get Intellisense working. This will give you code completion on VScode.
+```bash
+./watod --setup-dev-env robot
+```
+1. Make a change to
