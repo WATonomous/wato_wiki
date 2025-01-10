@@ -47,7 +47,7 @@ Of course, we cannot cover everything. So feel free to use this assignment as a 
 We recommend you refresh your knowledge of the following before beginning the assignment:
 - [GitHub and git](https://docs.github.com/en/get-started/start-your-journey/hello-world)
 - [navigating the terminal](https://www.redhat.com/en/blog/navigating-filesystem-linux-terminal)
-- [C++ and Python](https://leetcode.com/)
+- [C++ and Python](https://leetcode.com/) (You will be using C++ for this assignment because it is easier to learn rclpy coming from rclcpp)
 - Concurrent Programming and Interprocess Communication
 
 ### Setup
@@ -67,23 +67,23 @@ The ASD Assignment utilizes our custom-built [Monorepo Infrastructure](../autono
 In this warm up, you will learn how to use the infrastructure. More specifically, how to open Foxglove to visualize data, make changes to the code, build the code, and witness your changes on Foxglove. We highly recommend you reference the [Monorepo Infrastructure Docs](../autonomous_software_general/monorepo_infrastructure) while you go through this warm up and the rest of the assignment.
 
 ### First Encounter with Foxglove
-1. Set your `watod-config.sh` to run `robot`, `gazebo`, and `vis_tools` as the active modules.
+**1. Set your `watod-config.sh` to run `robot`, `gazebo`, and `vis_tools` as the active modules.**
 ```bash
 ACTIVE_MODULES="robot gazebo vis_tools"
 ```
-2. Build these module images
+**2. Build these module images**
 ```bash
 ./watod build
 ```
-3. Up the module containers
+**3. Up the module containers**
 ```bash
 ./watod up
 ```
-4. Figure out your Foxglove URL
+**4. Figure out your Foxglove URL**
 - If you are developing locally, this can be found in the logs after you run `./watod up`, it should look like something along the lines of `https://localhost:#####`
 - If you are developing on watcloud, it should act the same as deving locally. If not, check that the port is being forwarded by looking at the `PORTS` tab in VScode
-5. Open up [Foxglove](https://foxglove.dev/ros) (web app or desktop app). Click **Open Connection** and enter the URL you found previously. The Foxglove dashboard should open.
-6. Import the pre-made Foxglove layout located in `config/wato_asd_training_foxglove_config.json` into the Foxglove Dashboard.
+**5. Open up [Foxglove](https://foxglove.dev/ros) (web app or desktop app). Click **Open Connection** and enter the URL you found previously. The Foxglove dashboard should open.**
+**6. Import the pre-made Foxglove layout located in `config/wato_asd_training_foxglove_config.json` into the Foxglove Dashboard.**
 - You should see the following:
 
 ![](../../public/assets/assignment_foxglove_init.png)
@@ -91,8 +91,195 @@ ACTIVE_MODULES="robot gazebo vis_tools"
 You can move the robot around using the Teleop Panel.
 
 ### Coding the Robot and Propagating the change into Foxglove
-0. Get Intellisense working. This will give you code completion on VScode.
+This section will get you to integrate a simple publisher node using one of the empty packages located in the `src` directory. Later on, we will give you a rundown on what you are actually writing.
+
+**0. Get Intellisense working. This will give you code completion on VScode.**
 ```bash
 ./watod --setup-dev-env robot
 ```
-1. Make a change to
+
+
+**1. In `src/robot/costmap/include/costmap_node.hpp` place the following code**
+```cpp
+#ifndef COSTMAP_NODE_HPP_
+#define COSTMAP_NODE_HPP_
+
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
+
+#include "costmap_core.hpp"
+
+class CostmapNode : public rclcpp::Node {
+  public:
+    CostmapNode();
+    
+    // Place callback function here
+    void publishMessage();
+
+  private:
+    robot::CostmapCore costmap_;
+    // Place these constructs here
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr string_pub_;
+    rclcpp::TimerBase::SharedPtr timer_;
+};
+
+#endif 
+```
+
+**2. In `src/robot/costmap/src/costmap_node.cpp` place the following code**
+```cpp
+#include <chrono>
+#include <memory>
+
+#include "costmap_node.hpp"
+
+CostmapNode::CostmapNode() : Node("costmap"), costmap_(robot::CostmapCore(this->get_logger())) {
+  // Initialize the constructs and their parameters
+  string_pub_ = this->create_publisher<std_msgs::msg::String>("/test_topic", 10);
+  timer_ = this->create_wall_timer(std::chrono::milliseconds(500), std::bind(&CostmapNode::publishMessage, this));
+}
+
+// Define the timer to publish a message every 500ms
+void CostmapNode::publishMessage() {
+  auto message = std_msgs::msg::String();
+  message.data = "Hello, ROS 2!";
+  RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+  string_pub_->publish(message);
+}
+
+int main(int argc, char ** argv)
+{
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<CostmapNode>());
+  rclcpp::shutdown();
+  return 0;
+}
+```
+
+**3. Because you added a new ROS2 libary `std_msgs`, you need to instruct ROS2's package manager to install and compile with `std_msgs`**
+- In `src/robot/costmap/package.xml` add in the following:
+```xml
+<?xml version="1.0"?>
+<package format="3">
+  <name>costmap</name>
+  <version>0.0.0</version>
+  <description>A sample ROS package for pubsub communication</description>
+
+  <maintainer email="oleather@watonomous.ca">Owen Leather</maintainer>
+  <license>Apache2.0</license>
+
+  <!--https://www.ros.org/reps/rep-0149.html#dependency-tags-->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+
+  <!--YOU ARE ADDING THIS MAINLY-->
+  <depend>std_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+
+  <!--https://www.ros.org/reps/rep-0149.html#export-->
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+```
+This is telling the ROS2 pacakge manager to install the `std_msgs` library.
+- In `src/robot/costmap/CMakeLists.txt` add in the following:
+```cmake
+cmake_minimum_required(VERSION 3.10)
+project(costmap)
+
+# Set compiler to use C++ 17 standard
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# Search for dependencies required for building this package
+find_package(ament_cmake REQUIRED) # ROS2 build tool
+find_package(rclcpp REQUIRED)      # ROS2 C++ package
+find_package(std_msgs REQUIRED)    # YOU ARE ONLY ADDING THIS TO THE FILE
+
+# Compiles source files into a library
+# A library is not executed, instead other executables can link
+# against it to access defined methods and classes.
+# We build a library so that the methods defined can be used by
+# both the unit test and ROS2 node executables.
+add_library(costmap_lib
+  src/costmap_core.cpp)
+# Indicate to compiler where to search for header files
+target_include_directories(costmap_lib
+  PUBLIC include)
+# Add ROS2 dependencies required by package
+ament_target_dependencies(costmap_lib 
+  rclcpp
+  std_msgs # YOU ARE ONLY ADDING THIS TO THE FILE
+)
+
+# Create ROS2 node executable from source files
+add_executable(costmap_node src/costmap_node.cpp)
+# Link to the previously built library to access costmap classes and methods
+target_link_libraries(costmap_node costmap_lib)
+
+# Copy executable to installation location
+install(TARGETS
+  costmap_node
+  DESTINATION lib/${PROJECT_NAME})
+
+# Copy launch and config files to installation location
+install(DIRECTORY
+  config
+  DESTINATION share/${PROJECT_NAME})
+
+ament_package()
+```
+This is telling ROS2 compiler that you need `std_msgs` to compile the code.
+
+**4. Rebuild and Rerun the robot**
+```bash
+# In a separate terminal while the other modules are running
+./watod down robot # shuts down the robot service
+./watod build robot # rebuilds the robot service
+./watod up robot # starts the robot service up again
+```
+You can also just down, build, and up the whole thing. But this will eat up precious time.
+
+**5. View your changes on Foxglove**
+- Create a new panel that views raw messages, enter `/test_topic` as the topic you want to view
+- You should see something like the following:
+
+![](../../public/assets/foxglove_warmup.png)
+
+Congratulations! You now know how to make a code change and have it propagate into Foxglove!
+
+## How to Code Intelligence
+
+Now that you've gotten into the swing of things, let's take a step back and take a look at the field of robotics as a whole. 
+
+A reoccuring question roboticists often have is:
+
+> "How do we make robots think?"
+
+This question scales with the complexity of the robot. For a line following robot, this could be extremely easy: the robot simply needs to turn slightly left or right depending on where the line is. However, for something as complex as a humanoid robot, the question becomes alot more daunting.
+
+Line Follower Robot             |  Humanoid Robot
+:-------------------------:|:-------------------------:
+![](../../public/assets/buggy3.gif) | ![](../../public/assets/figure.gif)
+
+As you progress through your career in robotics, you will witness a multitude of robotics systems. Some that can be built by 5 people, others that have to be built by 100+ people (but actually only really written by like 5 people).
+
+However, all robotic systems seek to do one thing: **mimic aspects of the human brain to achieve a desired goal**. Of course, sometimes it's to mimic human cognition entirely, but for most applications of robotics, there is a economical usecase that needs to be fulfilled.
+
+In fact, every roboticist falls somewhere along a spectrum. At one end are the dreamers—a visionary group almost cult-like in their pursuit of playing god, driven by the singular ambition to create artificial general intelligence. At the other end are the pessimists—pragmatic, sometimes cynical individuals who see robots as little more than tools, focused solely on their limitations and building them only for profit.
+
+You decide where you want to be. But nevertheless, let's not start you off pessimistic.
+
+### A Simple Model of the Human Brain
+Human intelligence is a fascinating thing. Somehow this glob of flesh in your head is capable of controlling your every move, imagining the impossible, and deciphering the complexities of the universe. However, your mind has limitations, and all brains are not perfectly unique. In fact, every human brain shares a common set of modules. For example, it is the reason why we can translate languages. Noam Chomsky, a famous linguist, argued that we as humans share an innate language faculty. That all of our brains have an innate structure responsible for communication. These limitations are what we use to understand the brain, and with that we can spawn hypotheses on how we think.
+
+Here's our best guess (it's not the only one, but it's good enough for most roboticists):
