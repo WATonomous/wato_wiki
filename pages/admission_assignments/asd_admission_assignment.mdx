@@ -263,15 +263,23 @@ From the last example, you were probably thinking, "What the hell did I just wri
 So how do you use ROS? Learning ROS (and robotics programming in general) takes time. As you make more mistakes, you will get a better understanding of it. For now, we will only go over some basic aspects of ROS that are expecially relevant to this assignment.
 
 <Callout type="warning" emoji="️⚠️">
-  I use ROS and ROS2 interchangeably. But keep in mind that they are two different libraries that you download separately. That being said, there is a lot that is similar between them.
+  We use ROS and ROS2 interchangeably. But keep in mind that they are two different libraries that you download separately. That being said, there is a lot that is similar between them.
 </Callout>
 
+### ROS System Diagram
+Here's a simple diagram of three ROSnodes talking to each other. This is the generic way most robotics developers look at robotics systems.
+
+![]()
+
+### ROS Node
+A process that is running instances of ROS objects is called a ROSnode. What this means is, as long as your code has ROS objects that listen/publish data to the network, then it is considered a ROSnode. You can think of ROSnodes as the building blocks of a robotics system.
+
 ### ROS Messages and Topics
-ROS at its core is a framework for interprocess communication. Given two processes running, how do you make them communicate with each other? Especially when one process requires the output of another.
+ROS at its core is a framework for interprocess communication. Given two processes (ROSnodes) running, how do you make them communicate with each other? Especially when one process requires the output of another.
 
 The way ROS does this is through passing messages over a transport protocol such as UDP or TCP. In simpler terms, it is packaging data into a format that can be passed throughout your computer's internal network, at which point another program can then read that pacakged data, unpack it, and use it for processing.
 
-ROS communication involves two things: topics, and messages. A message is an arbitary data structure (an integer, or struct of multiple objects) that is used to represent the data that two or more processes will read and write. In ROS, there are a ton of prebuilt messages that can be used for your robotics project. We often don't need to create our own custom messages, but when we do, we have to build messages using ROS's build tools. You can think of messages as nothing more than the data that is to be sent between processes.
+ROS communication involves two things: **topics**, and **messages**. A **message** is an arbitary data structure (an integer, or struct of multiple objects) that is used to represent the data that two or more processes will read and write. In ROS, there are a ton of prebuilt messages that can be used for your robotics project. We often don't need to create our own custom messages, but when we do, we have to build messages using ROS's build tools. You can think of messages as nothing more than the data that is to be sent between processes.
 
 As a result, another question arises: How do we manage where to read and write messages? For example, if two processes are publishing the same message type, then how can we differentiate between a message coming from one process vs coming from the other process? Well that is where **topics** become important. ROS topics represent the medium in which messages should be passed through. You can think of them as URLs to a website. It you specify one URL in you browser, then you will get all the information available in that URL (the website itself) Topics functions very similarly. You can specify the topic a process can read/write to, and ROS fill figure out all of the networking jargon in the background. 
 
@@ -285,6 +293,11 @@ ROS utilizes these topics and messages with simple callable objects in C++ and P
 </Callout>
 
 In the warmup, we made you write a simple publisher. Please use the warmup code as a reference to how your ROS code should fit into the assignment's code format (as in what should be in the `.hpp` file and what should be in the `.cpp` file).
+
+### The Sky's the Limit
+A robotics system can be composed of a bunch of different ROSnodes communcating in a bunch of different ways. In fact, a ROSnode can consist of multiple publishers and subscribers. You just need to be careful of the concurrency between them.
+
+![]()
 
 Unfortunately, the only way to truly understand ROS is to read their docs and use it. If you have any questions when programming ROS, please ask them in our Discord.
 
@@ -364,25 +377,642 @@ Below is a diagram of a simple navigation architecture that can be used to help 
 ![]()
 
 Here is a description of each node:
-- Costmap: A ROSnode that takes in LaserScans from the `/lidar` topic, and converts them into a costmap. This is a discretized grid of squares that represent the chances as object exists in that grid with an arbitrary score.
-- Map Memory: A ROSnode that take in the costmaps overtime and stitches them together to form a global map.
-- Planner: A ROSnode that takes in the global map and use the A* algorithm to plan how to get from point A to point B. 
-- Control: A ROSnode that takes in the path from the planner and does Pure Pursuit control to physically move the robot along that path.
+- **Costmap:** A ROSnode that takes in LaserScans from the `/lidar` topic, and converts them into a costmap. This is a discretized grid of squares that represent the chances as object exists in that grid with an arbitrary score.
+- **Map Memory:** A ROSnode that take in the costmaps overtime and stitches them together to form a global map. This utilizes the robot's own position in the map found as an Odometry message in the '/odom/filtered' topic.
+- **Planner:** A ROSnode that takes in the global map and odometry to use the A* algorithm to plan how to get from point A to point B. 
+- **Control:** A ROSnode that takes in the path from the planner and odometry, and does Pure Pursuit control to physically move the robot along that path. It does this by publishing Twist messages to the '/cmd_vel' topic.
 
 With these four nodes, you can make the robot navigate to anywhere in the map!
 
 ## Implementation Details
 This section will be details on how to program each node. You can use this section as a reference for your own code, and as a foundation for where to get started.
 
-### Costmap
+### **Costmap Node**
+> **Should contain the following ROS constructs:**
+> - 1 Subscriber that subscribes to the '/lidar' topic for [sensor_msgs::msg::LaserScan](https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/LaserScan.html) messages
+> - 1 Publisher that publishes [nav_msgs::msg::OccupancyGrid](https://docs.ros.org/en/lunar/api/nav_msgs/html/msg/OccupancyGrid.html) messages to a '/costmap' topic
 
-### Map Memory
+![]()
 
-### Planner
+Equivalent to basic pereption, the Costmap Node is responsible for processing data from laserscans to create a discretized map of where the robot can and cannot go. A simple costmap can have binary values 0 and 1 and is called an occupancy grid. However, often sensor readings are noisey, so when a laser scan tells you something is 10m away, it might actually be 9.5-10.5 meters away. That is why a costmap is useful. It allows us to represent the map as a range of values representing the 'cost' that would incur should the robot cross into that part of the map. This means that a high cost equates to places where objects are definitely present and the robot should avoid. Areas of the map with low cost represent places where we are uncertain of whether an object is near, but we should trek safely nontheless. 
 
-### Control
+#### **Steps to Create a Basic Costmap**
+
+1. **Subscribe to the `/lidar` Topic**
+   - Receive `sensor_msgs::msg::LaserScan` messages from the `/lidar` topic.
+   - The `LaserScan` message contains:
+     - `angle_min`, `angle_max`: The start and end angles of the scan.
+     - `angle_increment`: The angular resolution of the scan.
+     - `ranges`: Array of distance measurements.
+
+2. **Initialize the Costmap**
+   - Create a 2D array to represent the `OccupancyGrid`. Each cell corresponds to a grid space in the real world.
+   - Define the resolution of the costmap (e.g., 0.1 meters per cell) and its size.
+   - Initialize all cells to a default value (e.g., 0 for free space).
+
+3. **Convert LaserScan to Grid Coordinates**
+   - For each valid range value in `ranges`:
+     - Compute the Cartesian coordinates of the detected point:
+       ```math
+       x = range \cdot \cos(angle)
+       ```
+
+       ```math
+       y = range \cdot \sin(angle)
+       ```
+     - Transform these coordinates into grid indices using the resolution and origin of the costmap.
+
+4. **Mark Obstacles**
+   - Set the cells corresponding to detected obstacle positions to a high cost (e.g., 100 for "occupied").
+
+5. **Inflate Obstacles**
+   - Define an **inflation radius** (e.g., 1 meter) and a maximum cost for inflated cells.
+   - For each obstacle cell:
+     - Calculate the Euclidean distance to surrounding cells.
+     - Assign a cost to the surrounding cells based on the distance:
+       ```math
+       cost = max\_cost \cdot \left(1 - \frac{distance}{inflation\_radius}\right)
+       ```
+       - Only assign a cost if the calculated cost is higher than the cell's current value.
+       - Do not assign a cost to cells beyond the inflation radius.
+
+6. **Publish the Costmap**
+   - Convert the 2D costmap array into a `nav_msgs::msg::OccupancyGrid` message.
+   - Populate the `OccupancyGrid` fields:
+     - `header`: Include the frame ID and timestamp.
+     - `info`: Define the resolution, origin, and size of the grid.
+     - `data`: Flatten the 2D costmap array into a 1D array.
+   - Publish the message to the `/costmap` topic.
+
+---
+
+#### **Code Example (Pseudo-ROS 2 Implementation)**
+
+```cpp
+void laserCallback(const sensor_msgs::msg::LaserScan::SharedPtr scan) {
+    // Step 1: Initialize costmap
+    initializeCostmap();
+
+    // Step 2: Convert LaserScan to grid and mark obstacles
+    for (size_t i = 0; i < scan->ranges.size(); ++i) {
+        double angle = scan->angle_min + i * scan->angle_increment;
+        double range = scan->ranges[i];
+        if (range < scan->range_max && range > scan->range_min) {
+            // Calculate grid coordinates
+            int x_grid, y_grid;
+            convertToGrid(range, angle, x_grid, y_grid);
+            markObstacle(x_grid, y_grid);
+        }
+    }
+
+    // Step 3: Inflate obstacles
+    inflateObstacles();
+
+    // Step 4: Publish costmap
+    publishCostmap();
+}
+```
+
+---
+
+#### Key Points
+- The `LaserScan` data provides obstacle locations in polar coordinates, which are converted to grid coordinates.
+- The costmap marks obstacles and inflates costs around them using a linear scale within a defined radius.
+
+### **Map Memory Node**
+> **Should contain the following ROS constructs:**
+> - 1 Subscriber that subscribes to the '/costmap' topic for [nav_msgs::msg::OccupancyGrid](https://docs.ros.org/en/lunar/api/nav_msgs/html/msg/OccupancyGrid.html) messages
+> - 1 Subscriber that subscribes to the '/odom/filtered' topic for [nav_msgs::msg::Odometry](https://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html) messages
+> - 1 Publisher that publishes [nav_msgs::msg::OccupancyGrid](https://docs.ros.org/en/lunar/api/nav_msgs/html/msg/OccupancyGrid.html) messages to a '/map' topic
+> - 1 Timer that is used to limit the number of times the map is updated (this is for optimization, we don't need to update the map everytime we get a costmap)
+
+![]()
+
+This node is a combination of world modeling and memory. Given that we know where we can and cannot go at a given time, we can infer the inehrent structure of the entire map as we move the robot around. This is useful because we can stop the robot from retracing its steps and planning a new route that goes through obstacles that we previously detected. 
+
+To reduce the frequency of map updates, you can design the mapping node to only fuse maps when the robot has moved a set distance. For the explanations below, we use 1.5m.
+
+---
+
+#### **Steps to Build and Update the Map**
+
+1. **Subscribe to `/costmap` Topic**
+   - Receive `nav_msgs::msg::OccupancyGrid` messages from the `/costmap` topic.
+   - Each costmap represents the local environment as detected by the robot at a specific moment.
+
+2. **Subscribe to `/odom/filtered` Topic**
+   - Receive `nav_msgs::msg::Odometry` messages from the `/odom/filtered` topic.
+   - Use this data to track the robot’s movement and determine when it has moved 5 meters since the last map update.
+
+3. **Track Robot Movement**
+   - Store the robot’s initial position and periodically compute its distance from the last update position:
+     ```math
+     distance = \sqrt{(x_{current}} - x_{last}})^2 + (y_{current}} - y_{last}})^2}
+     ```
+
+4. **Aggregate Costmaps into the Global Map**
+   - Maintain a global `OccupancyGrid` that represents the map of the environment.
+   - When the robot moves 1.5 meters, integrate the most recent costmap into the global map:
+     - Transform the costmap into the global frame using the robot’s current position and orientation.
+     - Update the global map by merging the transformed costmap into it, prioritizing new data over old data.
+
+5. **Optimize with a Timer**
+   - Use a timer to limit the frequency of map updates to a reasonable rate (e.g., every 1 second).
+   - Only perform a map update if the robot has moved 1.5 meters since the last update position.
+
+6. **Publish the Map**
+   - Publish the aggregated global map as a `nav_msgs::msg::OccupancyGrid` message to the `/map` topic.
+
+---
+
+#### **Logic for Map Update**
+
+1. Check if the robot has moved 5 meters since the last map update.
+2. If yes, aggregate the most recent costmap into the global map.
+3. Publish the updated map.
+
+---
+
+#### **Linear Fusion of Costmaps**
+When integrating costmaps:
+- If a cell in the new costmap has a known value (occupied or free), overwrite the corresponding cell in the global map.
+- If a cell in the new costmap is unknown, retain the previous value in the global map.
+
+---
+
+#### **Code Example (Pseudo-ROS 2 Implementation)**
+
+```cpp
+class MappingNode : public rclcpp::Node {
+public:
+    MappingNode() : Node("mapping_node"), last_x(0.0), last_y(0.0), distance_threshold(5.0) {
+        // Initialize subscribers
+        costmap_sub_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(
+            "/costmap", 10, std::bind(&MappingNode::costmapCallback, this, std::placeholders::_1));
+        odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
+            "/odom/filtered", 10, std::bind(&MappingNode::odomCallback, this, std::placeholders::_1));
+
+        // Initialize publisher
+        map_pub_ = this->create_publisher<nav_msgs::msg::OccupancyGrid>("/map", 10);
+
+        // Initialize timer
+        timer_ = this->create_wall_timer(
+            std::chrono::seconds(1), std::bind(&MappingNode::updateMap, this));
+    }
+
+private:
+    // Subscribers and Publisher
+    rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costmap_sub_;
+    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+    rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr map_pub_;
+    rclcpp::TimerBase::SharedPtr timer_;
+
+    // Global map and robot position
+    nav_msgs::msg::OccupancyGrid global_map_;
+    double last_x, last_y;
+    const double distance_threshold;
+    bool costmap_updated_ = false;
+
+    // Callback for costmap updates
+    void costmapCallback(const nav_msgs::msg::OccupancyGrid::SharedPtr msg) {
+        // Store the latest costmap
+        latest_costmap_ = *msg;
+        costmap_updated_ = true;
+    }
+
+    // Callback for odometry updates
+    void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg) {
+        double x = msg->pose.pose.position.x;
+        double y = msg->pose.pose.position.y;
+
+        // Compute distance traveled
+        double distance = std::sqrt(std::pow(x - last_x, 2) + std::pow(y - last_y, 2));
+        if (distance >= distance_threshold) {
+            last_x = x;
+            last_y = y;
+            should_update_map_ = true;
+        }
+    }
+
+    // Timer-based map update
+    void updateMap() {
+        if (should_update_map_ && costmap_updated_) {
+            integrateCostmap();
+            map_pub_->publish(global_map_);
+            should_update_map_ = false;
+        }
+    }
+
+    // Integrate the latest costmap into the global map
+    void integrateCostmap() {
+        // Transform and merge the latest costmap into the global map
+        // (Implementation would handle grid alignment and merging logic)
+    }
+
+    // Flags
+    nav_msgs::msg::OccupancyGrid latest_costmap_;
+    bool should_update_map_ = false;
+};
+```
+
+---
+
+#### **Key Points**
+1. The global map is updated only when the robot moves at least 5 meters and at a controlled frequency.
+2. The node uses odometry to track movement and costmaps to update the environment representation.
+3. A timer ensures that updates do not occur too frequently, optimizing computational resources.
+
+### **Planner Node**
+> **Should contain the following ROS constructs:**
+> - 1 Subscriber that subscribes to the '/map' topic for [nav_msgs::msg::OccupancyGrid](https://docs.ros.org/en/lunar/api/nav_msgs/html/msg/OccupancyGrid.html) messages
+> - 1 Subscriber that subscribes to the '/goal_point' topic for [geometry_msgs::msg::PointStamped](https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PointStamped.html) messages
+> - 1 Subscriber that subscribes to the '/odom/filtered' topic for [nav_msgs::msg::Odometry](https://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html) messages
+> - 1 Publisher that publishes [nav_msgs::msg::Path](https://docs.ros.org/en/lunar/api/nav_msgs/html/msg/Path.html) messages to a '/path' topic
+> - 1 Timer that tracks when we have reached the goal, or timedout, and we need to replan
+
+![]()
+
+The planner node corrosponds to a combination of configuration and action. Because the robots sole purpose is to move to a specified point, its configuration is very simple. Within the planner, you can model its configurator as a simple state machine that switches between two states: waiting for a goal, waiting for robot to reach the goal. These two states are sufficient enough for the task at hand. Furthermore, the planning node also produces a global plan from the robot's starting position to the final goal. It does this by using the discretized grid of the map and iterating through the grid to reach an optimal path. This plan is updated everytime the map updates.
+
+To plan from one point in an incomplete map to another, there are a multiple of algorithms you can use. The simplest is Breadth First Search, which will inflate outwards from the robot's starting position, and end when it reaches the goal point. For this assignment, we suggest you make your life more interesting and learn how to use A*. [Here's a nice video about how A* works](https://www.youtube.com/watch?v=-L-WgKMFuhE)
+
+To give you an easier time with building A*, here's some structs that could help you with building and traversing the graph:
+```cpp
+// ------------------- Supporting Structures -------------------
+
+// 2D grid index
+struct CellIndex
+{
+  int x;
+  int y;
+
+  CellIndex(int xx, int yy) : x(xx), y(yy) {}
+  CellIndex() : x(0), y(0) {}
+
+  bool operator==(const CellIndex &other) const
+  {
+    return (x == other.x && y == other.y);
+  }
+
+  bool operator!=(const CellIndex &other) const
+  {
+    return (x != other.x || y != other.y);
+  }
+};
+
+// Hash function for CellIndex so it can be used in std::unordered_map
+struct CellIndexHash
+{
+  std::size_t operator()(const CellIndex &idx) const
+  {
+    // A simple hash combining x and y
+    return std::hash<int>()(idx.x) ^ (std::hash<int>()(idx.y) << 1);
+  }
+};
+
+// Structure representing a node in the A* open set
+struct AStarNode
+{
+  CellIndex index;
+  double f_score;  // f = g + h
+
+  AStarNode(CellIndex idx, double f) : index(idx), f_score(f) {}
+};
+
+// Comparator for the priority queue (min-heap by f_score)
+struct CompareF
+{
+  bool operator()(const AStarNode &a, const AStarNode &b)
+  {
+    // We want the node with the smallest f_score on top
+    return a.f_score > b.f_score;
+  }
+};
+```
+
+---
+
+#### **Node Behavior and Design**
+
+The planner operates as a state machine with two states:
+1. **Waiting for Goal**: The node waits for a new goal point from the `/goal_point` topic.
+2. **Waiting for Robot to Reach Goal**: Once a goal is received, the node plans a path using A\* and monitors the robot's progress toward the goal.
+
+#### **Key Functionalities**
+1. **Global Plan**:
+   - Uses the A\* algorithm to find the optimal path from the robot's current position to the goal on the occupancy grid (`/map`).
+   - Pathfinding accounts for obstacle constraints and generates a path that minimizes the cost.
+
+2. **State Transition**:
+   - Transition from "waiting for goal" to "waiting for robot to reach the goal" occurs when a valid goal is received.
+   - Transition back occurs when:
+     - The goal is reached.
+     - A timeout is reached.
+     - The map updates, requiring a replan.
+
+3. **Timer for Replanning**:
+   - Checks for timeout or completion conditions periodically.
+   - Replans if the robot fails to progress or if a new map update invalidates the previous plan.
+
+---
+
+#### **Steps to Implement**
+
+1. **Subscribers**:
+   - `/map`: Receives `nav_msgs::msg::OccupancyGrid` messages.
+     - Used as the grid for A\* pathfinding.
+   - `/goal_point`: Receives `geometry_msgs::msg::PointStamped` messages.
+     - Specifies the goal point.
+   - `/odom/filtered`: Receives `nav_msgs::msg::Odometry` messages.
+     - Tracks the robot's current position and progress toward the goal.
+
+2. **Publisher**:
+   - `/path`: Publishes `nav_msgs::msg::Path` messages.
+     - Contains the planned path from the robot's position to the goal.
+
+3. **Timer**:
+   - Periodically checks if the goal is reached or if replanning is required.
+   - Ensures efficient operation by limiting unnecessary updates.
+
+4. **A\* Implementation**:
+   - Use the occupancy grid as the search space.
+   - Initialize start and goal points based on the robot’s position and the goal point.
+   - Implement A\*:
+     - Maintain an open list of nodes to be evaluated and a closed list of evaluated nodes.
+     - Use a cost function:
+       \[
+       f(n) = g(n) + h(n)
+       \]
+       - \( g(n) \): Cost to reach the node.
+       - \( h(n) \): Heuristic estimate of cost to reach the goal (e.g., Euclidean or Manhattan distance).
+     - Expand nodes until the goal is reached or no valid path exists.
+
+5. **State Machine**:
+   - Define and handle transitions between "waiting for goal" and "waiting for robot to reach goal."
+
+---
+
+#### **Code Example (Pseudo-ROS 2 Implementation)**
+
+```cpp
+class PlannerNode : public rclcpp::Node {
+public:
+    PlannerNode() : Node("planner_node"), state_(State::WAITING_FOR_GOAL) {
+        // Subscribers
+        map_sub_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(
+            "/map", 10, std::bind(&PlannerNode::mapCallback, this, std::placeholders::_1));
+        goal_sub_ = this->create_subscription<geometry_msgs::msg::PointStamped>(
+            "/goal_point", 10, std::bind(&PlannerNode::goalCallback, this, std::placeholders::_1));
+        odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
+            "/odom/filtered", 10, std::bind(&PlannerNode::odomCallback, this, std::placeholders::_1));
+
+        // Publisher
+        path_pub_ = this->create_publisher<nav_msgs::msg::Path>("/path", 10);
+
+        // Timer
+        timer_ = this->create_wall_timer(
+            std::chrono::milliseconds(500), std::bind(&PlannerNode::timerCallback, this));
+    }
+
+private:
+    enum class State { WAITING_FOR_GOAL, WAITING_FOR_ROBOT_TO_REACH_GOAL };
+    State state_;
+
+    // Subscribers and Publisher
+    rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr map_sub_;
+    rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr goal_sub_;
+    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+    rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr path_pub_;
+    rclcpp::TimerBase::SharedPtr timer_;
+
+    // Data Storage
+    nav_msgs::msg::OccupancyGrid current_map_;
+    geometry_msgs::msg::PointStamped goal_;
+    geometry_msgs::msg::Pose robot_pose_;
+
+    bool goal_received_ = false;
+
+    void mapCallback(const nav_msgs::msg::OccupancyGrid::SharedPtr msg) {
+        current_map_ = *msg;
+        if (state_ == State::WAITING_FOR_ROBOT_TO_REACH_GOAL) {
+            planPath();
+        }
+    }
+
+    void goalCallback(const geometry_msgs::msg::PointStamped::SharedPtr msg) {
+        goal_ = *msg;
+        goal_received_ = true;
+        state_ = State::WAITING_FOR_ROBOT_TO_REACH_GOAL;
+        planPath();
+    }
+
+    void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg) {
+        robot_pose_ = msg->pose.pose;
+    }
+
+    void timerCallback() {
+        if (state_ == State::WAITING_FOR_ROBOT_TO_REACH_GOAL) {
+            if (goalReached()) {
+                RCLCPP_INFO(this->get_logger(), "Goal reached!");
+                state_ = State::WAITING_FOR_GOAL;
+            } else {
+                RCLCPP_INFO(this->get_logger(), "Replanning due to timeout or progress...");
+                planPath();
+            }
+        }
+    }
+
+    bool goalReached() {
+        double dx = goal_.point.x - robot_pose_.position.x;
+        double dy = goal_.point.y - robot_pose_.position.y;
+        return std::sqrt(dx * dx + dy * dy) < 0.5; // Threshold for reaching the goal
+    }
+
+    void planPath() {
+        if (!goal_received_ || current_map_.data.empty()) {
+            RCLCPP_WARN(this->get_logger(), "Cannot plan path: Missing map or goal!");
+            return;
+        }
+
+        // A* Implementation (pseudo-code)
+        nav_msgs::msg::Path path;
+        path.header.stamp = this->get_clock()->now();
+        path.header.frame_id = "map";
+
+        // Compute path using A* on current_map_
+        // Fill path.poses with the resulting waypoints.
+
+        path_pub_->publish(path);
+    }
+};
+```
+
+---
+
+#### **Key Points**
+1. **State Machine**: Clear separation of "waiting for goal" and "waiting for robot to reach goal."
+2. **A\* Planning**: Finds an optimal path on the discretized occupancy grid using heuristic cost estimation.
+3. **Replanning**: Automatically triggered by timer-based checks for progress or map updates.
+
+### **Control Node**
+> **Should contain the following ROS constructs:**
+> - 1 Subscriber that subscribes to the '/path' topic for [nav_msgs::msg::Path](https://docs.ros.org/en/lunar/api/nav_msgs/html/msg/Path.html) messages
+> - 1 Subscriber that subscribes to the '/odom/filtered' topic for [nav_msgs::msg::Odometry](https://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html) messages
+> - 1 Publisher that publishes [geometry_msgs::msg::Twist](https://docs.ros.org/en/lunar/api/geometry_msgs/html/msg/Twist.html) messages to a '/costmap' topic
+
+![]()
+
+The control node is the final piece of the puzzle. It is the final action layer that is between your robotics software, and moving the robot (well, there's also the hardware abstraction layer that actually takes what this node outputs and converts it into actual electrical signals to move the motors of the robot). 
+
+The field of controls is vast, and there are multiple different types of control schemes. As you go through university, you will probably learn about PID control. This form of control is used EVERYWHERE. 
+
+>As of writing this assignment I was telling my dad about how I learned PID control, and how we can optimize signals in the Laplace domain, find parameters of a system with frequency analysis, blah, blah, blah. And he responded by telling me how he learned the same thing back in China, and uses it all the time to control temperatures and electrical signals in oil refineries.
+
+Turns out you can use PID controls for following the path you just made. You simply calculate how far your robot deviates from the path (and its discrete derivative and integral), and use that to adjust your robot back onto the path. HOWEVER, PID controls is quite finnicky, so lets teach you a different control scheme. 
+
+**Pure Pursuit Control** is a geometric algorithm used to guide a robot along a predefined path. The robot selects a "lookahead point" on the path at a fixed distance ahead, and the algorithm calculates the steering angle needed to reach this point. This angle is based on the curvature of a circular arc connecting the robot’s current position to the target point.
+
+![](../../public/assets/pure_pursuit_lookahead.png)
+
+The lookahead distance controls how far ahead the target point is chosen. A larger distance makes the motion smoother but less precise, while a smaller distance improves accuracy but can lead to sharper, less smooth movements. As the robot moves, the target point and steering angle are updated continuously, allowing the robot to follow the path dynamically.
+
+![](../../public/assets/pure_pursuit_lookahead2.png)
+
+You can read more about Pure Pursuit [here](https://www.mathworks.com/help/nav/ug/pure-pursuit-controller.html).
+
+---
+
+#### **Node Behavior**
+
+The control node continuously tracks the robot's position relative to the path and calculates how the robot should move to reach the next "lookahead point." The Pure Pursuit algorithm determines the steering curvature needed to bring the robot closer to this point, ensuring smooth and dynamic path tracking.
+
+#### **Core Functionalities**
+
+1. **Path Tracking**:
+   - Subscribes to `/path` (`nav_msgs::msg::Path`) for the global path generated by the planner.
+   - Selects a "lookahead point" on the path that lies a fixed distance ahead of the robot.
+
+2. **Robot Pose Tracking**:
+   - Subscribes to `/odom/filtered` (`nav_msgs::msg::Odometry`) to get the robot's current position and orientation.
+
+3. **Twist Calculation**:
+   - Computes linear and angular velocities:
+     - Linear velocity is proportional to the distance to the lookahead point.
+     - Angular velocity is determined based on the curvature required to reach the lookahead point.
+   - Publishes the velocity commands as a `geometry_msgs::msg::Twist` message to the `/cmd_vel` topic.
+
+4. **Dynamic Behavior**:
+   - Continuously updates the lookahead point and recalculates velocities as the robot moves.
+
+---
+
+#### **Key Pure Pursuit Components**
+
+- **Lookahead Point**: A target point chosen on the path at a fixed distance ahead of the robot.
+- **Steering Angle**: Computed based on the curvature of the circular arc connecting the robot to the lookahead point.
+- **Curvature**: Determines the angular velocity needed to follow the circular arc.
+
+The steering curvature is calculated as:
+```math
+\kappa = \frac{2 \cdot y}{L_d^2}
+```
+- y: Lateral error (perpendicular distance to the lookahead point).
+- L_d: Lookahead distance.
+
+The angular velocity is then:
+```math
+\omega = v \cdot \kappa
+```
+- v: Linear velocity (proportional to L_d).
+
+---
+
+#### **Pseudo-ROS Node Implementation**
+
+```cpp
+class ControlNode : public rclcpp::Node {
+public:
+    ControlNode() : Node("control_node"), lookahead_distance_(1.0), max_linear_velocity_(0.5) {
+        // Subscribers
+        path_sub_ = this->create_subscription<nav_msgs::msg::Path>(
+            "/path", 10, std::bind(&ControlNode::pathCallback, this, std::placeholders::_1));
+        odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
+            "/odom/filtered", 10, std::bind(&ControlNode::odomCallback, this, std::placeholders::_1));
+
+        // Publisher
+        cmd_vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
+
+        RCLCPP_INFO(this->get_logger(), "Control node initialized");
+    }
+
+private:
+    // Subscribers and Publisher
+    rclcpp::Subscription<nav_msgs::msg::Path>::SharedPtr path_sub_;
+    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
+
+    // Data storage
+    nav_msgs::msg::Path current_path_;
+    geometry_msgs::msg::Pose current_pose_;
+
+    // Parameters
+    double lookahead_distance_;
+    double max_linear_velocity_;
+
+    void pathCallback(const nav_msgs::msg::Path::SharedPtr msg) {
+        current_path_ = *msg;
+        RCLCPP_INFO(this->get_logger(), "Path received with %zu poses", current_path_.poses.size());
+    }
+
+    void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg) {
+        current_pose_ = msg->pose.pose;
+        computeAndPublishTwist();
+    }
+
+    void computeAndPublishTwist() {
+        if (current_path_.poses.empty()) {
+            RCLCPP_WARN(this->get_logger(), "No path available");
+            return;
+        }
+
+        geometry_msgs::msg::PoseStamped lookahead_point = findLookaheadPoint();
+        if (!lookahead_point.header.frame_id.empty()) {
+            geometry_msgs::msg::Twist cmd_vel;
+            calculatePurePursuit(lookahead_point, cmd_vel);
+            cmd_vel_pub_->publish(cmd_vel);
+        } else {
+            RCLCPP_WARN(this->get_logger(), "No valid lookahead point found");
+        }
+    }
+
+    geometry_msgs::msg::PoseStamped findLookaheadPoint() {
+        // TODO: Implement lookahead point selection logic
+        return geometry_msgs::msg::PoseStamped(); // Placeholder
+    }
+
+    void calculatePurePursuit(const geometry_msgs::msg::PoseStamped &lookahead_point,
+                              geometry_msgs::msg::Twist &cmd_vel) {
+        // TODO: Implement Pure Pursuit control logic
+    }
+};
+```
+
+---
+
+#### **Key Details**
+1. **Dynamic Path Tracking**: Continuously adjusts to changes in the path and robot's position.
+2. **Smooth Control**: The Pure Pursuit algorithm ensures smooth motion by steering toward the lookahead point.
+3. **Lookahead Distance**: A tunable parameter that balances tracking accuracy and smoothness.
+4. **Twist Output**: Publishes both linear and angular velocities, which can be consumed by the robot's hardware abstraction layer (in our case, our simulation).
 
 ## Helpful Tips
+- You never need to run `colcon build` because our monorepo infrastructure runs it automatically whenever you run `./watod build`. A good amount of ROS packaging and Launchfiles has also been abstracted away from you. This was deliberate in order to make your experience with the assignment as "code-heavy" as possible.
+  - If you want more into about how our infrastructure works, refer to the docs, or just read the `watod` scripting. It's not as complex as you think it is.
+  - What are launchfiles you may ask? Well basically ROS compiles your code into executable binaries inside a `./install` directory. Launchfiles, and its python api, are used to navigate the binaries within the `./install` directory. Note, you do not see any `./install` directories in this assignment because we build your code inside docker containers. 
+- The resolution of the costmap should be more than the map. This is to allow the map memory algorithm to match points from the costmap to the map without leaving holes.
+- Throughout this assignment, you should really learn how to use Foxglove. It is a powerful tool to see what messages are being sent throughout the robot. Use 3D panel to see the messages in an intuitive way. Use Raw Message panels to see what the message actually looks like. Good for debugging.
+- Make sure your map memory node publishes a map on initialization. Otherwise, your planner won't be able to plan unless if you move the robot manually for a bit.
+- Your planner node might plan through objects it can't see. That's okay, as the robot moves, the map will update, and so will the planned path.
 
 ## Final Remarks
 Congratulations! You have just achieved basic navigation in a static environment. You can now submit your assignment to the Discord, and use your newfound expertise to code REAL robots!!
@@ -394,6 +1024,6 @@ Now that you've built a simple navigation system, it's time to open your mind:
 - How can we change this algorithm to account for moving obstacles?
 - What if the robot wasn't differential drive? What if it was two separate carts connected to each other at a pivot point?
 
-All of these are probing questions that should get you excited about the limitless potential of robotics. You have just learned how to code a robot. Your future is bright :).
+All of these are probing questions that should get you excited about the limitless potential of robotics. You have just learned how to code a robot. Now it's time for you to learn to how code even more intelligent robots. Your future is bright :).
 
 Whether you used this assignment to get in WATonomous, or you used it for your personal growth, we wish you luck in your future career. :D
