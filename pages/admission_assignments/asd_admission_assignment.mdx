@@ -507,7 +507,7 @@ To reduce the frequency of map updates, you can design the mapping node to only 
 3. **Track Robot Movement**
    - Store the robot’s initial position and periodically compute its distance from the last update position:
      ```math
-     distance = \sqrt{(x_{current}} - x_{last}})^2 + (y_{current}} - y_{last}})^2}
+     distance = \sqrt{(x_{current} - x_{last})^2 + (y_{current} - y_{last})^2}
      ```
 
 4. **Aggregate Costmaps into the Global Map**
