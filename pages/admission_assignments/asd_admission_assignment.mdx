@@ -71,18 +71,23 @@ In this warm up, you will learn how to use the infrastructure. More specifically
 ```bash
 ACTIVE_MODULES="robot gazebo vis_tools"
 ```
+
 **2. Build these module images**
 ```bash
 ./watod build
 ```
+
 **3. Up the module containers**
 ```bash
 ./watod up
 ```
+
 **4. Figure out your Foxglove URL**
 - If you are developing locally, this can be found in the logs after you run `./watod up`, it should look like something along the lines of `https://localhost:#####`
 - If you are developing on watcloud, it should act the same as deving locally. If not, check that the port is being forwarded by looking at the `PORTS` tab in VScode
+
 **5. Open up [Foxglove](https://foxglove.dev/ros) (web app or desktop app). Click **Open Connection** and enter the URL you found previously. The Foxglove dashboard should open.**
+
 **6. Import the pre-made Foxglove layout located in `config/wato_asd_training_foxglove_config.json` into the Foxglove Dashboard.**
 - You should see the following:
 
