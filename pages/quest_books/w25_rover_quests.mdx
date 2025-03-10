@@ -8,3 +8,80 @@ The WATO Rover Team is helping build the autonomous navigation system for the UW
 
 The objectives for Winter 2025 focus on integrating UWRT's existing modules with the WATO Monorepo/watod infrastructure, as well as building out the autonomy software using nav2.
 
+1. **Point Cloud Generator**:
+    - Create a point cloud using the IntelRealSense D435 cameras, and publish that to Nav2 for Costmap Generation, and localization.
+2. **Object Detection**:
+    - Using camera feeds to generate field relative poses for mission-critical objects.
+3. **ArUco Marker Detection**:
+    - Using camera feeds to generate field relative poses for ArUco markers.
+4. **Behaviour Tree**:
+    - Using the Behaviour Tree to plan the navigation of the rover.
+5. **Nav2 Integration**:
+    - Use sensor data from rover to plan and control the rover.
+    - Use the rover's odometry to plan and control the rover (costmap, localize, plan, and control).
+
+### Term Objectives and Scoring
+
+1. **Point Cloud Generator**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to reliably generate and publish a point cloud to Nav2. |
+| 5/10  | Rover is able to inreliably generate and publish a point cloud to Nav2. | 
+| 0/10  | We were not able to meet the above goals                                                            |
+
+**Minimum Requirements:**  Partially integrated with basic functionality for a score above 7/10.
+
+2. **Object Detection**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to accurately detect and publish goal pose for Object. |
+| 7/10  | Rover is able to accurately detect but not publish goal pose for Object. |
+| 4/10  | Rover is able to inaccurately/unreliably detect Object but not publish goal pose. |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** Rover is able to inaccurately/unreliably detect Object but not publish goal pose for a score above 4/10.
+
+3. **ArUco Marker Detection**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to accurately detect and publish goal pose for ArUco marker. |
+| 7/10  | Rover is able to accurately detect but not publish goal pose for ArUco marker. |
+| 4/10  | Rover is able to inaccurately/unreliably detect ArUco marker but not publish goal pose. |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** Rover is able to inaccurately/unreliably detect ArUco marker but not publish goal pose for a score above 4/10.
+
+4. **Behaviour Tree**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is successfully able to navigate to any goal autonomously. (Object, ArUco, or GNSS Waypoint). |
+| 7/10 | Rover is able to navigate to one of the goals, but is not able to switch between them. |
+| 4/10 | Rover has a basic behaviour tree set up but is not able to navigate to any goal. |
+| 0/10 |  No progress.                                                            |
+
+**Minimum Requirements:**: Rover has a basic behaviour tree set up but is not able to navigate to any goal for a score above 4/10.
+
+5. **Nav2 Integration**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is achieve all mission goals. Costmap, localization, planning, and control all work together and fully implemented. |
+| 7/10 | Rover is able to navigate to all mission goals, but slowly/slightly illegally. Costmap, localization, planning, and control work together but not fully implemented. |
+| 4/10 | Rover is unable to navigate to all mission goals. One more more aspects of Nav2 not implemented. |
+| 0/10 |  No progress.                                                            |
+
+**Minimum Requirements:** Rover is unable to navigate to all mission goals. One more more aspects of Nav2 not implemented for a score above 4/10.
+
+## Scoring Template
+
+| Quest Name | Description | Due Date | Score |
+|------------|-------------|----------|-------|
+| Point Cloud Generator | Create a point cloud using the IntelRealSense D435 cameras, and publish that to Nav2 for Costmap Generation, and localization. | 2025-03-31 | |
+| Object Detection | Using camera feeds to generate field relative poses for mission-critical objects. | 2025-03-31 | |
+| ArUco Marker Detection | Using camera feeds to generate field relative poses for ArUco markers. | 2025-03-31 | |
+| Behaviour Tree | Using the Behaviour Tree to plan the navigation of the rover. | 2025-04-25 | |
+| Nav2 Integration | Use sensor data from rover to plan and control the rover. | 2025-04-25 | |
