@@ -9,7 +9,7 @@ The WATO Rover Team is helping build the autonomous navigation system for the UW
 The objectives for Winter 2025 focus on integrating UWRT's existing modules with the WATO Monorepo/watod infrastructure, as well as building out the autonomy software using nav2.
 
 1. **Point Cloud Generator**:
-    - Create a point cloud using the IntelRealSense D435 cameras, and publish that to Nav2 for Costmap Generation, and localization.
+    - Create a point cloud using the IntelRealSense D435 cameras and the RealSense SDK, and publish the point cloud message to Nav2 for Costmap Generation, and localization.
 2. **Object Detection**:
     - Using camera feeds to generate field relative poses for mission-critical objects.
 3. **ArUco Marker Detection**:
@@ -19,6 +19,9 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 5. **Nav2 Integration**:
     - Use sensor data from rover to plan and control the rover.
     - Use the rover's odometry to plan and control the rover (costmap, localize, plan, and control).
+6. **Simulation**:
+    - Generate rover URDF and TF tree.
+    - Gazebo simulation for both the rover and desert environment.
 
 ### Term Objectives and Scoring
 
@@ -76,6 +79,17 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 
 **Minimum Requirements:** Rover is unable to navigate to all mission goals. One more more aspects of Nav2 not implemented for a score above 4/10.
 
+6. **Simulation**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Accurate Gazebo simulation for both the rover and a desert-like environment. |
+| 7/10 | Accurate simulation for the rover but not the environment.
+| 4/10 | Basic simulation for an example rover with our sensors, but not accurate to our actual rover. |
+| 0/10 |  No progress.                                                            |
+
+**Minimum Requirements:** An accurate simulation of the rover for a score above 7/10.
+
 ## Scoring Template
 
 | Quest Name | Description | Due Date | Score |
@@ -85,3 +99,4 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 | ArUco Marker Detection | Using camera feeds to generate field relative poses for ArUco markers. | 2025-03-31 | |
 | Behaviour Tree | Using the Behaviour Tree to plan the navigation of the rover. | 2025-04-25 | |
 | Nav2 Integration | Use sensor data from rover to plan and control the rover. | 2025-04-25 | |
+| Simulation | Create URDF and TF tree for the rover, get Gazebo simulation running. | 2025-03-16 | |
