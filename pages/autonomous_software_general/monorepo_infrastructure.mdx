@@ -39,7 +39,7 @@ These enhancements streamlined the development process, improved accessibility f
 ### A Visual Understanding
 Below is a possible way to visualize how the Monorepo Infrastructure works:
 
-![](../../public/assets/infrastructure.jpg)
+![](../../public/assets/autonomous_software_general/infrastructure.jpg)
 
 The entire system communicates amongst itself using ROS2 messages. All the cool algorithms for perception, planning, control, etc. are wrapped in their own ROS2 nodes to function concurrently. Various nodes share `docker containers` if they require the same libraries and tools to function (eg. two nodes may require the same version of PyTorch, so they share the same docker container).
 
@@ -171,7 +171,7 @@ Up the service you want to dev in:
 ```
 
 Enter the container with VScode and go to `/home/bolty/ament_ws` to begin developing.
-![](../../public/assets/vscode_docker_extension.jpg)
+![](../../public/assets/autonomous_software_general/vscode_docker_extension.jpg)
 You can run ros2 commands natively when inside the container. Likewise, you can also run colcon build commands and roslaunch.
 
 <Callout type="warning" emoji="️💡">

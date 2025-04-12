@@ -91,7 +91,7 @@ ACTIVE_MODULES="robot gazebo vis_tools"
 **6. Import the pre-made Foxglove layout located in `config/wato_asd_training_foxglove_config.json` into the Foxglove Dashboard.**
 - You should see the following:
 
-![](../../public/assets/assignment_foxglove_init.png)
+![](../../public/assets/admission_assignments/assignment_foxglove_init.png)
 
 You can move the robot around using the Teleop Panel.
 
@@ -258,7 +258,7 @@ You can also just down, build, and up the whole thing. But this will eat up prec
 - Create a new panel that views raw messages, enter `/test_topic` as the topic you want to view
 - You should see something like the following:
 
-![](../../public/assets/foxglove_warmup.png)
+![](../../public/assets/admission_assignments/foxglove_warmup.png)
 
 Congratulations! You now know how to make a code change and have it propagate into Foxglove!
 
@@ -274,7 +274,7 @@ So how do you use ROS? Learning ROS (and robotics programming in general) takes 
 ### ROS System Diagram
 Here's a simple diagram of three ROSnodes talking to each other. This is the generic way most robotics developers look at robotics systems.
 
-![](../../public/assets/simple_ros_diagram.png)
+![](../../public/assets/admission_assignments/simple_ros_diagram.png)
 
 ### ROS Node
 A process that is running instances of ROS objects is called a ROSnode. What this means is, as long as your code has ROS objects that listen/publish data to the network, then it is considered a ROSnode. You can think of ROSnodes as the building blocks of a robotics system.
@@ -302,7 +302,7 @@ In the warmup, we made you write a simple publisher. Please use the warmup code 
 ### The Sky's the Limit
 A robotics system can be composed of a bunch of different ROSnodes communcating in a bunch of different ways. In fact, a ROSnode can consist of multiple publishers and subscribers. You just need to be careful of the concurrency between them.
 
-![](../../public/assets/limitless_potential.png)
+![](../../public/assets/admission_assignments/limitless_potential.png)
 
 Unfortunately, the only way to truly understand ROS is to read their docs and use it. If you have any questions when programming ROS, please ask them in our Discord.
 
@@ -318,7 +318,7 @@ This question scales with the complexity of the robot. For a line following robo
 
 Line Follower Robot             |  Humanoid Robot
 :-------------------------:|:-------------------------:
-![](../../public/assets/buggy3.gif) | ![](../../public/assets/figure.gif)
+![](../../public/assets/admission_assignments/buggy3.gif) | ![](../../public/assets/admission_assignments/figure.gif)
 
 As you progress through your career in robotics, you will witness a multitude of robotics systems. Some that can be built by 5 people, others that have to be built by 100+ people (but actually only really written by like 5 people).
 
@@ -333,7 +333,7 @@ Human intelligence is a fascinating thing. Somehow this glob of flesh in your he
 
 #### Here's a good guess (it's very limited, but it's good enough for most roboticists):
 
-![](../../public/assets/crazy_brain.png)
+![](../../public/assets/admission_assignments/crazy_brain.png)
 
 Generally, we as humans do the following:
 - **Perception:** Identify, organize, and interpret information from our five senses. 
@@ -355,20 +355,23 @@ Once you know the results of your actions, your brain stores those results in yo
 ### How does the Brain Tie into Robotics?
 **Every robotics system can be thought of in the context of the modules explained above.** No matter how simple or complex the robot is, its inner software system generally follows a flow of information similar to our simplified model of the brain.
 
-![](../../public/assets/av_arch_random.png)
+![](../../public/assets/admission_assignments/av_arch_random.png)
 
 > This is a random AV architecture we pulled from online. Usually software architectures are grouped differently by pretty much everyone. Try connecting its various modules to our simple model of the human brain.
 
 **Take an autonomous vehicle for example.** It's perception modules are its sensors (camera, radar, lidar, sonar, etc.). Its world model is a highly detailed map of the road (including lanes, traffic signs, lights, etc. This is known as an HD Map). The car also uses its world model to predict the future paths of people and cars around it. Its configurator is its behaviour tree, which is a more complex state machine that defines what the robot should do based on the current state its in. Finally, its action is the various levels of planning: Global Planning, Local Planning, and Control sequences to steer the vehicle and control its throttle.
 
-![](../../public/assets/line_following_arch.png)
+![](../../public/assets/admission_assignments/line_following_arch.png)
 
 **Something more simple can be a line follower robot.** This robot's perception is a single sensor that tracks where the line is. Its world model is very limited, as it only needs to know where it is with respect to the line. Likewise, its configuration is sparse because its sole purpose is to follow a line. Finally, its action module just moves the left of right wheel faster based on where the line is with respect to the robot. Overall, you should be noticing a pattern here. We can view any robot through the lens of a simplified model of the human brain.
 
 ## Time to Finish your Assignment
 
-In this assignment, you are given a simulation of a robot with a laserscanner and a camera. Because the laser scanner gives us a very good understanding of how far hard objects are away from us, we will only the laser scanner for this assignment. The goal of the robot is to move to a point specified by the user. Note, to make the assignment easier, we have already given you the constant position of the robot with respect to the map. This is represented by an `Odometry` message present in the `/odom/filtered` topic.
+In this assignment, you are given a simulation of a robot with a laserscanner and a camera. Because the laser scanner gives us a very good understanding of how far hard objects are away from us, we will only the laser scanner for this assignment. The goal of the robot is to move to a point specified by the user. 
 
+<Callout type="warning" emoji="️⚠️">
+  **Note, to make the assignment easier, we have already given you the exact position of the robot with respect to the map.** This is represented by an `Odometry` message present in the `/odom/filtered` topic. In real life, finding the exact position of a robot is impossible, and engineers use complex probabilistic models and sensor fusion (GPS, Lidar, Camera, IMU, ...) to figure out the best possible estimate of a robot's position.
+</Callout>
 
 <Callout type="warning" emoji="️⚠️">
   **Think back to the previous section:** if you were the robot in that simulation, and all you knew was how to control yourself, where your goal position was, and how far dangerous things are from you, then how would you plan to get to that point?
@@ -379,7 +382,7 @@ From before, you know that this robot will need the following high-level modules
 ### A Simple Navigation Architecture
 Below is a diagram of a simple navigation architecture that can be used to help the robot navigate from point A to point B.
 
-![](../../public/assets/assignment_arch.png)
+![](../../public/assets/admission_assignments/assignment_arch.png)
 
 Here is a description of each node:
 - **Costmap:** A ROSnode that takes in LaserScans from the `/lidar` topic, and converts them into a costmap. This is a discretized grid of squares that represent the chances as object exists in that grid with an arbitrary score.
@@ -878,11 +881,11 @@ Turns out you can use PID controls for following the path you just made. You sim
 
 **Pure Pursuit Control** is a geometric algorithm used to guide a robot along a predefined path. The robot selects a "lookahead point" on the path at a fixed distance ahead, and the algorithm calculates the steering angle needed to reach this point. This angle is based on the curvature of a circular arc connecting the robot’s current position to the target point.
 
-![](../../public/assets/pure_pursuit_lookahead.png)
+![](../../public/assets/admission_assignments/pure_pursuit_lookahead.png)
 
 The lookahead distance controls how far ahead the target point is chosen. A larger distance makes the motion smoother but less precise, while a smaller distance improves accuracy but can lead to sharper, less smooth movements. As the robot moves, the target point and steering angle are updated continuously, allowing the robot to follow the path dynamically.
 
-![](../../public/assets/pure_pursuit_lookahead2.png)
+![](../../public/assets/admission_assignments/pure_pursuit_lookahead2.png)
 
 You can read more about Pure Pursuit [here](https://www.mathworks.com/help/nav/ug/pure-pursuit-controller.html).
 
@@ -1046,6 +1049,7 @@ This implementation provides a simple yet effective way to integrate Pure Pursui
 Congratulations! You have just achieved basic navigation in a static environment. You can now submit your assignment to the Discord, and use your newfound expertise to code REAL robots!!
 
 Now that you've built a simple navigation system, it's time to open your mind:
+- **How do I connect my code to a real robot?** There exists hardware (sensors, motors, actuators, etc.) that are built to convert ROS messages into serial messages and finally into hardware voltages. These are called **drivers**, and many hardware manufacturers create ROS drivers to sell their product easier. However, there exists stupid people that only give you a simple C++ API, or better yet a serial interface, which you then need to create your own ROS driver for. If you are in mechatronics, you'll get a knack for this stuff.
 - How can we change this software system to account for other sensors such as cameras, radars, and sonars?
 - If we weren't directly given the robot's position with respect to the map, then how would we localize the robot? In other words, how do we make the robot know where it is?
 - What if we wanted the robot to do more complex decision making? What if its goal was more than just going from one point to another?
