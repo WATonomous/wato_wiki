@@ -21,11 +21,7 @@ jobs:
       - name: Install and export
         run: |
           npm install
-
-      - name: Export site with PR number
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          PR_NUMBER=$PR_NUMBER npm run export
+          npm run export
 
       - name: Deploy to GitHub Pages Preview
         uses: peaceiris/actions-gh-pages@v4

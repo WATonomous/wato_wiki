@@ -10,13 +10,3 @@ module.exports = {
     unoptimized: true,
   },
 };
-
-const pr = process.env.PR_NUMBER
-const isPreview = Boolean(pr)
-
-module.exports = {
-  basePath: isPreview ? `/previews/pr-${pr}` : '',
-  // Also recommended:
-  trailingSlash: true,
-  assetPrefix: isPreview ? `/previews/pr-${pr}/` : '',
-}
