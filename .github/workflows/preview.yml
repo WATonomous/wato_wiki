@@ -29,7 +29,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           publish_branch: gh-pages-preview-${{ github.event.pull_request.number }}
-          cname: wiki.watonomous.ca
 
       - name: Comment on the PR with the preview link
         uses: peter-evans/commit-comment@v2
