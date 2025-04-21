@@ -3,7 +3,7 @@ name: Deploy Preview
 on:
   pull_request:
     branches:
-      - main  # or the branch you want to base the preview on
+      - main
 
 jobs:
   build-and-deploy:
@@ -13,29 +13,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js 22
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22' # Specify the version of Node.js you need
+          node-version: '22'
 
-      - name: Run install and export
+      - name: Install and export
         run: |
           npm install
           npm run export
+        env:
+          WEBSITE_BASE_PATH: "/previews/pr-${{ github.event.pull_request.number }}"
 
       - name: Deploy to GitHub Pages Preview
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          publish_branch: gh-pages-preview-${{ github.event.pull_request.number }}
-          cname: wiki.watonomous.ca
+          publish_branch: gh-pages
+          destination_dir: previews/pr-${{ github.event.pull_request.number }}
+          force_orphan: false
 
       - name: Comment on the PR with the preview link
-        uses: peter-evans/commit-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
           body: |
             🚀 Preview of the changes is available at:
-            https://${{ github.repository_owner }}.github.io/${{ github.repository }}/gh-pages-preview-${{ github.event.pull_request.number }}
-
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/previews/pr-${{ github.event.pull_request.number }}
+          edit-mode: replace
