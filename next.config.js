@@ -4,10 +4,14 @@ const withNextra = require("nextra")({
   latex: true,
 });
 
+const basePath = (process.env.WEBSITE_BASE_PATH || '').replace(/\/$/, '')
+
 module.exports = {
   ...withNextra(),
   images: {
     unoptimized: true,
   },
-  basePath: (process.env.WEBSITE_BASE_PATH || '').replace(/\/$/, ''),
+  basePath,
+  assetPrefix: basePath,
+  trailingSlash: true,
 };

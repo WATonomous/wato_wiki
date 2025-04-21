@@ -18,14 +18,12 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Set WEBSITE_BASE_PATH env variable
-        run: |
-          echo "WEBSITE_BASE_PATH=/previews/pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-
       - name: Install and export
         run: |
           npm install
           npm run export
+        env:
+          WEBSITE_BASE_PATH: "/previews/pr-${{ github.event.pull_request.number }}"
 
       - name: Deploy to GitHub Pages Preview
         uses: peaceiris/actions-gh-pages@v4
