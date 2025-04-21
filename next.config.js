@@ -9,4 +9,5 @@ module.exports = {
   images: {
     unoptimized: true,
   },
+  basePath: (process.env.WEBSITE_BASE_PATH || '').replace(/\/$/, ''),
 };
