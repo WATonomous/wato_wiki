@@ -35,6 +35,8 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 
 **Minimum Requirements:**  Rover is able to inreliably generate and publish a point cloud to Nav2 for a score above 5/10.
 
+**Score: 10/10**
+
 2. **Object Detection**
 
 | Score | Criteria                                                                 |
@@ -45,6 +47,8 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 
 **Minimum Requirements:** Rover is able to inaccurately detect and publish goal pose for Object for a score above 5/10.
 
+**Score: 5/10**
+
 3. **ArUco Marker Detection**
 
 | Score | Criteria                                                                 |
@@ -54,6 +58,8 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 | 0/10  | No progress.                                                            |
 
 **Minimum Requirements:** Rover is able to inaccurately/unreliably detect ArUco marker but not publish goal pose for a score above 5/10.
+
+**Score: 10/10**
 
 4. **Behaviour Tree**
 
@@ -66,6 +72,8 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 
 **Minimum Requirements:**: Rover has a basic behaviour tree set up but is not able to navigate to any goal for a score above 4/10.
 
+**Score: 7/10**
+
 5. **Nav2 Integration**
 
 | Score | Criteria                                                                 |
@@ -76,6 +84,8 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 | 0/10 |  No progress.                                                            |
 
 **Minimum Requirements:** Rover is unable to navigate to all mission goals. One more more aspects of Nav2 not implemented for a score above 4/10.
+
+**Score: 4/10**
 
 6. **Simulation**
 
@@ -88,13 +98,15 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 
 **Minimum Requirements:** An accurate simulation of the rover for a score above 7/10.
 
+**Score: 4/10**
+
 ## Scoring Template
 
 | Quest Name | Description | Due Date | Score |
 |------------|-------------|----------|-------|
-| Point Cloud Generator | Create a point cloud using the IntelRealSense D435 cameras, and publish that to Nav2 for Costmap Generation, and localization. | 2025-03-31 | |
-| Object Detection | Using camera feeds to generate field relative poses for mission-critical objects. | 2025-03-31 | |
-| ArUco Marker Detection | Using camera feeds to generate field relative poses for ArUco markers. | 2025-03-31 | |
-| Behaviour Tree | Using the Behaviour Tree to plan the navigation of the rover. | 2025-04-25 | |
-| Nav2 Integration | Use sensor data from rover to plan and control the rover. | 2025-04-25 | |
-| Simulation | Create URDF and TF tree for the rover, get Gazebo simulation running. | 2025-03-16 | |
+| Point Cloud Generator | Create a point cloud using the IntelRealSense D435 cameras, and publish that to Nav2 for Costmap Generation, and localization. | 2025-03-31 | 10/10 |
+| Object Detection | Using camera feeds to generate field relative poses for mission-critical objects. | 2025-03-31 | 5/10 |
+| ArUco Marker Detection | Using camera feeds to generate field relative poses for ArUco markers. | 2025-03-31 | 10/10 |
+| Behaviour Tree | Using the Behaviour Tree to plan the navigation of the rover. | 2025-04-25 | 7/10 |
+| Nav2 Integration | Use sensor data from rover to plan and control the rover. | 2025-04-25 | 4/10 |
+| Simulation | Create URDF and TF tree for the rover, get Gazebo simulation running. | 2025-03-16 | 4/10 |
