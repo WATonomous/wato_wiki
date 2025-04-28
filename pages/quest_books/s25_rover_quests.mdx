@@ -1,0 +1,72 @@
+# Rover Quest Book - Spring 2025 (S25)
+
+## The Great Objective: Simulate navigation for a rover.
+
+The WATO Rover Team is helping build the autonomous navigation system for the UWRT's [URC 2025](https://urc.marssociety.org/home/requirements-guidelines) rover. 
+
+## Term Objectives Summary
+
+The objectives for Winter 2025 focus on integrating UWRT's existing modules with the WATO Monorepo/watod infrastructure, as well as simulating the autonomy software using nav2.
+
+1. **Simulate collecting depth camera data from three different cameras.**
+2. **Convert depth camera data into a costmap.**
+3. **Navigate autonomously to chosen point.**
+4. **Write three blogs on simulating the rover**
+
+### Term Objectives and Scoring
+
+1. **Simulate depth camera data**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All three depth cameras are generating and publishing data to Nav2. |
+| 8/10  | All three depth cameras are generating, but not publishing data to Nav2  | 
+| 5/10  | One or two depth cameras are generating and publishing data to Nav2 |
+| 3/10  | One or two depth cameras are generating but not publishing data to Nav2 |
+| 0/10  | No depth cameras are generating data to Nav2 |                                                      |
+
+**Minimum Requirements:**  One or two depth cameras are generating but not publishing data to Nav2 for a score of 3/10.
+
+2. **Generate costmap from Depth camera data**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Depth cameras are able to simulate an accurate costmap. |
+| 5/10  | Depth cameras are able to simulate an innacurate costmap. |
+| 0/10  | Depth cameras are unable to simulate a costmap and/or depth cameras are not completed |
+
+**Upstream Dependency: Depth Camera Data**
+
+**Minimum Requirements:** Depth cameras are able to simulate an innacurate costmap for a score of 5/10.
+
+3. **Autonomous navigate to chosen point**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to accurately and efficiently navigate to a point. |
+| 7/10  | Rover is able to inefficiently navigate to a point. |
+| 4/10  | Rover is unreliably able to navigate to a point. (Less than 50% success rate out of 20 tests) |
+| 0/10  | Rover is unable to navigate to a point |
+
+**Minimum Requirements:** Rover is able to inefficiently navigate to a point for a score above 7/10.
+
+4. **Blogs**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 20/20 | More than three blogs have been written on simulating software for the rover. |
+| 15/20 | Three blogs have been written on simulating software for the rover. |
+| 10/20 | Two blogs have been written on simulating software for the rover. |
+| 5/20  | One blog has been written on simulating software for the rover. |
+| 0/20  | No blogs have been written on simulating software for the rover. |
+
+**Minimum Requirements:**: Three blogs have been written on simulating software for the rover for a score above 15/20.
+
+## Scoring Template
+
+| Quest Name | Description | Due Date | Score | 
+|--------------------------------------------|------------------------------------------------------------------------------------------------------|-------------|--------| 
+| Depth Camera Simulation | Simulate collecting depth camera data from three different cameras and publish to Nav2. |  |  | 
+| Costmap Generation | Convert depth camera data into a costmap for navigation using Nav2. |  |  | 
+| Autonomous Navigation | Navigate the rover autonomously and efficiently to a chosen point using the generated costmap. | | |
+| Blog Posts | Write at least three blogs on simulating the rover in autonomy software and lessons learned. | | |
