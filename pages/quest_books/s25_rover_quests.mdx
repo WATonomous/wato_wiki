@@ -2,14 +2,15 @@
 
 ## The Great Objective: Simulate navigation for a rover.
 
-The WATO Rover Team is helping build the autonomous navigation system for the UWRT's [URC 2025](https://urc.marssociety.org/home/requirements-guidelines) rover. 
+The WATO Rover Team is helping build the autonomous navigation system for the UWRT's [URC 2026](https://urc.marssociety.org/home/requirements-guidelines) rover. 
 
 ## Term Objectives Summary
 
-The objectives for Winter 2025 focus on integrating UWRT's existing modules with the WATO Monorepo/watod infrastructure, as well as simulating the autonomy software using nav2.
+The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki.watonomous.ca/quest_books/archive/w25_rover_quests/) progress and completing essential autonomous navigation functionality.
 
 1. **Simulate collecting depth camera data from three different cameras.**
 2. **Convert depth camera data into a costmap.**
+2. **Compute and publish goal pose of detected object.**
 3. **Navigate autonomously to chosen point.**
 4. **Write three blogs on simulating the rover**
 
@@ -39,7 +40,18 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 
 **Minimum Requirements:** Depth cameras are able to simulate an innacurate costmap for a score of 5/10.
 
-3. **Autonomous navigate to chosen point**
+3. **Compute and publish goal pose of detected object**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to accurately compute the pose of detected object (e.g. mallet or water bottle) and publish it to the correct topic. |
+| 7/10  | Rover is able to compute and publish an approximate pose. |
+| 0/10  | Rover is unable to do any pose computation for the objects |
+
+**Minimum Requirements:** Rover is able to compute and publish an approximate pose for a score above 7/10.
+
+
+4. **Autonomously navigate to chosen point**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -50,7 +62,7 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 
 **Minimum Requirements:** Rover is able to inefficiently navigate to a point for a score above 7/10.
 
-4. **Blogs**
+5. **Blogs**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -68,5 +80,6 @@ The objectives for Winter 2025 focus on integrating UWRT's existing modules with
 |--------------------------------------------|------------------------------------------------------------------------------------------------------|-------------|--------| 
 | Depth Camera Simulation | Simulate collecting depth camera data from three different cameras and publish to Nav2. |  |  | 
 | Costmap Generation | Convert depth camera data into a costmap for navigation using Nav2. |  |  | 
+| Goal Pose Generation | Compute and publish goal poses of detected objects we need to navigate to. |  |  | 
 | Autonomous Navigation | Navigate the rover autonomously and efficiently to a chosen point using the generated costmap. | | |
 | Blog Posts | Write at least three blogs on simulating the rover in autonomy software and lessons learned. | | |
