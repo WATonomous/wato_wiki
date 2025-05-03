@@ -1,1 +1,137 @@
 # Eve Quest Book - Spring 2025 (S25)
+
+## The Great Objective: Level 5 Robo-taxi Around Campus
+
+WATonomous aims to achieve a fully autonomous Level 5 robo-taxi capable of navigating the University of Waterloo campus by the end of Winter 2025. This involves integrating hardware, software, and cognition systems to enable decision-making directly within the car. Achieving this milestone establishes the groundwork for advanced autonomous vehicle research and real-world applications.
+
+## Term Objectives Summary
+
+The objectives for Winter 2025 focus on integrating hardware, developing software modules, and preparing the platform for autonomous operation. These include:
+
+1. **Hardware Integration**
+   - OSCC boards: Fully integrated and functional with control drivers.
+   - Sensor drivers: Implemented for all sensors (camera, GPS/IMU, Lidar, radar) and tested with rosbag recordings.
+   - Mounts: Fabrication and installation of Lidar mirror mounts and radar mounts.
+
+2. **Software Modules**
+   - Perception Stack: Sensor integration and testing on the car.
+   - Local Plan and Controller: Turning and obstacle avoidance capabilities tested on the car.
+   - HD Map and Global Plan: Load and test an HD map of the Waterloo regional test track.
+   - Behavior Tree: Implementation without requiring car testing.
+   - Localization: Functional with GPS/IMU and car odometry, tested on the car.
+
+---
+
+### Term Objectives and Scoring
+
+#### Hardware Integration
+
+1. **OSCC Boards**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Joystick command passes through ROS2 stack to OSCC → verified motion with hard & soft e-stop systems functional. |
+| 7/10  | One or more OSCC control drivers implemented and verified with test motion (but not all subsystems functional). |
+| 4/10  | Boards are wired and installed; no verified movement or joystick input. |
+| 0/10  | No integration, wiring incomplete or testing blocked.                                                            |
+
+**Minimum Requirements:** At least one control driver implemented and tested for a score above 4/10.
+
+2. **Mount Fabrication & Installation**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 5/5   | All mounts (Lidar mirror mounts and radar mounts) fabricated, installed, and tested. |
+| 3/5   | Some mounts fabricated and installed, with partial testing.             |
+| 1/5   | Basic fabrication started but not installed.                            |
+| 0/5   | No progress.                                                            |
+
+**Minimum Requirements:** At least one mount fabricated for a score above 1/5.
+
+3. **Sensor Drivers**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Drivers for all sensors (camera, GPS/IMU, Lidar, radar) implemented in the monorepo, with full functionality verified and rosbag recordings completed. |
+| 7/10  | Drivers for most sensors implemented and partially tested; incomplete recordings. |
+| 4/10  | Basic drivers implemented for one or two sensors with minimal testing.  |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** At least one sensor driver implemented and tested for a score above 4/10.
+
+#### Software Modules (All must be on the main branch)
+
+4. **Perception Stack**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 20/20 | Fully functional pipeline including anomaly detection running at around 30fps with all sensors, rigorously tested on the car under diverse scenarios. |
+| 15/20 | Pipeline with tracked 3D bounding boxes, lights and sign detection, using all sensors, tested on the car with minor issues.      |
+| 10/20 | Pipeline with tracked 3D bounding boxes with almost all sensors, tested on the car with minor issues. |
+| 5/20  | Partial pipeline with only 3D bounding boxes from the 3 cameras and Lidar.  |
+| 0/20  | No progress.                                                            |
+
+**Minimum Requirements:** Basic pipeline functionality (tracked 3D bounding boxes with signs and lights detection) running at least 20fps with at least 3 cameras and 1 Lidar tested on the car for a score above 5/20.
+
+5. **Local Plan and Controller**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 20/20 | (MPPI or MPC) Fully functional, rigorously tested on the car, capable of turning. |
+| 15/20 | (PID or Pure Pursuit) Functional with some limitations, tested on the car with minor issues.  |
+| 10/20 | (MMPI) with initial car tests conducted.       |
+| 5/20  | (MMPI) started but not done.                        |
+| 0/20  | No progress.                                                            |
+
+**Minimum Requirements:** Basic functionality with initial testing for a score above 5/20.
+
+6. **HD Map and Global Plan**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Successfully loads HD map of Waterloo regional test track and is fully tested on the car. |
+| 7/10  | Loads HD map but with minor issues; partially tested on the car.        |
+| 4/10  | Basic implementation with no significant car testing.                   |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** Must load an HD map and perform basic functionality for a score above 4/10.
+
+7. **Behavior Tree**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 5/5   | Queries written, reviewed, and merged into the main branch.               |
+| 3/5   | Draft written and partially reviewed.                                   |
+| 1/5   | Initial development started but incomplete.                             |
+| 0/5   | No progress.                                                            |
+
+**Minimum Requirements:** At least a draft written for a score above 1/5.
+
+8. **Localization**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Fully tested on the car and functional with GPS/IMU and car odometry.   |
+| 7/10  | Functional with either GPS/IMU or car odometry; partially tested.       |
+| 4/10  | Basic implementation started but no significant testing.               |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** Must be functional with either GPS/IMU or car odometry for a score above 4/10.
+
+---
+
+### Scoring Template
+
+| Quest Name              | Description                                           | Due Date  | Score  |
+|-------------------------|-------------------------------------------------------|-----------|--------|
+| OSCC Boards             | Fully integrated and functional on the car.          | 2025-02-15| 2/10       |
+| Sensor Drivers          | Implemented for all sensors with rosbag recordings.  | 2025-03-8|  6/10      |
+| Mounts                 | Lidar mirror mounts and radar mounts completed.      | 2025-03-8|  3/5      |
+| Perception Stack        | Sensor integration and car testing completed.         | 2025-03-31|  9/20      |
+| Local Plan and Controller| Turning and obstacle avoidance tested on the car.    | 2025-04-12|  8/20      |
+| HD Map and Global Plan  | Loads HD map of Waterloo test track, tested on car.  | 2025-02-15|  4/10      |
+| Behavior Tree           | Fully implemented and merged into main branch.        | 2025-03-15| 2/5       |
+| Localization            | Functional with GPS/IMU and car odometry.            | 2025-04-12| 4/10       |
+
+### Comments
+This term was heavily influenced by our lack of access to AVRIL.
