@@ -2,18 +2,24 @@
 
 ## The Great Objective: Simulate navigation for a rover.
 
-The WATO Rover Team is helping build the autonomous navigation system for the UWRT's [URC 2026](https://urc.marssociety.org/home/requirements-guidelines) rover. 
+The WATO Rover Team is helping build the autonomous navigation subsystem for the [UW Robotics Team](https://github.com/uwrobotics)'s [URC 2026](https://urc.marssociety.org/home/requirements-guidelines) rover. We hope to do our part to pass the [System Acceptance Review](https://urc.marssociety.org/home/requirements-guidelines/system-acceptance-review) and qualify for next year's competition.
 
 ## Term Objectives Summary
 
-The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki.watonomous.ca/quest_books/archive/w25_rover_quests/) progress and completing essential autonomous navigation functionality for the URC.
+The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki.watonomous.ca/quest_books/archive/w25_rover_quests/) progress and completing essential autonomous navigation functionality for the URC. 
 
 1. **Simulate collecting depth camera data from three different cameras.**
-1. **Convert depth camera data into a costmap.**
-1. **Complete localization using GPS/IMU and odometry and test on the rover.** 
-1. **Compute and publish goal pose of detected object.**
-1. **Navigate autonomously to chosen point.**
-1. **Write three blogs on simulating the rover**
+- Build upon the camera simulation created last term that publishes simulated point cloud data which will allow all members to test their algorithms that involve the cameras, regardless of hardware access.
+2. **Costmap**
+- Convert depth camera data into a costmap.
+3. **Rover localization**
+- Complete localization using GPS/IMU and odometry and test on simulated data and on the rover.
+4. **Compute and publish goal pose of detected object.**
+- Object detection of mission-critical objects for the competition (e.g. rubber mallets, water bottles) was achieved last term and tested with webcam. We need to integrate with our RealSense cameras and transform detected objects to map/odom frame so we can publish a navigation goal.
+5. **Navigate autonomously to chosen waypoint.**
+- Complete the planning and control modules so the rover can autonomously navigate to any waypoint. This is required for navigating to the position of a detected object, as well as navigating to a provided GPS waypoint (another required task for the competition).
+6. **Write three blogs on simulating the rover**
+- We are a relatively new team and hope to improve our outreach and provide documentation for future members by writing blog posts trhoughout the term showcasing our progress.
 
 ### Term Objectives and Scoring
 
@@ -29,7 +35,7 @@ The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki
 
 **Minimum Requirements:**  One or two depth cameras are generating but not publishing data to Nav2 for a score of 3/10.
 
-2. **Generate costmap from Depth camera data**
+2. **Generate costmap from depth camera data**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -41,12 +47,13 @@ The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki
 
 **Minimum Requirements:** Depth cameras are able to simulate an innacurate costmap for a score of 5/10.
 
-3. **Localization using GPS/IMU and odometry and testing on the rover.** 
+3. **Rover localization** 
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
 | 10/10 | Accurate localization based on GPS, IMU, and odometry is achieved and fully tested in both simulation and on rover. |
 | 7/10  | Accurate localization is achieved and fully tested in simulation. |
+| 5/10  | Inaccurate localization and/or partial testing in simulation. |
 | 0/10  | No progress |
 
 **Minimum Requirements:** Accurate localization is achieved and tested using simulated data for a score of 7/10.
@@ -56,9 +63,9 @@ The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Rover is able to accurately compute the pose of detected object (e.g. mallet or water bottle) and publish it to the correct topic. |
+| 10/10 | Rover is able to accurately compute the pose of detected object (e.g. mallet or water bottle) and publish goal to the correct topic. |
 | 7/10  | Rover is able to compute and publish an approximate pose. |
-| 0/10  | Rover is unable to do any pose computation for the detected objects |
+| 0/10  | Rover is unable to do any pose computation for the detected objects. |
 
 **Minimum Requirements:** Rover is able to compute and publish an approximate pose for a score above 7/10.
 
@@ -91,8 +98,8 @@ The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki
 | Quest Name | Description | Due Date | Score | 
 |--------------------------------------------|------------------------------------------------------------------------------------------------------|-------------|--------| 
 | Depth Camera Simulation | Simulate collecting depth camera data from three different cameras and publish to Nav2. |May 23|  | 
-| Costmap Generation | Convert depth camera data into a costmap for navigation using Nav2. |May 30|  | 
+| Costmap Generation | Convert depth camera data into a costmap for navigation using Nav2. |June 13|  | 
 | Localization | Complete localization using GPS/IMU and odometry and testing on the rover. |June 13|  |
 | Goal Pose Generation | Compute and publish goal poses of detected objects we need to navigate to. |June 20|  | 
-| Autonomous Navigation | Navigate the rover autonomously and efficiently to a chosen point using the generated costmap. |June 27| |
-| Blog Posts | Write at least three blogs on simulating the rover in autonomy software and lessons learned. |August 14| |
+| Autonomous Navigation (Planning and Control)| Navigate the rover autonomously and efficiently to a chosen point using the generated costmap. |July 11| |
+| Blog Posts | Write at least three blogs on simulating the rover in autonomy software and lessons learned. |August 11| |
