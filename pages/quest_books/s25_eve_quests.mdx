@@ -35,57 +35,68 @@ The objectives for Winter 2025 focus on integrating hardware, developing softwar
 | 4/10  | Boards are wired and installed; no verified movement or joystick input. |
 | 0/10  | No integration, wiring incomplete or testing blocked.                                                            |
 
-**Minimum Requirements:** At least one control driver implemented and tested for a score above 4/10.
+**Minimum Requirements:** Boards are wired and installed; no verified movement or joystick input 4/10.
 
-2. **Mount Fabrication & Installation**
+2. **Sensor Drivers**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 5/5   | All mounts (Lidar mirror mounts and radar mounts) fabricated, installed, and tested. |
-| 3/5   | Some mounts fabricated and installed, with partial testing.             |
-| 1/5   | Basic fabrication started but not installed.                            |
+| 10/10 | Drivers for all LiDARs, radar, GPS/IMU, and camera implemented, functional, and recorded in rosbags. |
+| 7/10  | Majority of sensors interfaced and tested; partial or intermittent rosbag data. |
+| 4/10  | 3 cameras and 1 Lidar interfaced with static rosbag recording.  |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** 3 cameras and 1 Lidar interfaced with static rosbag recording 4/10.
+
+3. **Mount Fabrication & Installation**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 5/5   | All mounts (LiDAR mirrors + radar) installed on vehicle and road-tested with weatherproofing in mind. |
+| 3/5   | Partial fabrication/installation completed, or totally completed but not suitable for natural outdoor conditions. |
+| 1/5   | Basic fabrication but no installation.                            |
 | 0/5   | No progress.                                                            |
 
 **Minimum Requirements:** At least one mount fabricated for a score above 1/5.
 
-3. **Sensor Drivers**
+4. **Electrical Safety & Stability**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Drivers for all sensors (camera, GPS/IMU, Lidar, radar) implemented in the monorepo, with full functionality verified and rosbag recordings completed. |
-| 7/10  | Drivers for most sensors implemented and partially tested; incomplete recordings. |
-| 4/10  | Basic drivers implemented for one or two sensors with minimal testing.  |
-| 0/10  | No progress.                                                            |
+| 5/5 | E-Stops, OSCC, compute rack, top rack and relay wiring fully implemented and enclosed and documented where necessary. |
+| 3/5  | E-Stops wired and partial enclosure/organization complete. |
+| 1/5  | Wiring is completed but enclosures incomplete or unsafe.  |
+| 0/5  | No e-stop implementation, car presents electrical hazards to a regular user. |
 
-**Minimum Requirements:** At least one sensor driver implemented and tested for a score above 4/10.
+**Minimum Requirements:** Wiring is completed but enclosures incomplete or unsafe 4/10.
 
 #### Software Modules (All must be on the main branch)
 
-4. **Perception Stack**
+5. **Perception Stack**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
 | 20/20 | Fully functional pipeline including anomaly detection running at around 30fps with all sensors, rigorously tested on the car under diverse scenarios. |
 | 15/20 | Pipeline with tracked 3D bounding boxes, lights and sign detection, using all sensors, tested on the car with minor issues.      |
 | 10/20 | Pipeline with tracked 3D bounding boxes with almost all sensors, tested on the car with minor issues. |
-| 5/20  | Partial pipeline with only 3D bounding boxes from the 3 cameras and Lidar.  |
+| 5/20  | Partial pipeline with only 2D-3D bounding boxes from the 3 cameras and Lidar tested on the car.  |
 | 0/20  | No progress.                                                            |
 
 **Minimum Requirements:** Basic pipeline functionality (tracked 3D bounding boxes with signs and lights detection) running at least 20fps with at least 3 cameras and 1 Lidar tested on the car for a score above 5/20.
 
-5. **Local Plan and Controller**
+6. **Local Plan and Controller**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
 | 20/20 | (MPPI or MPC) Fully functional, rigorously tested on the car, capable of turning. |
 | 15/20 | (PID or Pure Pursuit) Functional with some limitations, tested on the car with minor issues.  |
-| 10/20 | (MMPI) with initial car tests conducted.       |
-| 5/20  | (MMPI) started but not done.                        |
+| 10/20 | (MPPI) with initial car tests conducted.       |
+| 5/20  | Integration with world modelling (MPPI) started but not done.                        |
 | 0/20  | No progress.                                                            |
 
 **Minimum Requirements:** Basic functionality with initial testing for a score above 5/20.
 
-6. **HD Map and Global Plan**
+7. **HD Map and Global Plan**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -96,7 +107,7 @@ The objectives for Winter 2025 focus on integrating hardware, developing softwar
 
 **Minimum Requirements:** Must load an HD map and perform basic functionality for a score above 4/10.
 
-7. **Behavior Tree**
+8. **Behavior Tree**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -107,7 +118,7 @@ The objectives for Winter 2025 focus on integrating hardware, developing softwar
 
 **Minimum Requirements:** At least a draft written for a score above 1/5.
 
-8. **Localization**
+9. **Localization**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -118,6 +129,17 @@ The objectives for Winter 2025 focus on integrating hardware, developing softwar
 
 **Minimum Requirements:** Must be functional with either GPS/IMU or car odometry for a score above 4/10.
 
+10. **Blog Posts**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 5/5   | Blog post every month |
+| 3/5   | Three blog posts             |
+| 1/5   | Single blog post    |
+| 0/5   | No progress.                                                            |
+
+**Minimum Requirements:** At least one blog post 1/5.
+
 ---
 
 ### Scoring Template
@@ -127,6 +149,7 @@ The objectives for Winter 2025 focus on integrating hardware, developing softwar
 | OSCC Boards             | Fully integrated and functional on the car.          | 2025-02-15| 2/10       |
 | Sensor Drivers          | Implemented for all sensors with rosbag recordings.  | 2025-03-8|  6/10      |
 | Mounts                 | Lidar mirror mounts and radar mounts completed.      | 2025-03-8|  3/5      |
+| Electrical Safety & Stability | Vehicle wiring is robust and ready for testing with no hazards. | 2025-03-8|  3/5      |
 | Perception Stack        | Sensor integration and car testing completed.         | 2025-03-31|  9/20      |
 | Local Plan and Controller| Turning and obstacle avoidance tested on the car.    | 2025-04-12|  8/20      |
 | HD Map and Global Plan  | Loads HD map of Waterloo test track, tested on car.  | 2025-02-15|  4/10      |
