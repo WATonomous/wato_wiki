@@ -1,0 +1,105 @@
+# Rover Quest Book - Spring 2025 (S25)
+
+## The Great Objective: Simulate navigation for a rover.
+
+The WATO Rover Team is helping build the autonomous navigation subsystem for the [UW Robotics Team](https://github.com/uwrobotics)'s [URC 2026](https://urc.marssociety.org/home/requirements-guidelines) rover. We hope to pass the [System Acceptance Review](https://urc.marssociety.org/home/requirements-guidelines/system-acceptance-review) and do well in next year's competition.
+
+## Term Objectives Summary
+
+The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki.watonomous.ca/quest_books/archive/w25_rover_quests/) progress and completing essential autonomous navigation functionality for the URC. 
+
+1. **Simulate collecting depth camera data from three different cameras.**
+- Build upon the camera simulation created last term that publishes simulated point cloud data, which will allow all members to test algorithms that involve the cameras, regardless of hardware access.
+2. **Costmap**
+- Convert depth camera data into a costmap.
+3. **Rover localization**
+- Complete localization using GPS/IMU and odometry and test on simulated data and on the rover.
+4. **Compute and publish goal pose of detected object.**
+- Object detection of mission-critical objects for the competition (e.g. rubber mallets, water bottles) was achieved last term and tested with webcam. We need to integrate with our RealSense cameras and transform detected objects to map/odom frame so we can publish a navigation goal.
+5. **Navigate autonomously to chosen waypoint.**
+- Complete the planning and control modules so the rover can autonomously navigate to any waypoint. This is required for navigating to the position of a detected object, as well as navigating to a provided GPS waypoint (another required task for the competition).
+6. **Write three blogs on simulating the rover**
+- We are a relatively new team and hope to improve our outreach and provide documentation for future members by writing blog posts throughout the term showcasing our progress.
+
+### Term Objectives and Scoring
+
+1. **Simulate depth camera data**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All three depth cameras are generating and publishing data to Nav2. |
+| 8/10  | All three depth cameras are generating, but not publishing data to Nav2  | 
+| 5/10  | One or two depth cameras are generating and publishing data to Nav2 |
+| 3/10  | One or two depth cameras are generating but not publishing data to Nav2 |
+| 0/10  | No depth cameras are generating data to Nav2 |                                                      |
+
+**Minimum Requirements:**  One or two depth cameras are generating but not publishing data to Nav2 for a score of 3/10.
+
+2. **Generate costmap from depth camera data**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Depth cameras are able to simulate an accurate costmap, complete with obstacle and inflation layers. |
+| 5/10  | Depth cameras are able to simulate an inaccurate costmap. |
+| 0/10  | Depth cameras are unable to simulate a costmap and/or depth cameras are not completed |
+
+**Upstream Dependency: Depth Camera Data**
+
+**Minimum Requirements:** Depth cameras are able to simulate an innacurate costmap for a score of 5/10.
+
+3. **Rover localization** 
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Accurate localization based on GPS, IMU, and odometry is achieved and fully tested in both simulation and on rover. |
+| 7/10  | Accurate localization is achieved and fully tested in simulation. |
+| 5/10  | Inaccurate localization and/or partial testing in simulation. |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Accurate localization is achieved and tested using simulated data for a score of 7/10.
+
+
+4. **Compute and publish goal pose of detected object**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to accurately compute the pose of detected object (e.g. mallet or water bottle) and publish goal to the correct topic. |
+| 7/10  | Rover is able to compute and publish an approximate pose. |
+| 0/10  | Rover is unable to do any pose computation for the detected objects. |
+
+**Minimum Requirements:** Rover is able to compute and publish an approximate pose for a score above 7/10.
+
+
+5. **Autonomously navigate to chosen point**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to accurately and efficiently navigate to a point. |
+| 7/10  | Rover is able to inefficiently navigate to a point. |
+| 4/10  | Rover is unreliably able to navigate to a point. (Less than 50% success rate out of 20 tests) |
+| 0/10  | Rover is unable to navigate to a point |
+
+**Minimum Requirements:** Rover is able to inefficiently navigate to a point for a score above 7/10.
+
+6. **Blogs**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 20/20 | More than three blogs have been written on simulating software for the rover. |
+| 15/20 | Three blogs have been written on simulating software for the rover. |
+| 10/20 | Two blogs have been written on simulating software for the rover. |
+| 5/20  | One blog has been written on simulating software for the rover. |
+| 0/20  | No blogs have been written on simulating software for the rover. |
+
+**Minimum Requirements:**: Three blogs have been written on simulating software for the rover for a score above 15/20.
+
+## Scoring Template
+
+| Quest Name | Description | Due Date | Score | 
+|--------------------------------------------|------------------------------------------------------------------------------------------------------|-------------|--------| 
+| Depth Camera Simulation | Simulate collecting depth camera data from three different cameras and publish to Nav2. |May 23|  | 
+| Costmap Generation | Convert depth camera data into a costmap for navigation using Nav2. |June 13|  | 
+| Localization | Complete localization using GPS/IMU and odometry and testing on the rover. |June 13|  |
+| Goal Pose Generation | Compute and publish goal poses of detected objects we need to navigate to. |June 20|  | 
+| Autonomous Navigation (Planning and Control)| Navigate the rover autonomously and efficiently to a chosen point using the generated costmap. |July 11| |
+| Blog Posts | Write at least three blogs on simulating the rover in autonomy software and lessons learned. |August 11| |
