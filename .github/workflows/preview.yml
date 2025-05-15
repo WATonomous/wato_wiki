@@ -26,13 +26,13 @@ jobs:
           WEBSITE_BASE_PATH: "/previews/pr-${{ github.event.pull_request.number }}"
 
       - name: Deploy to GitHub Pages Preview
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          publish_branch: gh-pages
-          destination_dir: previews/pr-${{ github.event.pull_request.number }}
-          force_orphan: false
+          branch: gh-pages
+          folder: ./out
+          target-folder: previews/pr-${{ github.event.pull_request.number }}
+          clean: false  # <-- DO NOT clean the whole branch
+          force: false  # <-- DO NOT force overwrite
 
       - name: Comment on the PR with the preview link
         uses: peter-evans/create-or-update-comment@v3

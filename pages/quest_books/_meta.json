@@ -3,5 +3,8 @@
     "w25_micro_quests": "W25 Micro Quests",
     "w25_rover_quests": "W25 Rover Quests",
     "w25_humanoid_quests": "W25 Humanoid Quests",
+    "archive": "Archive",
+    "s25_rover_quests": "S25 Rover Quests",
+    "s25_eve_quests": "S25 Eve Quests"
     "s25_watcloud_quests": "S25 WATcloud Quests",
 }
