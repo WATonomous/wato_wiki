@@ -80,11 +80,10 @@ cd wato_asd_tooling
 bash ssh_helpers/generate_ssh_config.sh
 ```
 
-You should now be able to connect our cluster using these commands:
+You should now be able to connect our cluster login nodes using these commands:
 ```bash
-ssh tr-ubuntu3
-ssh derek3-ubuntu2
-ssh delta-ubuntu2
+ssh wato-login1
+ssh wato-login2
 ```
 
 ### [Local Machine] Setup VScode for SSH
@@ -141,7 +140,7 @@ Copy your public key on your local computer and paste it into the authorized_key
 
 ```bash
 your_local_machine$ cat ~/.ssh/your_key.pub (copy the output of this)
-your_local_machine$ ssh [tr-ubuntu3 or derek3-ubuntu2]
+your_local_machine$ ssh [wato-login1 or wato-login2]
 watcloud_slurm_node$ touch ~/.ssh/authorized_keys
 watcloud_slurm_node$ nano ~/.ssh/authorized_keys (paste you rpublic key into here)
 ```
