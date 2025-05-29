@@ -1,5 +1,6 @@
 {
-  "archive": "Archive",
-  "s25_rover_quests": "S25 Rover Quests",
-  "s25_eve_quests": "S25 Eve Quests"
+    "archive": "Archive",
+    "s25_rover_quests": "S25 Rover Quests",
+    "s25_eve_quests": "S25 Eve Quests",
+    "s25_watcloud_quests": "S25 WATcloud Quests"
 }
