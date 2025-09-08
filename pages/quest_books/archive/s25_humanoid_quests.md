@@ -167,3 +167,24 @@ Building out the mount for the arms and the cameras
 | 5/10 | Body design complete |
 | 2/10 | Body design in progress |
 | 0/10 | No progress |
+
+
+---
+
+## Scoring Template
+
+| Quest Name              | Description                                                            | Due Date  | Score  |
+|-------------------------|------------------------------------------------------------------------|-----------|--------|
+| Software - Simulation   | One or two major components completed; others in development.          | 2025-08-31| 5/20   |
+| Software - Behaviour    | No progress                                                            | 2025-08-31| 0/25   |
+| Software - Perception   | Basic simulation up, simple RL models trained.                         | 2025-08-31| 5/20   |
+| Software - Interfacing  | SLAM initial research begin                                            | 2025-08-31| 4/20   |
+| Software - Embedded     | Sensors are integrated, free rtos setup                                | 2025-08-31| 7/20   |
+| Hand - Traincar         | Custom PCB created, ordered, shipped & delivered                       | 2025-08-31| 10/20  |
+| Hand - Mechanical       | Thumb, finger, palm prototype is manufactured                          | 2025-08-31| 6/20   |
+| Hand - Sensors          | Sensor categories identified & researched                              | 2025-08-31| 1/10   |
+| Forearm                 | Wrist motors purchased, initial CAD complete                           | 2025-08-31| 12/40  |
+| Arm                     | Intitial prototype built                                               | 2025-08-31| 15/15  |
+| Body - Power Systems    | Power system designed and built with interfaces with system components | 2025-08-31| 3/5    |
+| Body - Mechanical       | Body built with aesthetic design, integrated into system               | 2025-08-31| 9/20   |
+

@@ -1,0 +1,136 @@
+# Humanoid Quest Book
+
+These are the objectives for the Spring/Summer 2025 term. Blog posts / documention should be added for each component, giving a **+2** to the section.
+
+## Software
+
+### Simulation
+
+| Score /20 | Description                                                                                                                        |
+|------- |------------------------------------------------------------------------------------------------------------------------------------|
+| +5     | Sensor Imitation |
+| +5     | URDF Automation |
+| +5     | Inverse Kinematics and PID Control |
+| +5     | Initial Reinforcement Learning (RL) development |
+| 0/20   | No visible progress made.                                                                                                          |
+
+### Behaviour
+
+| Score /20 | Criteria                                   |
+|------------|-------------------------------------------|
+| +5         | Movement API for Physical system           |
+|            | 5/5 Movement API with teleop and VR control implemented |
+|            | 4/5 Movement API with teleop control implemented        |
+|            | 1-3/5 Movement API being developed                    |
+|            | 0/5 No progress                                      |
+| +5         | Simulation API Integration                  |
+|            | 5/5 Movement API is fully compatible with simulation   |
+|            | 3/5 Movement API currently being integrated with simulation |
+|            | 0/5 No progress                                      |
+| +5         | Voxal Grid                                 |
+|            | 5/5 Implemented, integrated with controller           |
+|            | 3/5 Implemented, controller ingratiation needed       |
+|            | 1-3/5 Development                                    |
+| +5         | System localization / Initialization        |
+|            | 5/5 System implemented for getting initial state of the robot |
+|            | 3/5 Manual system initialization                     |
+|            | 0/5 No progress                                      |
+| 0/20   | No visible progress made.                                                                                                          |
+
+
+### Perception
+
+| Score /20 | Criteria                                                        |
+|-------|-----------------------------------------------------------------|
+| +5    | Object detection - inital basic object detection with 3D object detections |
+| +5    | Keyboard specific objected detection and localization            |
+| +5    | Object/Material Classification - inital development and research        |
+| +5    | Publishing filtered RGBD data                                   |
+| 0/20   | No visible progress made.                                                                                                          |
+
+
+### Interfacing
+
+| Score /20 | Criteria                                                        |
+|------------|-----------------------------------------------------------------|
+| +5         | CAN Package management system developed                          |
+| +5         | Deployment System built to support system scaling                |
+| +5         | Sensor filtering / denoising implement                           |
+| +5         | Sensor Drivers - Sensor drivers integrated, exposing sensor data to system |
+| 0/20   | No visible progress made.                                                                                                          |
+
+
+### Embedded
+
+| Score | Criteria                                                        |
+|-------|-----------------------------------------------------------------|
+| +5    | Sensor data collected and sent over CAN                         |
+| +5    | Finger position data consistently maintained when running        |
+| +3    | Embedded devices run tension control loop with current draw feedback |
+| +2    | Flashing STM32 firmware with ESP32 implemented                  |
+| +3    | Move fingers to set positions via PID controls                  |
+| +2    | Embedded devices process CAN messages                           |
+| 0/20  | No progress                                                    |
+
+
+## Mechanical
+
+### Hand
+
+#### Traincar:
+
+| Criteria /20 | Requirements                                                        |
+|---------------|---------------------------------------------------------------------|
+| +5            | Mechanical Integration (Finger, Forearm)                           |
+| +5            | Motor Control Tested (Current Sense, Motor Movement, Magnetic Encoder feedback) |
+| +5            | Communication Protocols Tested (I2C, SPI, WIFI, CAN-FD)                              |
+| +5            | Mechanical enclosure prototype for PCB and motors designed & printed           |
+| +5            | PCB Soldering and Assembly Completed                             |
+| +5            | Plan improvements for rev 2                                     |
+| 0/30          | No Progress                                                         |
+
+#### Sensors:
+
+| Criteria /10 | Requirements                                                         |
+|---------------|---------------------------------------------------------------------|
+| +5            | Sensors tested & integrated (able to communicate, test rig + procedure setup and used, integrated into traincar) |
+| +2            | Sensors purchased                                                   |
+| +3            | Sensor categories identified & researched                           |
+
+### Forearm:
+
+| Criteria /20 | Requirements                                                         |
+|---------------|---------------------------------------------------------------------|
+| +5            | Hand is fully integrated with Forearm:                              |
+|               | 5/5: Mechanically mounted & wires routed (no pinching!)             |
+|               | 3/5: Mechanically mounted                                           |
+| +5            | Fingers & Thumb are tested & integrated into palm                   |
+| +5            | 4 Degree-of-Freedom (DoF) finger prototypes designed, printed, and assembled |
+| +5            | Sensors are designed and integrated into fingers (touch, etc) |
+| +5            | Forearm power systems designed and tested                                 |
+
+### Arm
+
+| Criteria /25 | Requirements                                                        |
+|---------------|---------------------------------------------------------------------|
+| +5            | Revision 2 designed in CAD                                          |
+| +10           | Arm tested under load                                               |
+| +5            | Arm tested without load                                              |
+| +5            | Arm power systems designed and tested                                 |
+
+### Body
+
+| Criteria /10 | Requirements                                                        |
+|---------------|---------------------------------------------------------------------|
+| +5         | Revision 2 designed in CAD                                          |
+| +5         | Covers designed and integrated           |
+
+
+### Power Systems
+
+| Criteria /10 | Requirements                                                        |
+|---------------|---------------------------------------------------------------------|
+| 10/10         | Power system designed and built with interfaces with system components |
+| 7/10          | System design complete, parts purchased and installed               |
+| 5/10          | System design complete and part selection complete                  |
+
