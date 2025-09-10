@@ -187,4 +187,3 @@ Building out the mount for the arms and the cameras
 | Arm                     | Intitial prototype built                                               | 2025-08-31| 15/15  |
 | Body - Power Systems    | Power system designed and built with interfaces with system components | 2025-08-31| 3/5    |
 | Body - Mechanical       | Body built with aesthetic design, integrated into system               | 2025-08-31| 9/20   |
-
