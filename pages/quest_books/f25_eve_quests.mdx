@@ -1,0 +1,391 @@
+# Eve Quest Book - Fall 2025 (F25)
+
+## The Great Objective: Level 5 Robo-taxi Around Campus
+
+WATonomous aims to achieve a fully autonomous Level 5 robo-taxi capable of navigating the University of Waterloo campus by the end of Fall 2025. This involves integrating hardware, software, and cognition systems to enable decision-making directly within the car. Achieving this milestone establishes the groundwork for advanced autonomous vehicle research and real-world applications.
+
+## Term Objectives Summary
+
+The objectives for Fall 2025 focus on integrating hardware, developing software modules, and preparing the platform for autonomous operation.
+
+1. **Hardware Integration**
+   - Throttle Board
+   - Steering Board
+   - Brake Board
+   - Gateway Board
+   - Camera Firmware
+   - Lidar Firmware
+   - GPS/IMU Firmware
+   - Joystick
+   - ROS2CCO
+   - Sensor Networking
+   - Lidar Mount
+   - Camera Mount
+   - GPS/IMU Mount
+   - OSCC Board Enclosures
+   - Relay Enclosures
+   - E-Stop
+
+2. **Software Modules**
+   - Deep ROS
+   - Camera Object Detection
+   - 2D Tracking
+   - 2D-3D Association
+   - Lidar Costmap Migration
+   - HD Map
+   - Behavior Planner
+   - Localization
+   - Global Planner
+   - Lattice Planner (builds IDEAL splines from behaviour)
+   - Local Planner (builds a collision-aware spline)
+   - Controller (MPPI, MPC, PID, Pure Pursuit)
+
+---
+
+### Term Objectives and Scoring
+
+#### Hardware Integration
+
+1. **Throttle Board**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Throttle board fully integrated - can send desired commands and car executes them correctly. |
+| 7/10  | Throttle board functional with minor issues or response delays. |
+| 4/10  | Throttle board installed and wired but not fully operational. |
+| 0/10  | No throttle board integration. |
+
+**Minimum Requirements:** Throttle board installed and wired for a score of 4/10.
+
+2. **Steering Board**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Steering board fully integrated - can send desired commands and car executes them correctly. |
+| 7/10  | Steering board functional with minor issues. |
+| 4/10  | Steering board installed and wired but not fully operational. |
+| 0/10  | No steering board integration. |
+
+**Minimum Requirements:** Steering board installed and wired for a score of 4/10.
+
+3. **Brake Board**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Brake board fully integrated - can send desired commands and car executes them correctly. |
+| 7/10  | Brake board functional with minor issues. |
+| 4/10  | Brake board installed and wired but not fully operational. |
+| 0/10  | No brake board integration. |
+
+**Minimum Requirements:** Brake board installed and wired for a score of 4/10.
+
+4. **Gateway Board**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Gateway board fully functional with all CAN communication working reliably. |
+| 7/10  | Gateway board operational with occasional communication issues. |
+| 4/10  | Gateway board installed and basic communication established. |
+| 0/10  | No gateway board integration. |
+
+**Minimum Requirements:** Gateway board installed with basic communication for a score of 4/10.
+
+5. **Camera Firmware**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All camera drivers in monorepo and functional - streaming synchronized data at expected framerates. |
+| 7/10  | Most camera drivers in monorepo and functional with minor synchronization or quality issues. |
+| 4/10  | At least one camera driver in monorepo and streaming data reliably. |
+| 0/10  | No functional camera firmware. |
+
+**Minimum Requirements:** At least one camera streaming data for a score of 4/10.
+
+6. **Lidar Firmware**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All lidar drivers in monorepo and functional - publishing synchronized point clouds at expected rates. |
+| 7/10  | Lidar drivers in monorepo and functional with minor configuration or timing issues. |
+| 4/10  | At least one lidar driver in monorepo and publishing point cloud data. |
+| 0/10  | No functional lidar firmware. |
+
+**Minimum Requirements:** At least one lidar publishing data for a score of 4/10.
+
+7. **GPS/IMU Firmware**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | GPS/IMU drivers in monorepo and fully functional with RTK corrections. |
+| 7/10  | GPS/IMU drivers in monorepo and operational with standard GPS accuracy. |
+| 4/10  | GPS/IMU drivers in monorepo with basic data being published. |
+| 0/10  | No functional GPS/IMU firmware. |
+
+**Minimum Requirements:** Basic GPS/IMU data publishing for a score of 4/10.
+
+8. **Joystick OSCC**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | Joystick interfaceable with OSCC boards directly without ROS. |
+| 0/10  | No joystick integration. |
+
+**Minimum Requirements:** Optional, but a quick way to get Joystick working (theoretically).
+
+9. **Joystick Node**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | Joystick node in monorepo and controlling basic vehicle functions reliably. |
+| 4/10  | Joystick node in monorepo and publishing data to ROS2. |
+| 0/10  | No joystick integration. |
+
+**Minimum Requirements:** Joystick publishing data to ROS2 for a score of 4/10.
+
+10. **ROS2CCO**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | ROS2CCO fully functional with all vehicle interfaces and safety checks. |
+| 7/10  | ROS2CCO operational with most interfaces working. |
+| 4/10  | Basic ROS2CCO communication established. |
+| 0/10  | No ROS2CCO implementation. |
+
+**Minimum Requirements:** Basic ROS2CCO communication for a score of 4/10.
+
+11. **Sensor Networking**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All sensors networked with proper bandwidth management and minimal latency. |
+| 7/10  | Sensor network functional with occasional bandwidth issues. |
+| 4/10  | Basic sensor networking established for critical sensors. |
+| 0/10  | No sensor networking implementation. |
+
+**Minimum Requirements:** Basic networking for critical sensors for a score of 4/10.
+
+12. **Lidar Mount**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Both lidars mounted and connected. |
+| 4/10  | Only one side lidar mounted and connected. |
+| 0/10  | No lidar mounting solution. |
+
+**Minimum Requirements:** Basic lidar mounting for a score of 4/10.
+
+13. **Camera Mount**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | Camera mounts secure and functional. |
+| 4/10  | Basic camera mounting solution in place. |
+| 0/10  | No camera mounting solution. |
+
+**Minimum Requirements:** Basic camera mounting for a score of 4/10.
+
+14. **GPS/IMU Mount**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | GPS/IMU mount secure and connected. |
+| 0/10  | Not complete. |
+
+**Minimum Requirements:** Basic GPS/IMU mounting for a score of 10/10.
+
+15. **OSCC Board Enclosures**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Functional enclosures protecting all boards installed. |
+| 4/10  | Basic enclosure solution for critical boards fabricated. |
+| 0/10  | No board protection. |
+
+**Minimum Requirements:** Basic enclosures for critical boards for a score of 4/10.
+
+16. **Relay Enclosures**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Functional relay enclosure installed. |
+| 4/10  | Basic enclosure solution for relay fabricated. |
+| 0/10  | No relay protection. |
+
+**Minimum Requirements:** Basic relay protection for a score of 4/10.
+
+17. **E-Stop**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | Primary e-stop system functional with proper testing. |
+| 4/10  | Basic e-stop wired and partially functional. |
+| 0/10  | No e-stop implementation. |
+
+**Minimum Requirements:** Basic e-stop functionality for a score of 4/10.
+
+#### Software Modules (All must be on the main branch)
+
+1. **Deep ROS**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Basic Deep ROS setup with initial integration with camera object detection. |
+| 0/10  | No Deep ROS implementation. |
+
+**Minimum Requirements:** Basic Deep ROS setup for a score of 10/10.
+
+2. **Camera Object Detection**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Multi-camera detection of all object types. |
+| 7/10  | Object detection functional. |
+| 0/10  | No object detection. |
+
+**Minimum Requirements:** Basic object detection on one camera for a score of 4/10.
+
+3. **2D Tracking**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Robust multi-object tracking with consistent IDs across all cameras. |
+| 7/10  | Tracking functional. |
+| 4/10  | Basic tracking implementation. |
+| 0/10  | No tracking implementation. |
+
+**Minimum Requirements:** Basic tracking implementation for a score of 4/10.
+
+4. **2D-3D Association**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | Association functional with minimal accuracy issues. |
+| 4/10  | Basic 2D-3D association working. |
+| 0/10  | No 2D-3D association. |
+
+**Minimum Requirements:** Basic 2D-3D association for a score of 4/10.
+
+5. **Lidar Costmap Migration (Patchworks++)**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Full costmap generation from lidar with dynamic obstacle handling. |
+| 4/10  | Basic costmap generation from lidar data migrated to perception. |
+| 0/10  | No costmap implementation. |
+
+**Minimum Requirements:** Basic costmap generation for a score of 4/10.
+
+6. **HD Map**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Custom HD maps loaded with full regulatory element support. |
+| 7/10  | HD map functional with perception integration. |
+| 4/10  | Basic HD map loading and visualization. |
+| 0/10  | No HD map implementation. |
+
+**Minimum Requirements:** Basic HD map functionality for a score of 4/10.
+
+7. **Behavior Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | Behavior planner functional in monorepo for basic navigation. |
+| 4/10  | Initial behavior planner implementation. |
+| 0/10  | No behavior planner. |
+
+**Minimum Requirements:** Initial behavior planner for a score of 4/10.
+
+8. **Localization**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Multi-sensor localization functional in monorepo. |
+| 4/10  | Basic localization using GPS. |
+| 0/10  | No localization implementation. |
+
+**Minimum Requirements:** Basic GPS localization for a score of 4/10.
+
+9. **Global Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Global planner in monorepo and generating optimal routes with traffic consideration. |
+| 4/10  | Basic global path planning. |
+| 0/10  | No global planner. |
+
+**Minimum Requirements:** Basic global planning for a score of 4/10.
+
+
+10. **Lattice Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Lattice Planner in monorepo handling multiple different behaviors. |
+| 4/10  | Basic Lattice Planner implementation. |
+| 0/10  | No local planner. |
+
+**Minimum Requirements:** Basic local planning for a score of 4/10.
+
+11. **Local Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Local planner in monorepo handling dynamic obstacles smoothly. |
+| 4/10  | Basic local planning implementation. |
+| 0/10  | No local planner. |
+
+**Minimum Requirements:** Basic local planning for a score of 4/10.
+
+12. **Controller**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Advanced controller in monorepo fully tuned and tested on vehicle. |
+| 4/10  | Basic controller implementation. |
+| 0/10  | No controller implementation. |
+
+**Minimum Requirements:** Basic controller for a score of 4/10.
+
+---
+
+### Scoring Template
+
+#### Hardware Integration
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| Throttle Board          | Complete throttle control integration                 |        |
+| Steering Board          | Complete steering control integration                 |        |
+| Brake Board             | Complete brake control integration                    |        |
+| Gateway Board           | Establish CAN communication gateway                   |        |
+| Camera Firmware         | Deploy and configure all camera drivers               |        |
+| Lidar Firmware          | Deploy and configure all lidar drivers                |        |
+| GPS/IMU Firmware        | Deploy GPS/IMU with RTK capabilities                  |        |
+| Joystick OSCC           | Joystick commanding directly with OSCC                |        |
+| Joystick Node           | Joystick command with ROS -> ROS2CCO                  |        |
+| ROS2CCO                 | Complete ROS2 vehicle interface                       |        |
+| Sensor Networking       | Establish robust sensor network infrastructure        |        |
+| Lidar Mount             | Install professional lidar mounting system            |        |
+| Camera Mount            | Install weatherproof camera mounting system           |        |
+| GPS/IMU Mount           | Install GPS/IMU with proper ground plane              |        |
+| OSCC Board Enclosures   | Install weatherproof board enclosures                 |        |
+| Relay Enclosures        | Install professional relay protection                 |        |
+| E-Stop                  | Implement hard and soft emergency stop systems        |        |
+
+#### Software Modules
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| Deep ROS                | Integrate Deep ROS for perception optimization        |        |
+| Camera Object Detection | Multi-camera object detection at 30+ fps              |        |
+| 2D Tracking             | Robust multi-object tracking across cameras           |        |
+| 2D-3D Association       | Accurate camera-lidar data fusion                     |        |
+| Lidar Costmap Migration | Dynamic costmap generation from lidar                 |        |
+| HD Map                  | Load custom HD maps with regulatory elements          |        |
+| Behavior Planner        | Complex scenario handling and traffic rules           |        |
+| Localization            | Multi-sensor localization with cm accuracy            |        |
+| Global Planner          | Optimal route planning with traffic consideration     |        |
+| Lattice Planner         | Dynamic obstacle avoidance and smooth navigation      |        |
+| Local Planner           | Dynamic obstacle avoidance and smooth navigation      |        |
+| Controller              | MPC/MPPI controller for precise vehicle control       |        |
