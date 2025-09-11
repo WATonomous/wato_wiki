@@ -6,50 +6,95 @@ Micro Autonomy aims to win the F1teneth Autonomous Racing Competition in the fut
 
 ## Term Objectives Summary
 
-The objectives for this term focuses on integrating the hardware and software stacks. This includes:
+The objectives for this term focuses on setting up hardware and developing the autonomy software stack. This includes:
 
 1. **Hardware Setup**
-   - Assemble & test everything including Jetson, LiDAR and VESC to work properly and publish ros messages needed for autonomous navigation
+   - Setup everything including Jetson, LiDAR and VESC to work properly and publish ros messages needed for autonomous navigation
 2. **State Estimation**
-   - Estimates current position of vehicle against known world map
+   - Estimates current position of vehicle relative to last position using Kalman Filter 
 2. **Mapping: SLAM**
-   - Generate a map in image format and a yaml file for the map specifications based on IMU, encoder and LiDAR specifications on a real world setup
-3. **Planning: Lattice Planner**
-   - Static obstacle avoidance support
-4. **Controls: Pure Pursuit**
-   - Static obstacle avoidance support
+   - Generate a map in image format and a yaml file for the map specifications based on IMU, encoder and LiDAR specifications
+3. **Raceline Generation/Optimization**
+   - Generate a optimized raceline as global trajectory (ideal path) for the race car to follow to minimize lap time
+4. **Planning: Lattice Planner**
+   - Generate local trajectories for obstacle avoidance and following global trajectory during Racing
+5. **Controls: Pure Pursuit**
+   - Controls the vehicle's steering and trottle to following the trajectories genereated by the planning module
 
 1. **Hardware Setup**
+
+1.1 Traxis Car Assembly
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 |  Setup interfaces for sensors to publish readings and actuators to take ROS topic commands to support autonomous control|
-| 7/10 |  Test electronic & tune motor controllers |
-| 5/10 |  Assemble all components for F1Tenth Car to start manually controlled movement|
+| 10/10 |  Fully built with all sensors and hardware mounted and power system working|
+| 8/10  |  Have all the sensors and Jetson mounted to the Platfrom Plate |
+| 6/10  |  Fabriate the Platfrom mounting plate and all other mounting hardware | 
+| 4/10  |  Gut and stip all the components from the original chassis | 
+| **2/10**  |  Purchase & manufacture all (within current budget) components | 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:** Autonomous control ready (10/10)
-
-2. **State Estimation**
+1.2 LiDAR
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 5/5  | Tuned state estimation position based on IMU, encoder and LiDAR in actual vehicle | 
-| 3/5  | Un-tuned state estimation position based on IMU, encoder and LiDAR in actual vehicle | 
+| 10/10 |  Setup interfaces for LiDAR to ouput a ROS /scan topic |
+| 7/10 |  setup the docker compose file to correctly interface with the LiDAR  |
+| 5/10 |  configure the ip and network settings for the LiDAR |
+| 0/10  | No Progress                                                          |
+
+1.3 Vec
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 |  tune the IMU to correctly how roll, pitch and yaw data and accleration values |
+| 7/10  |  tune the motor PID controller to produce a step response  |
+| 5/10  |  configure all the hardware limits and current settings |
+| 2/10  |  Have the vesc power on and showup in the Vesc tool software | 
+| 0/10  | No Progress                                                          |
+
+1.4 Overall Hardware integration
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Setup interface with the correct ROS Drivers and have a tuned and accurate odometry output |
+| 7/10  | configure the yaml files to fine tune odometry |
+| 5/10  | Install the correct ROS Transport drivers along with F1teneth Driver Stack | 
+| 0/10  | No Progress                                                          |
+
+2. **State Estimation and Localization**
+
+2.1 Extended Kalman Filter
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Have a fully functional Extended Kalman Filter working on the physical vehicle | 
+|  8/10 | Have a fully functional Extended Kalman Filter working in the simulation | 
+|  6/10 | Have fully Defined sensor models for the EKF | 
+|  4/10 | Have Fully Defined motion model for the EKF along with the corosponding Jacobian | 
+|  2/10 | have fully Defined state to propigate for the EKF | 
+|  0/10 | No Progress                                                          |
+
+2.2 Particle Filter
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 5/5  | Have Particle Filter working on physical vehicle | 
+| 3/5  | Have Particle Filter working in the simulation | 
 | 0/5  | No Progress                                                          |
 
-**Minimum Requirements:** Untuned vehicle estimation (3/5)
+**Minimum Requirements:**Estimates position in simulation (5/10)* 
 
 3. **Mapping: SLAM**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | High quality map and yaml file generated through state estimation and LiDAR scans on actual vehicle for complex routes|
-| 7/10 | Map and yaml file generated through state estimation and LiDAR scans on actual vehicle for simple routes|
-| 5/10  | Map and yaml file generated through state estimation and LiDAR scanes in simulation | 
+| 10/10 | Map and yaml file generated through state estimation and LiDAR scans on actual vehicle |
+| 8/10  | Map and yaml file generated through state estimation and LiDAR scanes in simulation | 
+| **5/10**  | Map and yaml file generated through true position (odometry) and LiDAR scans in simulation | 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:** Map and yaml file generated through state estimation and LiDAR scans on actual vehicle for simple routes (7/10)
+**Minimum Requirements:**Can generate a map and yaml file in simulation (5/10)*
 
 
 4. **Raceline Generation/Optimization**
@@ -57,51 +102,65 @@ The objectives for this term focuses on integrating the hardware and software st
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
 | 10/10 | Optimizes centerline to generate a raceline that minimizes actual lap time based on complex vehicle dynamics |
+| 7/10  | Optimizes centerline to generate a raceline that minimizes steering or total curvature and generates velocity profile| 
+| 3/10  | Generates a centerline for testing purposes for the vehicle to follow | 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:** (TBD) No minimum requirements
+**Minimum Requirements:**Optimizes centerline to generate a raceline that minimizes steering or total curvature (7/10)
 
 5. **Planning: Lattice Planner**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Dynamic obstacle avoidance |
-| 8/10 | Genenerates/optimizes local trajectory based on cost map and vehicle dynamics to achieve static obstalce avoidance on actual vehicle|
-| 5/10  | Generates & optimize a local trajectory for obstacle avoidance static obstacles are on the ideal path | 
-| 3/10  | Generates local trajectory by using a cost map to achieve obstacle avoidance when static obstacles are on the ideal path | 
+| 10/10 | Genenerates/optimizes local trajectory based on cost map and vehicle dynamics to achieve obstalce avoidance on actual vehicle|
+| 9/10 | Genenerates/optimizes local trajectory based on cost map and vehicle dynamics to achieve obstalce avoidance |
+| 8/10  | Generates local trajectory by using a cost map to achieve obstacle avoidance when obstalces are on the ideal path | 
+| 5/10  | Generates local trajectory to make vehicle follow the raceline (ideal path)| 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:** Real vehicle static obstacle avoidance (8/10) 
+**Minimum Requirements:**Generates local trajectory by using a cost map to achieve obstacle avoidance when obstalces are on the ideal path (7/10) 
 
 6. **Controls: Pure Pursuit**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Tune pure pursuit controller for dynamic obstacle avoidance on actual vehicle |
-| 8/10 | Tune pure pursuit controller for static obstacle avoidance on actual vehicle |
-| 5/10 | Follows local trajectories and ideal velocities smoothly on actual vehicle |
+| 10/10 | Follows local trajectories and ideal velocities smoothly on actual vehicle |
+| 8/10  | Follows local trajectory generated by planning through controlling steering angle and throttle based on velocity profile | 
+| 4/10  | Follows a global trajectory by controlling steerring angle with a constant velocity | 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:** Real vehicle static obstacle avoidance (8/10)
+**Minimum Requirements:**Follows local trajectory generated by planning through controlling steering angle and throttle based on velocity profile (9/10)
 
 7. **Integration**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Full software integration & hardware interfaces for real life autonomous racing |
+| 10/10 | Full software integration & hardware interfaces for real life autonomous racing|
 | 8/10  | Full software integration in simulation for autonomous driving, limited hardware interfaces | 
+| 4/10  | Limited software integration between components | 
 | 0/10  | No progress| 
 
-**Minimum Requirements:** Full integration (10/10)
+**Minimum Requirements:** Full software integration in simulation for autonomous driving (8/10)
+
 
 ## Scoring Template
 
 | Quest Name | Description | Due Date | Score |
 |------------|-------------|----------|-------|
-| Hardware Setup |  | 2025-08-31 |  |
-| State Estimation |  | 2025-08-31 |  |
-| Mapping: SLAM |  | 2025-08-31 |  |
-| Raceline Generation/Optimization |  | 2025-08-31 |  |
-| Planning: Lattice Planner |  | 2025-04-31 |  |
-| Controls: Pure Pursuit |  | 2025-08-31 |  |
-| Integration | Full Integration | 2025-08-31 |  |
+| Hardware Setup 1.1 | Fully built with all sensors and hardware mounted and power system working | 2025-08-31 | 10/10 |
+| Hardware Setup 1.2 | Setup interfaces for LiDAR to ouput a ROS /scan topic | 2025-08-31 | 10/10 |
+| Hardware Setup 1.3 | Tune the IMU to correctly how roll, pitch and yaw data and accleration values | 2025-08-31 | 10/10 |
+| Hardware Setup 1.4 | Setup interface with the correct ROS Drivers and have a tuned and accurate odometry output | 2025-08-31 | 10/10 |
+| State Estimation 2.1 | Have a fully functional Extended Kalman Filter working on the physical vehicle | 2025-08-31 | 9/10 |
+| State Estimation 2.2 | Have Particle Filter working on physical vehicle | 2025-08-31 | 5/5 |
+| Mapping: SLAM | Generate a map in image format and a yaml file for the map specifications based on IMU, encoder and LiDAR specifications. | 2025-08-31 | 10/10 |
+| Raceline Generation/Optimization | Generate a optimized raceline as global trajectory (ideal path) for the race car to follow to minimize lap time. | 2025-08-31 | 9/10 |
+| Planning: Lattice Planner | Generate local trajectories for obstacle avoidance and following global trajectory during Racing. | 2025-08-31 | 5/10 |
+| Controls: Pure Pursuit | Controls the vehicle's steering and trottle to following the trajectories generated by the planning module. | 2025-08-31 | 7/10 |
+| Integration | Full software integration & hardware interfaces for real life autonomous racing | 2025-08-31 | 6/10 |
+
+Priorities:
+- Get and use camera
+- Local Planning with Controls
+- Lidar State Estimation
+- RL based planning
