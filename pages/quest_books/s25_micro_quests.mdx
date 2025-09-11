@@ -4,22 +4,14 @@
 
 Micro Autonomy aims to win the F1teneth Autonomous Racing Competition in the future
 
-## Term Objectives Summary
+## Term Objectives and Tasks
 
-The objectives for this term focuses on setting up hardware and developing the autonomy software stack. This includes:
+- **2.3. Camera Integration with Localization**: Integrate Camera Object Detection with Localization to use real-time slam mapping 
+- **5. Planning: Local Planning**: Enable Obstacle Avoidance in lattice planner on actual vehicle
+- **6. Pure Pursuit**: Integrate and tune algorithm with local planner to work on actual vehicle
 
-1. **Hardware Setup**
-   - Setup everything including Jetson, LiDAR and VESC to work properly and publish ros messages needed for autonomous navigation
-2. **State Estimation**
-   - Estimates current position of vehicle relative to last position using Kalman Filter 
-2. **Mapping: SLAM**
-   - Generate a map in image format and a yaml file for the map specifications based on IMU, encoder and LiDAR specifications
-3. **Raceline Generation/Optimization**
-   - Generate a optimized raceline as global trajectory (ideal path) for the race car to follow to minimize lap time
-4. **Planning: Lattice Planner**
-   - Generate local trajectories for obstacle avoidance and following global trajectory during Racing
-5. **Controls: Pure Pursuit**
-   - Controls the vehicle's steering and trottle to following the trajectories genereated by the planning module
+
+
 
 1. **Hardware Setup**
 
@@ -34,6 +26,8 @@ The objectives for this term focuses on setting up hardware and developing the a
 | **2/10**  |  Purchase & manufacture all (within current budget) components | 
 | 0/10  | No Progress                                                          |
 
+Progress: 10/10
+
 1.2 LiDAR
 
 | Score | Criteria                                                                 |
@@ -42,6 +36,8 @@ The objectives for this term focuses on setting up hardware and developing the a
 | 7/10 |  setup the docker compose file to correctly interface with the LiDAR  |
 | 5/10 |  configure the ip and network settings for the LiDAR |
 | 0/10  | No Progress                                                          |
+
+Progress: 10/10
 
 1.3 Vec
 
@@ -53,6 +49,8 @@ The objectives for this term focuses on setting up hardware and developing the a
 | 2/10  |  Have the vesc power on and showup in the Vesc tool software | 
 | 0/10  | No Progress                                                          |
 
+Progress: 10/10
+
 1.4 Overall Hardware integration
 
 | Score | Criteria                                                                 |
@@ -61,6 +59,8 @@ The objectives for this term focuses on setting up hardware and developing the a
 | 7/10  | configure the yaml files to fine tune odometry |
 | 5/10  | Install the correct ROS Transport drivers along with F1teneth Driver Stack | 
 | 0/10  | No Progress                                                          |
+
+Progress: 10/10
 
 2. **State Estimation and Localization**
 
@@ -71,9 +71,11 @@ The objectives for this term focuses on setting up hardware and developing the a
 | 10/10 | Have a fully functional Extended Kalman Filter working on the physical vehicle | 
 |  8/10 | Have a fully functional Extended Kalman Filter working in the simulation | 
 |  6/10 | Have fully Defined sensor models for the EKF | 
-|  4/10 | Have Fully Defined motion model for the EKF along with the corosponding Jacobian | 
+|  4/10 | Have Fully Defined motion model for the EKF along with the corresponding Jacobian | 
 |  2/10 | have fully Defined state to propigate for the EKF | 
 |  0/10 | No Progress                                                          |
+
+Progress: 10/10
 
 2.2 Particle Filter
 
@@ -83,7 +85,18 @@ The objectives for this term focuses on setting up hardware and developing the a
 | 3/5  | Have Particle Filter working in the simulation | 
 | 0/5  | No Progress                                                          |
 
-**Minimum Requirements:**Estimates position in simulation (5/10)* 
+Progress: 10/10
+
+2.3 Integrate Camera Object Detection with Localization
+
+| Score | Criteria                                                                 | 
+|-------|-------------------------------------------------------------------------| 
+| 10/10  | Localization works for changing environments in actual vehicle | 
+| 5/10  | Ignores LiDAR scans that interfering with real-time mapping | 
+| 0/10  | No Progress                                                          | 
+
+Progress: 0/10
+
 
 3. **Mapping: SLAM**
 
@@ -94,19 +107,19 @@ The objectives for this term focuses on setting up hardware and developing the a
 | **5/10**  | Map and yaml file generated through true position (odometry) and LiDAR scans in simulation | 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:**Can generate a map and yaml file in simulation (5/10)*
+Progress: 10/10
 
 
 4. **Raceline Generation/Optimization**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Optimizes centerline to generate a raceline that minimizes actual lap time based on complex vehicle dynamics |
-| 7/10  | Optimizes centerline to generate a raceline that minimizes steering or total curvature and generates velocity profile| 
-| 3/10  | Generates a centerline for testing purposes for the vehicle to follow | 
+| 10/10  | Optimizes centerline to generate a raceline and velocity profile that minimizes steering for all maps | 
+| 7/10  | Optimizes centerline to generate a raceline that minimizes steering for all maps | 
+| 5/10  | Generates a centerline for the vehicle to follow | 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:**Optimizes centerline to generate a raceline that minimizes steering or total curvature (7/10)
+Progress: 10/10
 
 5. **Planning: Lattice Planner**
 
@@ -118,32 +131,31 @@ The objectives for this term focuses on setting up hardware and developing the a
 | 5/10  | Generates local trajectory to make vehicle follow the raceline (ideal path)| 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:**Generates local trajectory by using a cost map to achieve obstacle avoidance when obstalces are on the ideal path (7/10) 
+Progress: 5/10
 
 6. **Controls: Pure Pursuit**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
 | 10/10 | Follows local trajectories and ideal velocities smoothly on actual vehicle |
-| 8/10  | Follows local trajectory generated by planning through controlling steering angle and throttle based on velocity profile | 
+| 7/10  | Follows local trajectories and ideal velocities smoothly in simulation | 
 | 4/10  | Follows a global trajectory by controlling steerring angle with a constant velocity | 
 | 0/10  | No Progress                                                          |
 
-**Minimum Requirements:**Follows local trajectory generated by planning through controlling steering angle and throttle based on velocity profile (9/10)
+Progress: 7/10
 
-7. **Integration**
+7. **Camera Object Detection and Tracking**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Full software integration & hardware interfaces for real life autonomous racing|
-| 8/10  | Full software integration in simulation for autonomous driving, limited hardware interfaces | 
-| 4/10  | Limited software integration between components | 
-| 0/10  | No progress| 
+| 10/10 | Camera detects opponent cars and returns bounding boxes reliabilty in real-time with low latency | 
+| 6/10  | Camera detects opponent cars and returns bounding boxes | 
+| 0/10  | No Progress                                                          | 
 
-**Minimum Requirements:** Full software integration in simulation for autonomous driving (8/10)
+Progress: 0/10
 
 
-## Scoring Template
+## Scoring Template Summary
 
 | Quest Name | Description | Due Date | Score |
 |------------|-------------|----------|-------|
@@ -151,16 +163,11 @@ The objectives for this term focuses on setting up hardware and developing the a
 | Hardware Setup 1.2 | Setup interfaces for LiDAR to ouput a ROS /scan topic | 2025-08-31 | 10/10 |
 | Hardware Setup 1.3 | Tune the IMU to correctly how roll, pitch and yaw data and accleration values | 2025-08-31 | 10/10 |
 | Hardware Setup 1.4 | Setup interface with the correct ROS Drivers and have a tuned and accurate odometry output | 2025-08-31 | 10/10 |
-| State Estimation 2.1 | Have a fully functional Extended Kalman Filter working on the physical vehicle | 2025-08-31 | 9/10 |
+| State Estimation 2.1 | Have a fully functional Extended Kalman Filter working on the physical vehicle | 2025-08-31 | 10/10 |
 | State Estimation 2.2 | Have Particle Filter working on physical vehicle | 2025-08-31 | 5/5 |
+| State Estimation 2.3 | Integrate Camera Object Detection with Localization to use real-time slam mapping | | 0/10 |
 | Mapping: SLAM | Generate a map in image format and a yaml file for the map specifications based on IMU, encoder and LiDAR specifications. | 2025-08-31 | 10/10 |
-| Raceline Generation/Optimization | Generate a optimized raceline as global trajectory (ideal path) for the race car to follow to minimize lap time. | 2025-08-31 | 9/10 |
+| Raceline Generation/Optimization | Generate a optimized raceline as global trajectory (ideal path) for the race car to follow to minimize lap time. | 2025-08-31 | 10/10 |
 | Planning: Lattice Planner | Generate local trajectories for obstacle avoidance and following global trajectory during Racing. | 2025-08-31 | 5/10 |
 | Controls: Pure Pursuit | Controls the vehicle's steering and trottle to following the trajectories generated by the planning module. | 2025-08-31 | 7/10 |
-| Integration | Full software integration & hardware interfaces for real life autonomous racing | 2025-08-31 | 6/10 |
-
-Priorities:
-- Get and use camera
-- Local Planning with Controls
-- Lidar State Estimation
-- RL based planning
+| Camera Object Detection and Edge Tracking | Camera detects opponent cars and returns bounding boxes reliabilty in real-time with low latency | | 0/10 |
