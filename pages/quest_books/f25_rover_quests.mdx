@@ -3,19 +3,19 @@
 ## Costmap Completion
 
 - **BIG TASK:** Utilize the depth cameras’ pointcloud data to populate a costmap.
-- **Note:** To make things simple, let us first accomplish the task of populating a “local” costmap centered on the rover’s body. This would be an NxN occupancy grid, similar to the ASD onboarding assignment. Eventually, we will use these local costmaps to populate a global costmap of the entire field.
-- **Note:** We utilize two Intel Realsense D435 depth cameras for obstacle avoidance.
-- **Note:** The ROS 2 topics that our depth cameras publish point cloud messages to are:
-    - `/sim/realsense1/depth/points`
-    - `/sim/realsense2/depth/points`
-- **Note:** The message type of the point cloud messages we receive on the camera topics are [PointCloud2 ROS 2 messages](https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/PointCloud2.html).
-    - It can be hard to extract the position data from these messages, which is why we convert the PointCloud2 messages to **pcl::PointXYZRGB** message.
+    - **Note:** To make things simple, let us first accomplish the task of populating a “local” costmap centered on the rover’s body. This would be an NxN occupancy grid, similar to the ASD onboarding assignment. Eventually, we will use these local costmaps to populate a global costmap of the entire field.
+    - **Note:** We utilize two Intel Realsense D435 depth cameras for obstacle avoidance.
+    - **Note:** The ROS 2 topics that our depth cameras publish point cloud messages to are:
+        - `/sim/realsense1/depth/points`
+        - `/sim/realsense2/depth/points`
+    - **Note:** The message type of the point cloud messages we receive on the camera topics are [PointCloud2 ROS 2 messages](https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/PointCloud2.html).
+        - It can be hard to extract the position data from these messages, which is why we convert the PointCloud2 messages to **pcl::PointXYZRGB** message.
 
-- **TASK:** Add `config/params.yaml` file for costmap and occupancy grid dimension parameters (and any other parameters), similar to the ASD assignment.
-- **TASK:** Determine if downsampling of the point cloud is necessary. If so, look into and use functions from the pcl library for downsampling.
-- **TASK:** Use the **Bresenham Line Algorithm** to populate the occupancy grid. The idea is to work with the “imaginary” ray cast from the camera origin to the point in 3D space and determine which cells of the occupancy grid this ray passes through. This enables us to determine which cells are free and which are occupied.
-- **TASK:** Apply an inflation radius/layer on the occupancy grid.
-- **TASK:** Create “map memory” node that updates a global costmap (not frequently though) using the local costmap data.
+    - **TASK:** Add `config/params.yaml` file for costmap and occupancy grid dimension parameters (and any other parameters), similar to the ASD assignment.
+    - **TASK:** Determine if downsampling of the point cloud is necessary. If so, look into and use functions from the pcl library for downsampling.
+    - **TASK:** Use the **Bresenham Line Algorithm** to populate the occupancy grid. The idea is to work with the “imaginary” ray cast from the camera origin to the point in 3D space and determine which cells of the occupancy grid this ray passes through. This enables us to determine which cells are free and which are occupied.
+    - **TASK:** Apply an inflation radius/layer on the occupancy grid.
+    - **TASK:** Create “map memory” node that updates a global costmap (not frequently though) using the local costmap data.
 - **BIG TASK:** Incorporate the elevation data of the University Rover Competition site into the costmap.
     - **Note:** The URC takes place at the [Mars Desert Research Station in Utah](https://www.google.com/maps/dir//38.406422,-110.791921).
     - **Note:** The “elevation data” we obtained for the site is in the form of a `.las` file (standard format for point cloud data) obtained from the [USGS Lidar Explorer](https://apps.nationalmap.gov/lidar-explorer/#/process).
@@ -67,7 +67,7 @@
 Complete localization using GPS/IMU and odometry and test on simulated data (rosbags) and on the rover.
 - **TASK:** Get VectorNav GPS/IMU hardware to publish messages to ROS 2 topic.
 - **TASK:** Create rosbag of example GPS/IMU data published by the VectorNav.
-
+- **BIG TASK**: Implement rover localization using the GPS data
 ---
 
 ## Waypoint Navigation
@@ -81,4 +81,5 @@ Complete localization using GPS/IMU and odometry and test on simulated data (ros
 ## Blogging and Outreach
 
 - **TASK:** Write technical blogs explaining how we accomplished our terrain simulation, motor control, object detection, etc last term.
+    
     - Get people excited about robotics programming!
