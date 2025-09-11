@@ -1,12 +1,12 @@
-# Rover Quest Book - Fall 2025 (S25)
+# Rover Quest Book - Spring 2025 (S25)
 
-## The Great Objective: Complete the autonomous navigation stack for the UW Mars Rover.
+## The Great Objective: Simulate navigation for a rover.
 
 The WATO Rover Team is helping build the autonomous navigation subsystem for the [UW Robotics Team](https://github.com/uwrobotics)'s [URC 2026](https://urc.marssociety.org/home/requirements-guidelines) rover. We hope to pass the [System Acceptance Review](https://urc.marssociety.org/home/requirements-guidelines/system-acceptance-review) and do well in next year's competition.
 
 ## Term Objectives Summary
 
-The objectives for Fall 2025 are centered on 
+The objectives for Spring 2025 focus on building upon [Winter 2025](https://wiki.watonomous.ca/quest_books/archive/w25_rover_quests/) progress and completing essential autonomous navigation functionality for the URC. 
 
 1. **Simulate collecting depth camera data from three different cameras.**
 - Build upon the camera simulation created last term that publishes simulated point cloud data, which will allow all members to test algorithms that involve the cameras, regardless of hardware access.
@@ -20,6 +20,9 @@ The objectives for Fall 2025 are centered on
 - Complete the planning and control modules so the rover can autonomously navigate to any waypoint. This is required for navigating to the position of a detected object, as well as navigating to a provided GPS waypoint (another required task for the competition).
 6. **Write three blogs on simulating the rover**
 - We are a relatively new team and hope to improve our outreach and provide documentation for future members by writing blog posts throughout the term showcasing our progress.
+
+
+
 
 ### Term Objectives and Scoring
 
@@ -35,6 +38,9 @@ The objectives for Fall 2025 are centered on
 
 **Minimum Requirements:**  One or two depth cameras are generating but not publishing data to Nav2 for a score of 3/10.
 
+Score: 10/10
+Reflection: We are building our costmap without Nav2 now. The cameras publish point clouds in the form of [PointCloud2](https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/PointCloud2.html) messages.
+
 2. **Generate costmap from depth camera data**
 
 | Score | Criteria                                                                 |
@@ -47,6 +53,8 @@ The objectives for Fall 2025 are centered on
 
 **Minimum Requirements:** Depth cameras are able to simulate an innacurate costmap for a score of 5/10.
 
+Score: 5/10
+
 3. **Rover localization** 
 
 | Score | Criteria                                                                 |
@@ -58,6 +66,7 @@ The objectives for Fall 2025 are centered on
 
 **Minimum Requirements:** Accurate localization is achieved and tested using simulated data for a score of 7/10.
 
+Score: 0/10. Priorities shifted onto Rover quests and we did not get to this unfortunately.
 
 4. **Compute and publish goal pose of detected object**
 
@@ -69,6 +78,7 @@ The objectives for Fall 2025 are centered on
 
 **Minimum Requirements:** Rover is able to compute and publish an approximate pose for a score above 7/10.
 
+Score: 7/10. Object detection successfully integrated, but there are some latency and detection hiccups.
 
 5. **Autonomously navigate to chosen point**
 
@@ -81,6 +91,8 @@ The objectives for Fall 2025 are centered on
 
 **Minimum Requirements:** Rover is able to inefficiently navigate to a point for a score above 7/10.
 
+Score: 0/10. Dependent on planner module, which was not completed.
+
 6. **Blogs**
 
 | Score | Criteria                                                                 |
@@ -92,6 +104,13 @@ The objectives for Fall 2025 are centered on
 | 0/20  | No blogs have been written on simulating software for the rover. |
 
 **Minimum Requirements:**: Three blogs have been written on simulating software for the rover for a score above 15/20.
+
+Score: 0/10. Focus was too much on development, did not make time to blog about our progress.
+
+## Other accomplishments
+- Terrain simulation (boulders) in gazebo
+- USGS Lidar data/elevation map
+- Object detection
 
 ## Scoring Template
 
