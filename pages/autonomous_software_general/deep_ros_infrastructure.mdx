@@ -101,3 +101,26 @@ colcon build
 # Source workspace
 source install/setup.bash
 ```
+
+### 5. Pre-commit
+
+`deep_ros` uses pre-commit to ensure proper code formatting, linting, and quality checks before commits are made to the repository. This helps maintain consistent code style and catches potential issues early.
+
+To set up pre-commit:
+
+```bash
+# Install pre-commit hooks
+pre-commit install
+
+# Run pre-commit on all files (optional)
+pre-commit run --all-files
+```
+
+The pre-commit hooks will automatically run before each commit, checking for:
+- Code formatting (black, autopep8)
+- Import sorting (isort)
+- Linting (flake8, pylint)
+- YAML/JSON validation
+- Trailing whitespace and line endings
+
+If any checks fail, the commit will be blocked until the issues are resolved.
