@@ -1,0 +1,720 @@
+# Humanoid Team Quest Book - Fall 2025 (F25)
+
+## The Great Objective: Integrate V1
+
+Integrate the V1 prototype arm and hand into the overall system, ensuring all components work seamlessly together. This includes mechanical assembly, electrical wiring, firmware development, and software integration. The goal is to have a functional humanoid arm and hand that can be controlled via VR teleoperation and demonstrate basic movements and tasks.
+
+## Term Objectives Summary
+
+1. **General & Planning**
+	- v1 prototype arm and hand fully assembled and tested
+	- v2 design started, requirements and improvements listed
+	- Safety measures documented and implemented
+	- All tasks tracked and assigned in notion
+	- All assembly, wiring, and software setup steps fully documented
+	- Onboarding guide for new team members complete
+	- Project demo and outreach materials prepared and presented
+
+2. **Software**
+	- Touch sensor and current sensor simulation
+	- URDF automation
+	- Arm and hand inverse kinematics
+	- PID control for all joints
+	- RL environment and model for arm movement
+
+3. **VR Teleop**
+	- VR teleop client and ROS bridge integration
+
+4. **Behaviour**
+	- Movement API for physical and simulation systems
+	- Voxel grid, system localization
+
+5. **Perception**
+	- Object detection, keyboard localization, material classification, RGBD data publishing
+
+6. **Interfacing**
+	- CAN package management, deployment, sensor filtering, sensor drivers
+
+7. **Embedded**
+	- CAN sensor data, finger position, tension control, firmware, PID, CAN message processing, wiring
+
+8. **Mechanical**
+	- Hand, forearm, arm, body, power systems (integration, testing, prototyping, sensors)
+
+---
+
+### Term Objectives and Scoring
+
+#### General & Planning
+
+1. **v1 prototype arm and hand fully assembled and tested**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | v1 prototype arm and hand fully assembled and tested |
+| 7/10  | v1 prototype arm and hand assembled, partial testing |
+| 5/10  | v1 prototype arm and hand assembled, no testing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** v1 prototype arm and hand assembled
+
+2. **v2 design started, requirements and improvements listed**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | v2 design started, requirements and improvements listed |
+| 5/10  | v2 requirements/planning started |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic requirements for v2 design documented
+
+3. **Safety measures documented and implemented**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Safety measures documented and implemented |
+| 5/10  | Safety measures planned |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic safety protocols identified and documented
+
+4. **All tasks tracked and assigned in notion**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | All tasks tracked and assigned in notion |
+| 5/10  | Some tasks tracked |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Core tasks tracked
+
+5. **All assembly, wiring, and software setup steps fully documented**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | All assembly, wiring, and software setup steps fully documented |
+| 7/10  | Most major steps documented |
+| 5/10  | Some documentation started |
+| 0/10  | No documentation |
+
+**Minimum Requirements:** Basic assembly steps documented for key components
+
+6. **Onboarding guide for new team members complete**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Onboarding guide for new team members complete |
+| 5/10  | Partial onboarding guide |
+| 0/10  | No onboarding guide |
+
+**Minimum Requirements:** Basic introduction materials for new team members
+
+7. **Project demo and outreach materials prepared and presented**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Project demo and outreach materials prepared and presented |
+| 5/10  | Demo/outreach materials in progress |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic demo materials prepared showing current progress
+
+#### Software
+
+##### Sensors
+
+1. **Touch sensor imitation**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Touch sensor imitation complete |
+| 5/10  | Touch sensor imitation partially complete |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Basic touch sensor simulation responding to contact
+
+2. **Current sensor imitation**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Current sensor imitation complete |
+| 5/10  | Current sensor imitation partial |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Basic current sensor simulation providing motor load feedback
+
+##### Tooling
+
+1. **URDF automation**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | URDF automation complete |
+| 5/10  | Partial URDF automation, some manual work still needed |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Set processes for URDF creation 
+
+##### Control
+
+1. **Arm inverse kinematics**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Arm inverse kinematics complete |
+| 5/10  | Partial arm inverse kinematics |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Basic arm inverse kinematics for primary joints
+
+2. **Hand inverse kinematics**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Hand inverse kinematics complete |
+| 5/10  | Partial hand inverse kinematics |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Basic hand positioning
+
+3. **PID control for all joints**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | PID control for all joints complete |
+| 5/10  | PID tuned for some joints, tuning needed for others |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** PID control functional for at least major arm joints
+
+##### Autonomy
+
+1. **RL environment setup**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | RL environment setup complete |
+| 5/10  | RL environment partially set up |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Basic RL environment configured for arm simulation
+
+2. **RL model trained for arm movement**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | RL model trained for arm movement |
+| 5/10  | RL model training started |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Basic RL model demonstrating simple arm movements
+
+##### VR Teleop
+
+1. **VR teleop client works with hand/fingers in real-time**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | VR teleop client works with hand/fingers in real-time |
+| 7/10  | VR teleop client works with hand/fingers, some lag/issues |
+| 5/10  | VR teleop client works with arm only |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** VR teleop client controlling basic arm movements
+
+2. **ROS bridge integration**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | ROS bridge integration complete (server sends messages, ROS reads, fingers move) |
+| 5/10  | Partial ROS bridge integration |
+| 0/10  | No visible progress made. |
+
+**Minimum Requirements:** Basic ROS bridge receiving and processing VR commands
+
+##### Behaviour
+
+1. **Movement API for Physical System**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Movement API with teleop and VR control implemented |
+| 8/10  | Movement API with teleop control implemented |
+| 5/10  | Movement API skeleton implemented |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic movement API structure with core functionality
+
+2. **Simulation API Integration**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Movement API is fully compatible with simulation |
+| 5/10  | Movement API partially integrated with simulation |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Movement API functional in simulation environment
+
+3. **Voxel Grid**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Voxel grid implemented, integrated with controller |
+| 5/10  | Voxel grid implemented, controller integration needed |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic voxel grid implementation for spatial representation
+
+4. **System Localization / Initialization**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | System implemented for getting initial state of the robot |
+| 5/10  | Manual system initialization |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic system state initialization capability
+
+##### Perception
+
+1. **3D Object Detection**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | 3D object detection implemented |
+| 5/10  | 2D object detection implemented |
+| 0/10  | No progress |
+
+**Minimum Requirements:** None
+
+2. **Keyboard Object Detection & Localization**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Keyboard-specific object detection and localization |
+| 5/10  | Partial detection/localization |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic keyboard detection in camera feed
+
+3. **Object/Material Classification**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Initial development and research completed |
+| 5/10  | Research started |
+| 0/10  | No progress |
+
+**Minimum Requirements:** None
+
+4. **RGBD Data Publishing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Publishing filtered RGBD data |
+| 5/10  | Partial data publishing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** None
+
+##### Interfacing
+
+1. **CAN Package Management System**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | CAN package management system developed |
+| 5/10  | Partial system developed |
+| 0/10  | No progress |
+
+**Minimum Requirements:** None
+
+2. **Deployment System**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Deployment system built to support system scaling |
+| 5/10  | Partial deployment system |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic deployment framework for software components
+
+3. **Sensor Filtering / Denoising**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Sensor filtering/denoising implemented |
+| 5/10  | Partial filtering/denoising |
+| 0/10  | No progress |
+
+**Minimum Requirements:** None
+
+4. **Sensor Drivers**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Sensor drivers integrated, exposing sensor data to system |
+| 5/10  | Partial driver integration |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic sensor drivers functional for core sensors
+
+##### Embedded
+
+1. **CAN Sensor Data Collection**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Sensor data collected and sent over CAN |
+| 5/10  | Partial data collection |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic sensor data collection via CAN bus
+
+2. **Finger Position Maintenance**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Finger position data consistently maintained when running |
+| 5/10  | Partial maintenance |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic finger position tracking functionality
+
+3. **Tension Control Loop**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Embedded devices run tension control loop with current draw feedback |
+| 5/10  | Partial control loop implemented |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic tension control loop implementation
+
+4. **Firmware Flashing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Flashing STM32 firmware with ESP32 implemented |
+| 5/10  | Partial firmware flashing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic firmware flashing capability demonstrated
+
+5. **Finger PID Control**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Move fingers to set positions via PID controls |
+| 5/10  | Partial PID control implemented |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic finger PID control
+
+6. **CAN Message Processing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Embedded devices process CAN messages |
+| 5/10  | Partial CAN message processing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic CAN message processing for device communication
+
+7. **Forearm PCB Soldering**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Forearm PCB fully soldered and tested |
+| 5/10  | Forearm PCB partially soldered |
+| 0/10  | No progress |
+
+**Minimum Requirements:** PCB soldering complete
+
+8. **Wiring**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | All wiring purchased and installed |
+| 5/10  | Wiring purchased, partial installation |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Essential wiring completed for basic functionality
+
+
+#### Mechanical
+
+##### Hand
+
+1. **Mechanical Integration (Finger, Forearm)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Mechanical integration complete |
+| 5/10  | Partial integration |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic finger-hand-forearm mechanical connection
+
+2. **Motor Control Testing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Motor control tested (current sense, movement, encoder) |
+| 5/10  | Partial testing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic motor movement and current sensing verified
+
+3. **Communication Protocols Testing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Communication protocols tested (I2C, SPI, WIFI, CAN-FD) |
+| 5/10  | Partial protocol testing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** At least one communication protocol working
+
+4. **Mechanical Enclosure Prototyping**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Enclosure prototype for PCB/motors designed & printed |
+| 5/10  | Partial prototyping |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic enclosure design for core components
+
+5. **Plan Improvements for Rev 2**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Improvements for rev 2 planned |
+| 5/10  | Partial planning |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic improvement list documented for rev 2
+
+6. **Sensors Tested & Integrated**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Sensors tested & integrated (communication, test rig, integrated) |
+| 5/10  | Partial testing/integration |
+| 0/10  | No progress |
+
+**Minimum Requirements:** At least one sensor type tested and communicating on test rig
+
+7. **Sensors Purchased**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | All sensors purchased |
+| 5/10  | Some sensors purchased |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Essential sensors purchased for basic functionality
+
+8. **Sensor Categories Identified & Researched**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Sensor categories identified & researched |
+| 5/10  | Partial research |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Core sensor categories identified with basic research
+
+##### Forearm
+
+1. **Hand Integration with Forearm**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Hand fully integrated with forearm (mounted, wires routed) |
+| 5/10  | Mechanically mounted |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic hand-forearm mechanical connection
+
+2. **4-DoF Finger Prototypes**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | 4-DoF finger prototypes designed, printed, assembled |
+| 5/10  | Partial prototyping |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic finger prototype designed and printed
+
+3. **Forearm Power Systems**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Forearm power systems designed and tested |
+| 5/10  | Partial design/testing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic power distribution designed for forearm
+
+##### Arm
+
+1. **Arm Revision 2 CAD**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Revision 2 designed in CAD |
+| 5/10  | Partial CAD design |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic revision 2 design concepts identified
+
+2. **Arm Load Testing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Arm tested under load |
+| 5/10  | Partial load testing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic load testing with simple weights
+
+3. **Arm No-Load Testing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Arm tested without load |
+| 5/10  | Partial no-load testing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic arm movement testing without load
+
+4. **Arm Power Systems**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Arm power systems designed and tested |
+| 5/10  | Partial design/testing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic power distribution designed for arm
+
+##### Body
+
+1. **Body Revision 2 CAD**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Revision 2 designed in CAD |
+| 5/10  | Partial CAD design |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic revision 2 body design concepts identified
+
+2. **Body Covers**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Covers designed and integrated |
+| 5/10  | Partial cover design/integration |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic cover design concepts for protection
+
+##### Power Systems
+
+1. **Power System Diagrams**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Power system diagrams drawn and reviewed |
+| 5/10  | Power system diagrams started |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic power system diagram with main components
+
+2. **BMS and Battery Spec**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | BMS and battery system fully specified and sourced |
+| 5/10  | BMS and battery system partially specified |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic BMS and battery requirements identified
+
+3. **Power System Design & Build**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Power system designed and built with interfaces to components |
+| 7/10  | System design complete, parts purchased and installed |
+| 5/10  | System design complete and part selection complete |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic power system design with core functionality
+
+---
+
+### Scoring Template
+
+| Quest Name | Description | Score |
+|------------|-------------|-------|
+| v1 prototype arm and hand fully assembled and tested | v1 prototype arm and hand fully assembled and tested |  |
+| v2 design started, requirements and improvements listed | v2 design started, requirements and improvements listed |  |
+| Safety measures documented and implemented | Safety measures documented and implemented |  |
+| All tasks tracked and assigned in notion | All tasks tracked and assigned in notion |  |
+| All assembly, wiring, and software setup steps fully documented | All assembly, wiring, and software setup steps fully documented |  |
+| Onboarding guide for new team members complete | Onboarding guide for new team members complete |  |
+| Project demo and outreach materials prepared and presented | Project demo and outreach materials prepared and presented |  |
+| Touch sensor imitation | Touch sensor imitation complete |  |
+| Current sensor imitation | Current sensor imitation complete |  |
+| URDF automation | URDF automation complete |  |
+| Arm inverse kinematics | Arm inverse kinematics complete |  |
+| Hand inverse kinematics | Hand inverse kinematics complete |  |
+| PID control for all joints | PID control for all joints complete |  |
+| RL environment setup | RL environment setup complete |  |
+| RL model trained for arm movement | RL model trained for arm movement |  |
+| VR teleop client works with hand/fingers in real-time | VR teleop client works with hand/fingers in real-time |  |
+| ROS bridge integration | ROS bridge integration complete (server sends messages, ROS reads, fingers move) |  |
+| Movement API for Physical System | Movement API with teleop and VR control implemented |  |
+| Simulation API Integration | Movement API is fully compatible with simulation |  |
+| Voxel Grid | Voxel grid implemented, integrated with controller |  |
+| System Localization / Initialization | System implemented for getting initial state of the robot |  |
+| 3D Object Detection | 3D object detection implemented |  |
+| Keyboard Object Detection & Localization | Keyboard-specific object detection and localization |  |
+| Object/Material Classification | Initial development and research completed |  |
+| RGBD Data Publishing | Publishing filtered RGBD data |  |
+| CAN Package Management System | CAN package management system developed |  |
+| Deployment System | Deployment system built to support system scaling |  |
+| Sensor Filtering / Denoising | Sensor filtering/denoising implemented |  |
+| Sensor Drivers | Sensor drivers integrated, exposing sensor data to system |  |
+| CAN Sensor Data Collection | Sensor data collected and sent over CAN |  |
+| Finger Position Maintenance | Finger position data consistently maintained when running |  |
+| Tension Control Loop | Embedded devices run tension control loop with current draw feedback |  |
+| Firmware Flashing | Flashing STM32 firmware with ESP32 implemented |  |
+| Finger PID Control | Move fingers to set positions via PID controls |  |
+| CAN Message Processing | Embedded devices process CAN messages |  |
+| Forearm PCB Soldering | Forearm PCB fully soldered and tested |  |
+| Wiring | All wiring purchased and installed |  |
+| Mechanical Integration (Finger, Forearm) | Mechanical integration complete |  |
+| Motor Control Testing | Motor control tested (current sense, movement, encoder) |  |
+| Communication Protocols Testing | Communication protocols tested (I2C, SPI, WIFI, CAN-FD) |  |
+| Mechanical Enclosure Prototyping | Enclosure prototype for PCB/motors designed & printed |  |
+| Plan Improvements for Rev 2 | Improvements for rev 2 planned |  |
+| Sensors Tested & Integrated | Sensors tested & integrated (communication, test rig, integrated) |  |
+| Sensors Purchased | All sensors purchased |  |
+| Sensor Categories Identified & Researched | Sensor categories identified & researched |  |
+| Hand Integration with Forearm | Hand fully integrated with forearm (mounted, wires routed) |  |
+| 4-DoF Finger Prototypes | 4-DoF finger prototypes designed, printed, assembled |  |
+| Forearm Power Systems | Forearm power systems designed and tested |  |
+| Arm Revision 2 CAD | Revision 2 designed in CAD |  |
+| Arm Load Testing | Arm tested under load |  |
+| Arm No-Load Testing | Arm tested without load |  |
+| Arm Power Systems | Arm power systems designed and tested |  |
+| Body Revision 2 CAD | Revision 2 designed in CAD |  |
+| Body Covers | Covers designed and integrated |  |
+| Power System Diagrams | Power system diagrams drawn and reviewed |  |
+| BMS and Battery Spec | BMS and battery system fully specified and sourced |  |
+| Power System Design & Build | Power system designed and built with interfaces to components |  |

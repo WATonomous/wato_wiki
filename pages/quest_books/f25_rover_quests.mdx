@@ -1,0 +1,85 @@
+# WATO Rover F24 Roadmap
+
+## Costmap Completion
+
+- **BIG TASK:** Utilize the depth cameras’ pointcloud data to populate a costmap.
+    - **Note:** To make things simple, let us first accomplish the task of populating a “local” costmap centered on the rover’s body. This would be an NxN occupancy grid, similar to the ASD onboarding assignment. Eventually, we will use these local costmaps to populate a global costmap of the entire field.
+    - **Note:** We utilize two Intel Realsense D435 depth cameras for obstacle avoidance.
+    - **Note:** The ROS 2 topics that our depth cameras publish point cloud messages to are:
+        - `/sim/realsense1/depth/points`
+        - `/sim/realsense2/depth/points`
+    - **Note:** The message type of the point cloud messages we receive on the camera topics are [PointCloud2 ROS 2 messages](https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/PointCloud2.html).
+        - It can be hard to extract the position data from these messages, which is why we convert the PointCloud2 messages to **pcl::PointXYZRGB** message.
+
+    - **TASK:** Add `config/params.yaml` file for costmap and occupancy grid dimension parameters (and any other parameters), similar to the ASD assignment.
+    - **TASK:** Determine if downsampling of the point cloud is necessary. If so, look into and use functions from the pcl library for downsampling.
+    - **TASK:** Use the **Bresenham Line Algorithm** to populate the occupancy grid. The idea is to work with the “imaginary” ray cast from the camera origin to the point in 3D space and determine which cells of the occupancy grid this ray passes through. This enables us to determine which cells are free and which are occupied.
+    - **TASK:** Apply an inflation radius/layer on the occupancy grid.
+    - **TASK:** Create “map memory” node that updates a global costmap (not frequently though) using the local costmap data.
+- **BIG TASK:** Incorporate the elevation data of the University Rover Competition site into the costmap.
+    - **Note:** The URC takes place at the [Mars Desert Research Station in Utah](https://www.google.com/maps/dir//38.406422,-110.791921).
+    - **Note:** The “elevation data” we obtained for the site is in the form of a `.las` file (standard format for point cloud data) obtained from the [USGS Lidar Explorer](https://apps.nationalmap.gov/lidar-explorer/#/process).
+    - **TASK:** Download the `.las` file from our repo: [fargate_utah_mdrs.las](https://github.com/WATonomous/wato_rover/blob/master/assets/fargate_utah_mdrs.las).
+        - To visualize the point cloud in your browser, go to [cloud.usbim.com](https://cloud.usbim.com/home/workspaces), create an account and upload the `.las` file.
+
+- **TASK:** Divide the competition site into regions (e.g. grid squares?) and assign a cost to each region based on the elevation indicated by the point cloud `.las` file.
+
+    - How to process `.las` files?
+        - For C++, there is the [libLAS library](https://liblas.org/start.html#overview).
+        - For Python, there is [laspy](https://laspy.readthedocs.io/en/latest/).
+
+---
+
+## Object Detection Completion
+
+- **Note:** The rover needs to identify mission-critical objects (rubber mallets and water bottles) and navigate toward them. See the autonomous navigation mission from last year’s competition guidelines: [URC Requirements](https://urc.marssociety.org/home/requirements-guidelines).
+- **BIG TASK:** Fine tune the YOLOv8 model for better performance on mallets and water bottles (required objects for the competition).
+    - Dataset previously used: [Roboflow Mallet Dataset](https://universe.roboflow.com/sc-robotics/mallet-0ga9i/dataset/8).
+    - Test algorithm on videos (rosbags, ROS datasets): [ROS 2 Dataset](https://robotisim.com/ros2-dataset/).
+
+---
+
+## Aside: Rosbags
+
+- What are rosbags? If you’ve done the ASD onboarding assignment, you know what ROS 2 topics/messages are.
+- A **rosbag** is a file that stores a log of timestamped ROS messages published to a topic. It’s like a “recording” of the messages you’ve published to a topic.
+- You can “record” a rosbag using:
+
+    ```bash
+    ros2 bag record <topic1> <topic2> … <topicN>
+    ```
+    [rosbag2 GitHub](https://github.com/ros2/rosbag2?tab=readme-ov-file)
+
+- The recording can be stopped by manually terminating it (`Ctrl+C`), or by adding parameters to the command ahead for the duration of the recording in time or number of messages. Check the `rosbag2` documentation for more information.
+- Why is this “recording” useful? You can “playback” a rosbag later, using:
+
+    ```bash
+    ros2 bag play my_bag
+    ```
+
+    This will republish the messages to the same topic, in the same order (because the messages in the rosbag were associated with timestamps).
+- This way, we can create datasets of video, point cloud scans, IMU data, etc and test our algorithms on these prepared datasets.
+- This is much easier than, say, having to test our obstacle avoidance on the actual rover hardware every time. More frictionless testing leads to more iteration and improvement.
+
+---
+
+## Localization
+Complete localization using GPS/IMU and odometry and test on simulated data (rosbags) and on the rover.
+- **TASK:** Get VectorNav GPS/IMU hardware to publish messages to ROS 2 topic.
+- **TASK:** Create rosbag of example GPS/IMU data published by the VectorNav.
+- **BIG TASK**: Implement rover localization using the GPS data
+---
+
+## Waypoint Navigation
+
+- Need to navigate autonomously to an arbitrary GPS waypoint.
+- Complete the planning and control modules so the rover can autonomously navigate to any waypoint. This is required for navigating to the position of a detected object, as well as navigating to a provided GPS waypoint (another required task for the competition).
+- **BIG TASK:** Design planner module for navigation (**A\*** Planner).
+
+---
+
+## Blogging and Outreach
+
+- **TASK:** Write technical blogs explaining how we accomplished our terrain simulation, motor control, object detection, etc last term.
+    
+    - Get people excited about robotics programming!
