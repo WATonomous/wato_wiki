@@ -1,0 +1,126 @@
+import { Callout } from 'nextra/components'
+import { Steps } from 'nextra/components'
+
+# Deep ROS Infrastructure
+
+
+`deep_ros` is a full ML-infrastructure pipeline tailored for **ROS 2**, providing modular, inference node containers and a sample model farm to streamline the deployment, testing, training, and quantization of neural networks. It enables seamless integration of perception modules into larger monorepo-based systems like WATonomous's autonomous driving stack.
+
+---
+
+##  Overview
+
+- **Inference-agnostic ROS 2 node containers**  
+  These containers allow rapid deployment and testing of machine learning models without being tightly coupled to a specific framework or model type  [GitHub](https://github.com/WATonomous/deep_ros).
+
+- **Model farm structure**  
+  Includes sample tooling for:
+  - Training models
+  - Evaluating performance
+  - Quantizing and exporting models
+  This provides an end-to-end ML workflow integrated into the repository  [Github](https://github.com/WATonomous/deep_ros).
+
+---
+
+##  Why `deep_ros` Matters for Modular Perception in the Monorepo
+
+- **Decoupled deployment architecture**  
+  The inference containers empower developers to swap perception models in and out independently of the core monorepo services. This modularity drastically reduces integration friction and improves testing workflows.
+
+- **Ready-for-production ML pipeline**  
+  With built-in support for model lifecycle—from training through quantization and deployment—`deep_ros` alleviates the repetitive boilerplate that often plagues perception model development.
+
+- **Streamlined integration into the Monorepo**  
+  The Monorepo leverages Docker and ROS2 to unify services (perception, localization, control) across containers and teams `deep_ros` fits into this ecosystem naturally:
+  - Its Docker containers can be orchestrated via `watod` (the monorepo’s Docker-compose wrapper)
+  - It supports quick swapping or upgrading of perception models without monorepo-level refactoring
+
+---
+
+
+## Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/WATonomous/deep_ros.git
+cd deep_ros
+```
+
+### 2. Directory Breakdown
+
+The repository is structured to separate core inference logic, utilities, and model workflows:
+- **deep_core/**
+  - Core inference nodes built for ROS 2.
+  - Provides model-agnostic containers that wrap ML models in standardized ROS 2 APIs.
+  - This is where perception modules (e.g., object detection, lane detection) are implemented for deployment.
+- **deep_tools/**
+  - Utility scripts and helpers for building, testing, and running inference containers.
+  - Includes tooling for evaluation, visualization, and performance monitoring.
+- **model_farm/**
+  - Contains example ML models and workflows for training, evaluation, and quantization.
+  - Designed to demonstrate end-to-end ML lifecycle:
+	1.	Train on sample datasets
+	2.	Evaluate performance
+	3.	Export and quantize for deployment
+- **DEVELOPING.md**
+  - Documentation and developer guide for using deep_ros.
+- **deep_\<NEW_NODE\>**
+  - New nodes will be created in the `/deep_ros` directory
+  - Ex. deep_object_detection (For camera object detection)
+
+
+
+### 3. Build the Container
+
+- Press Ctrl+Shift+P and run "Tasks: Run Task"
+
+- Select "Setup Dev Container (GPU)" 
+    or 
+  "Setup Dev Container (CPU Only)" if you only need a CPU and not running any of the models
+- Select "Switch ROS Distro"
+- Choose from: humble (default), iron, jazzy, or rolling
+- Press Ctrl+Shift+P again and run "Dev Containers: Rebuild and Reopen in Container"
+
+The container will automatically rebuild and reopen with your selected ROS version.
+You can now develop inside the container. 
+
+### 4. Inside the container
+
+To build and source the ROS nodes run the following
+```bash
+# Update rosdep
+rosdep update
+
+# Install dependencies
+rosdep install --from-paths src --ignore-src -r -y
+
+# Build packages
+colcon build
+
+# Source workspace
+source install/setup.bash
+```
+
+### 5. Pre-commit
+
+`deep_ros` uses pre-commit to ensure proper code formatting, linting, and quality checks before commits are made to the repository. This helps maintain consistent code style and catches potential issues early.
+
+To set up pre-commit:
+
+```bash
+# Install pre-commit hooks
+pre-commit install
+
+# Run pre-commit on all files (optional)
+pre-commit run --all-files
+```
+
+The pre-commit hooks will automatically run before each commit, checking for:
+- Code formatting (black, autopep8)
+- Import sorting (isort)
+- Linting (flake8, pylint)
+- YAML/JSON validation
+- Trailing whitespace and line endings
+
+If any checks fail, the commit will be blocked until the issues are resolved.
