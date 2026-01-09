@@ -1,0 +1,320 @@
+# Eve Quest Book - Winter 2026 (W26)
+
+## The Great Objective: Level 5 Robo-taxi Around Campus
+
+Building on the hardware integration completed in Fall 2025, WATonomous aims to deploy a fully functional autonomous driving stack on Eve by the end of Winter 2026. This term focuses on calibration, localization, mapping, planning, control, and perception infrastructure necessary for safe and reliable autonomous navigation around the University of Waterloo campus.
+
+## Term Objectives Summary
+
+The objectives for Winter 2026 focus on calibrating sensors, implementing perception and planning pipelines, and establishing the core autonomous driving capabilities.
+
+1. **Hardware Integration**
+   - Sensor Synchronization
+   - Blinker Light Board Design and Integration
+
+2. **Software - Interfacing**
+   - Camera Extrinsic and Intrinsic Calibration
+   - Lidar-Lidar Extrinsic Calibration
+   - Lidar-IMU Extrinsic Calibration
+   - ROS2CCO
+   - Joystick Node
+
+3. **Software - Perception & Localization**
+   - 2D-3D Association
+   - Localization
+   - Mapping (LIO-SAM or similar)
+   - HD Map
+
+4. **Software - Planning & Control**
+   - Behavior Planner
+   - Global Planner
+   - Lattice Planner
+   - MPPI Controller
+   - Prediction
+
+5. **Extra**
+   - BEVFusion
+   - WATOverse
+   - 128-beam Lidar Integration
+   - Unified Pose-Graph Optimizer
+   - Mirror Mount Improvements
+
+### Term Objectives and Scoring
+
+#### Hardware Integration
+
+1. **Sensor Synchronization**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All sensors time-synchronized with hardware triggers or PTP, latency verified and documented. |
+| 7/10  | Sensor synchronization functional with software timestamps and minimal drift. |
+| 4/10  | Basic timestamp synchronization implemented. |
+| 0/10  | No sensor synchronization. |
+
+**Minimum Requirements:** Basic timestamp synchronization for a score of 4/10.
+
+2. **Blinker Light Board Design and Integration**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Blinker light board fully designed, fabricated, and integrated with vehicle signals working correctly. |
+| 7/10  | Board designed and fabricated, partial integration with basic functionality. |
+| 4/10  | Board designed with initial prototype or testing completed. |
+| 0/10  | No blinker light board work completed. |
+
+**Minimum Requirements:** Board design completed for a score of 4/10.
+
+#### Software - Interfacing (Calibration)
+
+1. **Camera Extrinsic and Intrinsic Calibration**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All cameras calibrated (intrinsics and extrinsics) with verified accuracy and calibration results stored in configuration. |
+| 7/10  | Most cameras calibrated with good accuracy, minor refinement needed. |
+| 4/10  | Basic calibration completed for at least one camera with documented procedure. |
+| 0/10  | No camera calibration completed. |
+
+**Minimum Requirements:** Basic calibration for one camera for a score of 4/10.
+
+2. **Lidar-Lidar Extrinsic Calibration**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | All lidars extrinsically calibrated with verified accuracy, point clouds properly aligned. |
+| 7/10  | Lidar calibration functional with minor alignment issues. |
+| 4/10  | Basic lidar-lidar calibration completed with initial alignment. |
+| 0/10  | No lidar-lidar calibration. |
+
+**Minimum Requirements:** Basic lidar calibration for a score of 4/10.
+
+3. **Lidar-IMU Extrinsic Calibration**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Lidar-IMU extrinsic calibration completed and verified with motion compensation working correctly. |
+| 7/10  | Lidar-IMU calibration functional with minor timing or alignment issues. |
+| 4/10  | Basic lidar-IMU calibration completed. |
+| 0/10  | No lidar-IMU calibration. |
+
+**Minimum Requirements:** Basic lidar-IMU calibration for a score of 4/10.
+
+4. **ROS2CCO**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | ROS2CCO fully functional with all vehicle interfaces, safety checks, and command validation. |
+| 7/10  | ROS2CCO operational with most interfaces working and basic safety checks. |
+| 4/10  | Basic ROS2CCO communication established with minimal command support. |
+| 0/10  | No ROS2CCO implementation. |
+
+**Minimum Requirements:** Basic ROS2CCO communication for a score of 4/10.
+
+5. **Joystick Node**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Joystick fully functional with all vehicle interfaces, safety checks, and command validation. |
+| 7/10  | Joystick operational with most interfaces working and basic safety checks. |
+| 4/10  | Basic Joystick communication established with minimal command support. |
+| 0/10  | No Joystick implementation. |
+
+**Minimum Requirements:** Basic ROS2CCO communication for a score of 4/10.
+
+#### Software - Perception & Localization (All must be on the main branch)
+
+1. **2D-3D Association**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Robust 2D-3D association functional with multi-camera and multi-lidar fusion, high accuracy. |
+| 7/10  | 2D-3D association functional with good accuracy and handling of most edge cases. |
+| 4/10  | Basic 2D-3D association working with single camera-lidar pair. |
+| 0/10  | No 2D-3D association implementation. |
+
+**Minimum Requirements:** Basic 2D-3D association for a score of 4/10.
+
+2. **Localization**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Multi-sensor localization (GPS/IMU/Lidar) functional with cm-level accuracy and robust failure handling. |
+| 7/10  | Localization functional using multiple sensors with sub-meter accuracy. |
+| 4/10  | Basic localization using GPS/IMU with meter-level accuracy. |
+| 0/10  | No localization implementation. |
+
+**Minimum Requirements:** Basic GPS/IMU localization for a score of 4/10.
+
+3. **Mapping**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Full SLAM implementation (e.g., LIO-SAM) functional with high-quality maps of target areas and loop closure. |
+| 7/10  | Mapping functional with good quality maps, minor issues with loop closure or drift. |
+| 4/10  | Basic mapping capability with initial map generation. |
+| 0/10  | No mapping implementation. |
+
+**Minimum Requirements:** Basic mapping capability for a score of 4/10.
+
+4. **HD Map**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Custom HD maps of target areas loaded with full regulatory element support and lane-level precision. |
+| 7/10  | HD map functional with perception and planning integration, most features working. |
+| 4/10  | Basic HD map loading, visualization, and initial integration. |
+| 0/10  | No HD map implementation. |
+
+**Minimum Requirements:** Basic HD map functionality for a score of 4/10.
+
+#### Software - Planning & Control (All must be on the main branch)
+
+1. **Behavior Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Behavior planner functional handling complex scenarios (lane changes, intersections, traffic rules). |
+| 7/10  | Behavior planner operational with basic scenario handling and rule compliance. |
+| 4/10  | Initial behavior planner implementation with simple state machine. |
+| 0/10  | No behavior planner. |
+
+**Minimum Requirements:** Initial behavior planner for a score of 4/10.
+
+2. **Global Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Global planner in monorepo generating optimal routes with HD map integration and dynamic re-planning. |
+| 7/10  | Global planner functional with route generation using road network. |
+| 4/10  | Basic global path planning using waypoints or simple road graph. |
+| 0/10  | No global planner. |
+
+**Minimum Requirements:** Basic global planning for a score of 4/10.
+
+3. **Lattice Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Lattice planner in monorepo generating smooth, kinematically feasible trajectories for multiple behaviors. |
+| 7/10  | Lattice planner functional with trajectory generation for basic maneuvers. |
+| 4/10  | Basic lattice planner implementation with simple trajectory generation. |
+| 0/10  | No lattice planner. |
+
+**Minimum Requirements:** Basic lattice planning for a score of 4/10.
+
+4. **MPPI Controller**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | MPPI controller fully implemented, tuned, and tested on vehicle with smooth control and obstacle avoidance. |
+| 7/10  | MPPI controller functional with basic tuning and acceptable tracking performance. |
+| 4/10  | Basic MPPI controller implementation with initial testing in simulation or on vehicle. |
+| 0/10  | No MPPI controller implementation. |
+
+**Minimum Requirements:** Basic MPPI controller for a score of 4/10.
+
+5. **Prediction**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Prediction module functional with multi-modal trajectory prediction for dynamic obstacles. |
+| 7/10  | Prediction operational with basic trajectory forecasting for vehicles and pedestrians. |
+| 4/10  | Initial prediction implementation with constant velocity model. |
+| 0/10  | No prediction implementation. |
+
+**Minimum Requirements:** Initial prediction module for a score of 4/10.
+
+#### Extras
+
+These are stretch goals that would significantly enhance Eve's capabilities but are not required for the core autonomous driving functionality.
+
+1. **BEV Fusion**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | BEV fusion model trained and deployed, fusing multi-camera and lidar data for perception. |
+| 7/10  | BEV fusion model functional with good performance on target scenarios. |
+| 4/10  | Initial BEV fusion implementation with basic multi-view aggregation. |
+| 0/10  | No BEV fusion implementation. |
+
+2. **WATOverse (Data Generation Pipeline)**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Complete offline data processing pipeline functional with data collection, processing, labeling, and storage. |
+| 7/10  | Data pipeline operational with most processing stages automated. |
+| 4/10  | Basic data collection and processing pipeline established. |
+| 0/10  | No data pipeline implementation. |
+
+3. **128-Beam Lidar Integration**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | 128-beam lidar fully integrated with custom interface box, mount designed and installed, and driver functional. |
+| 7/10  | 128-beam lidar integrated with working driver and basic mounting solution. |
+| 4/10  | Interface box designed or initial integration work completed. |
+| 0/10  | No 128-beam lidar integration work. |
+
+4. **Unified Pose Graph Optimizer**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Working unified pose graph optimizer, merged in |
+| 0/10  | No pose graph optimizer |
+
+5. **Mirror Mount Improvements**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Lidar on mirror stops vibrating |
+| 0/10  | No work done on mirror mount |
+
+### Scoring Template
+
+#### Hardware Integration
+
+| Quest Name                                    | Description                                           | Score  |
+|-----------------------------------------------|-------------------------------------------------------|--------|
+| ROS2CCO                                       | Complete ROS2 vehicle interface with safety checks    |        |
+| Sensor Synchronization                        | Time-synchronize all sensors                          |        |
+| Blinker Light Board Design and Integration    | Design and integrate vehicle signal indicators        |        |
+
+#### Software - Interfacing (Calibration)
+
+| Quest Name                                    | Description                                           | Score  |
+|-----------------------------------------------|-------------------------------------------------------|--------|
+| Camera Extrinsic and Intrinsic Calibration    | Calibrate all cameras for accurate perception         |        |
+| Lidar-Lidar Extrinsic Calibration             | Align all lidar point clouds                          |        |
+| Lidar-IMU Extrinsic Calibration               | Calibrate lidar-IMU for motion compensation           |        |
+
+#### Software - Perception & Localization
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| 2D-3D Association       | Multi-sensor fusion for perception                    |        |
+| Localization            | Multi-sensor localization with cm-level accuracy      |        |
+| Mapping                 | SLAM implementation for map generation                |        |
+| HD Map                  | HD map integration with lane-level precision          |        |
+
+#### Software - Planning & Control
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| Behavior Planner        | High-level decision making for autonomous navigation  |        |
+| Global Planner          | Optimal route planning with HD map integration        |        |
+| Lattice Planner         | Smooth trajectory generation for behaviors            |        |
+| MPPI Controller         | Model predictive path integral controller             |        |
+| Prediction              | Multi-modal trajectory prediction for obstacles       |        |
+
+#### Extras
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| BEV Fusion              | Bird's eye view fusion for enhanced perception        |        |
+| WATOverse               | Offline data processing and generation pipeline       |        |
+| 128-Beam Lidar Integration | High-resolution lidar with custom interface box    |        |
+| Unified Pose-Graph Optimizer | In house SLAM system to be open sourced          |        |
+| Mirror Mount Improvements | Stopping the lidars from vibrating on the mirror    |        |
+
+**Overall**
