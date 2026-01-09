@@ -1,42 +1,52 @@
-# WATcloud Quest Book - Summer 2025
+# WATcloud Quest Book - Winter 2026
 
 ## Term Objectives Summary
 
-These are WATcloud's objectives for the Summer 2025 term. 
-
-1. Hardware additions: nebula machines and wato-drive3
-2. Handle outages, optimizing for zero downtime
-3. Transition to login node architecture
-4. Write blog posts!
-5. Get more funding!
+These are WATcloud's objectives for the Winter 2026 term. 
 
 ### Term Objectives and Scoring
-1. **Hardware additions: nebula machines and wato-drive3**
+
+1. **Bug Squash**
+
+There are some recurring new bugs / issues which should be dealt with.
+- 1.1 CVMFS endpoint disconnection
+- 1.2 Slurmdb unreachable
+- 1.3 Add limits and quotas to prevent machines from running out of disk space
+
+Completing these should help alleviate "random" CI failures. 
 
 | Score | Criteria                                                                 |
 |-------|--------------------------------------------------------------------------|
-| 20/20 | All 3 machines are in the cluster along with a new wato-drive            |
-| 10/20 | All 3 machines is in the cluster                                         |
+| 20/20 | All issues squashed                                                      |
 | 0/10  | No progress.                                                             |
 
-2. **Handle outages, optimizing for zero downtime**
+2. **Hardware additions: Create wato-drive3**
 
 | Score | Criteria                                                                 |
 |-------|--------------------------------------------------------------------------|
-| 20/20 | All outages are handled with zero downtime for critical services (try UPS for critical machines)   |
+| 20/20 | New machine is set up with wato-drive-3                                  |
+| 0/10  | No progress.                                                             |
+
+3. **Handle outages, optimizing for zero downtime**
+
+| Score | Criteria                                                                 |
+|-------|--------------------------------------------------------------------------|
+| 20/20 | All outages are handled with zero downtime for critical services         |
 | 10/20 | All outages are handled with < 12 hours downtime for critical services   |
 | 5/20  | All outages are announced before hand                                    |
 
 
-3. **Transition to login node architecture**
+4. **Deploy a new project**
+
+Deploy the following projects: WATcloud CLI, Spellchecker, Power Outage Notification System, Email Verification System.
 
 | Score | Criteria                                                                 |
 |-------|--------------------------------------------------------------------------|
-| 10/10 | Completely moved away from VM architecture and all resources are Slurm   |
-| 5/10  | Login nodes work but VMs are still available for users                   |
-| 0/10  | No progress.                                                             |
+| 15/15 | All projects deployed.                                                   |
+| 7/15  | Some projects deployed.                                                  |
+| 0/10  | No projects.                                                             |
 
-4. **Write blog posts!**
+5. **Write blog posts!**
 
 | Score | Criteria                                                                 |
 |-------|--------------------------------------------------------------------------|
@@ -44,7 +54,7 @@ These are WATcloud's objectives for the Summer 2025 term.
 | 10/20 | 1 blog post is written and published                                     |
 | 0/20  | No progress.                                                             |
 
-5. **Get more funding!**
+6. **Get more funding!**
 
 | Score | Criteria                                                                 |
 |-------|--------------------------------------------------------------------------|
