@@ -1,0 +1,112 @@
+# Micro Quest Book - Summer 2026 (S26)
+
+## The Great Objective: Competition Ready 
+
+This term, Micro aims to complete the MVP to a competition-ready state while laying the groundwork for early stage learned sensor fusion.
+This will involve finishing our local planning stack, extensive real-world tuning, and building and integrating our Intel RealSense camera onto the car.
+
+## Term Objectives Summary
+
+[Brief overview of what will be accomplished this term, organized into categories.]
+
+1. **Hardware**
+   - Intel RealSense Camera Mount
+
+2. **Software**
+   - SDF Based collision detection Node
+   - Hybrid A* + path optmization Node
+   - Intel RealSense Software integration
+   - Race Ready Tuning
+   - infrastructure improvements
+
+---
+
+### Term Objectives and Scoring
+
+#### Hardware
+
+1. **Intel RealSense Camera Mount**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Camera and mount can survive 8 consecutive laps with minor collision with No damage or minor scufs|
+| 7/10  | Mount is attached to platfrom + camera mounted on it |
+| 4/10  | Mount is Designed + Fabricated |
+| 0/10  | No mount is made |
+
+**Minimum Requirements:** There must be CAD files + a few printed prototypes for a score of 4/10
+
+#### Software
+
+1. **SDF Based collision detection Node**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | node can correct detect collision and suggest adjacent point to local planner |
+| 5/10  | node can correctly detect when a collision will happen |
+| 2/10  | Node can generate a correct SDF from a occupancy grid message |
+| 0/10  | Node does not exist in a functional state and produces no useful outputs |
+
+**Minimum Requirements:** Node must generate a correct SDF from occupancy grid for score of 2/10
+
+2. **Hybrid A* + Path Optimization Node**
+
+| Score | Criteria |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Hybrid A* and path optimizer are combined and working reliably on the car |
+| 7/10 | Hybrid A* and path optimizer are combined and validated in simulation |
+| 4/10 | Path optimizer is built out and producing optimized paths independently |
+| 0/10 | Hybrid A* does not output a valid path |
+
+**Minimum Requirements:** Hybrid A* must output a valid path for a score of 4/10.
+
+3. **Intel RealSense Software Integration**
+
+| Score | Criteria |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | ROS driver is installed, fully functional, and capable of automatically recording rosbags with depth, point cloud, and image data |
+| 7/10 | Camera produces depth maps, point clouds, and RGB images through the ROS driver |
+| 4/10 | Camera outputs raw image and depth data successfully |
+| 0/10 | No usable output from the camera |
+
+**Minimum Requirements:** Camera must produce raw image and depth output for a score of 4/10.
+
+4. **Race-Ready Tuning**
+
+| Score | Criteria |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Car is reliably running at a top speed of 10 m/s |
+| 7/10 | Car is reliably running at a top speed of 8 m/s |
+| 3/10 | Car is reliably running at a top speed of 5 m/s |
+| 0/10 | Car is stuck at 3 m/s or below |
+
+**Minimum Requirements:** Car must reach a top speed of 5 m/s for a score of 3/10.
+
+5. **Infrastructure Improvements**
+
+| Score | Criteria |
+|-------|-------------------------------------------------------------------------|
+| 5/5 | Foxglove is working correctly and well-documented, and an automated rosbag recording script is built that saves bags with timestamped run names to a designated location on launch |
+| 2/5 | Foxglove is set up, working correctly, and well-documented |
+| 0/5 | No functional infrastructure improvements delivered |
+
+**Minimum Requirements:** Foxglove must be working correctly and documented for a score of 2/5.
+
+---
+
+### Scoring Template
+
+#### Hardware
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| Intel RealSense Camera Mount      | Intel RealSense Camera mounted to car and ready to use in race    |        |
+
+#### Software
+| Quest Name | Description | Score |
+|---|---|---|
+| SDF Based Collision Detection Node | Build a node that generates SDFs from occupancy grids and detects collisions to assist the local planner | |
+| Hybrid A* + Path Optimization Node | Develop and integrate a Hybrid A* path planner with a path optimizer, validated in sim and on the car | |
+| Intel RealSense Software Integration | Install ROS drivers and integrate the Intel RealSense camera to produce depth, point cloud, and image data | |
+| Race-Ready Tuning | Tune the full stack for competition-level performance, targeting up to 10 m/s top speed | |
+| Infrastructure Improvements | Set up Foxglove with documentation and build an automated rosbag recording script on launch | |
