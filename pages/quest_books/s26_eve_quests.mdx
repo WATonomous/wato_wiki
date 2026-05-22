@@ -1,0 +1,122 @@
+# Eve Quest Book - Summer 2026 (S26)
+
+## The Great Objective: Level 5 Robo-taxi Around Campus
+
+WATonomous aims to achieve a fully autonomous Level 5 robo-taxi capable of navigating the University of Waterloo campus by the end of Summer 2026. This involves integrating hardware, software, and cognition systems to enable decision-making directly within the car. Achieving this milestone establishes the groundwork for advanced autonomous vehicle research and real-world applications.
+
+## Term Objectives Summary
+
+The objectives for Summer 2026 focus on developing BEVFusion for perception, developing MPC for action, lots of testing around ring road, and preparing the platform for autonomous operation.
+
+1. **Hardware Integration**
+   - Hardware Quality of Life
+
+2. **Software Modules**
+   - BEVFusion
+   - Prediction
+   - HD Map
+   - Localization
+   - Local Planner (builds a collision-aware spline)
+   - Controller (MPPI, MPC)
+
+---
+
+### Term Objectives and Scoring
+
+#### Hardware Integration
+
+
+1. **Hardware Quality of Life**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10  | No more hardware issues with clean cable management, a tidy car, and documentation. |
+| 4/10  | Hide all OSCC boards with proper cable management. |
+| 3/10  | E-stop no longer engages parking brake when in normal drive mode. |
+| 0/10  | No e-stop improvement. |
+
+**Minimum Requirements:** E-stop no longer engages parking brake when in normal drive mode 10/10.
+
+#### Software Modules (All must be on the main branch)
+
+1. **BEVFusion**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Fine-tuning BEVFusion with our own dataset from Wato-World annotations. |
+| 5/10  | Basic BEVFusion setup with initial integration with sensors producing object tracks. |
+| 0/10  | No BEVFusion implementation. |
+
+**Minimum Requirements:** Basic BEVFusion setup with initial integration with sensors producing object tracks.
+
+2. **Prediction**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Fully tested prediction on the ring road. |
+| 7/10  | Fix up and integrate prediction with BEVFusion. |
+| 0/10  | No prediction implemented. |
+
+**Minimum Requirements:** Fix up and integrate prediction with BEVFusion 7/10.
+
+3. **HD Map**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Ring road HD map fully tested around the entire ring road. |
+| 7/10 | Ring road HD map tested partially around ring road. |
+| 4/10  | Ring road HD map functional with perception integration. |
+| 1/10  | Basic ring road HD map loading and visualization. |
+
+**Minimum Requirements:** Basic ring road HD map loading and visualization. 0/10.
+
+4. **Localization**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Reliable Multi-sensor localization on ring road. |
+| 4/10  | Multi-sensor localization functional on ring road. |
+| 0/10  | Basic localization using GPS on the ring road. |
+
+**Minimum Requirements:** Multi-sensor localization functional on ring road for a score of 4/10.
+
+5. **Local Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Local planner in monorepo handling dynamic obstacles smoothly. |
+| 4/10  | Basic local planning implementation. |
+| 0/10  | No local planner. |
+
+**Minimum Requirements:** Basic local planning for a score of 4/10.
+
+6. **Controller**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Advanced controller in monorepo fully tuned and tested on vehicle. |
+| 4/10  | Basic controller implementation. |
+| 0/10  | No controller implementation. |
+
+**Minimum Requirements:** Basic controller for a score of 4/10.
+
+---
+
+### Scoring Template
+
+#### Hardware Integration
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| Hardware Quality of Life | No more hardware issues with clean cable management, a tidy car, and documentation |        |
+
+#### Software Modules
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| BEVFusion               | Fine-tuning BEVFusion with our own dataset from Wato-World annotations.    |        |
+| Prediction              | Fully tested prediction on the ring road      |        |
+| HD Map                  | Load custom HD maps with regulatory elements          |        |
+| Localization            | Multi-sensor localization with cm accuracy            |        |
+| Local Planner           | Dynamic obstacle avoidance and smooth navigation      |        |
+| Controller              | MPC/MPPI controller for precise vehicle control       |        |

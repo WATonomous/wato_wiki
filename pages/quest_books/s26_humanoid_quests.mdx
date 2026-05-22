@@ -1,0 +1,307 @@
+# Humanoid Quest Book - Summer 2026 (S26)
+
+## The Great Objective: V1 7DOF Humanoid Arm with gripper + Humanoid Locomotion
+
+Build out a V1 7DOF humanoid arm with gripper, ensuring all components work seamlessly together. This includes mechanical assembly, electrical wiring, firmware development, and software integration. The goal is to have a functional humanoid arm that can have integration with deploying RL robot policy / VLAs. Also, start design of the humanoid leg and its simulation environment for training locomotion policy.
+
+## Term Objectives Summary
+
+1. **General & Planning**
+	- v1 7DOF arm with gripper fully assembled, powered and tested
+	- start design on humanoid leg for locomotion policy training
+	- All assembly, wiring, and software setup steps fully documented
+	- Project demo and outreach materials prepared and presented
+
+2. **Software**
+	- Inverse kinematics deployment on the actual arm
+	- Sim2real deployment of RL policy on the arm
+	- Locomotion policy trained in IsaacLab
+	- PID control for all joints
+	- Data collection (including VR) pipeline for the arm
+
+3. **VR Teleop**
+	- VR teleop client
+	- ROS bridge integration
+
+4. **Perception**
+	- Simulating Realsense camera in sim + RGBD data publishing
+	- Object detection, keyboard localization
+	- SLAM with RealSense
+
+5. **Interfacing**
+	- CAN package management
+	- Deployment
+
+6. **Embedded**
+	- PID
+	- CAN message processing
+
+7. **Mechanical**
+	- Arm, leg, power systems (integration, testing, prototyping)
+
+---
+
+### Term Objectives and Scoring
+
+#### General & Planning
+
+1. **v1 7DOF arm with gripper fully assembled, powered and tested**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | v1 7DOF arm with gripper fully assembled, powered and tested |
+| 5/10  | v1 7DOF arm with gripper fully assembled, partial tested |
+| 0/10  | No progress |
+
+**Minimum Requirements:** v1 7DOF arm with gripper fully assembled, partial tested
+
+2. **start design on humanoid leg for locomotion policy training**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Finished design on humanoid leg and a fully trained locomotion policy |
+| 5/10  | Design on humanoid leg partially finsihed and a locomotion policy training environment created |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Design on humanoid leg partially finsihed and a locomotion policy training environment created
+
+3. **All assembly, wiring, and software setup steps fully documented**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | All assembly, wiring, and software setup steps fully documented |
+| 7/10  | Most major steps documented |
+| 5/10  | Some documentation started |
+| 0/10  | No documentation |
+
+**Minimum Requirements:** Basic assembly steps documented for key components
+
+4. **Project demo and outreach materials prepared and presented**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Project demo and outreach materials prepared and presented |
+| 5/10  | Demo/outreach materials in progress |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic demo materials prepared showing current progress
+
+#### Software
+
+1. **Inverse kinematics deployment on the actual arm**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | IK running on physical arm, end-effector reaches commanded poses reliably |
+| 7/10  | IK deployed on arm with minor accuracy or reliability issues |
+| 5/10  | IK working in sim or partial deployment on arm |
+| 0/10  | No progress |
+
+**Minimum Requirements:** IK deployed on physical arm for primary joints with basic pose tracking
+
+2. **Sim2real deployment of RL policy on the arm**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Trained RL policy deployed on physical arm with acceptable sim2real performance |
+| 7/10  | RL policy deployed on arm with notable sim2real gap |
+| 5/10  | Trained policy in sim, deployment started on arm |
+| 0/10  | No progress |
+
+**Minimum Requirements:** RL policy trained in sim and initial deployment attempted on physical arm
+
+3. **Locomotion policy trained in IsaacLab**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Locomotion policy trained in IsaacLab with stable walking/locomotion behavior |
+| 7/10  | Policy training in progress with partial locomotion behavior |
+| 5/10  | IsaacLab locomotion environment set up, training started |
+| 0/10  | No progress |
+
+**Minimum Requirements:** IsaacLab locomotion training environment created with training in progress
+
+4. **PID control for all joints**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | PID control for all joints complete |
+| 5/10  | PID tuned for some joints, tuning needed for others |
+| 0/10  | No progress |
+
+**Minimum Requirements:** PID control functional for at least major arm joints
+
+5. **Data collection (including VR) pipeline for the arm**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | End-to-end data collection pipeline operational, including VR teleop integration |
+| 7/10  | Pipeline mostly complete, VR integration partially working |
+| 5/10  | Basic data collection pipeline started |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic data collection pipeline capturing arm trajectories
+
+#### VR Teleop
+
+1. **VR teleop client works with hand/fingers in real-time**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | VR teleop client works with hand/fingers in real-time |
+| 7/10  | VR teleop client works with hand/fingers, some lag/issues |
+| 5/10  | VR teleop client works with arm only |
+| 0/10  | No progress |
+
+**Minimum Requirements:** VR teleop client controlling basic arm movements
+
+2. **ROS bridge integration**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | ROS bridge integration complete (server sends messages, ROS reads, fingers move) |
+| 5/10  | Partial ROS bridge integration |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic ROS bridge receiving and processing VR commands
+
+#### Perception
+
+1. **RealSense camera simulation and RGBD data publishing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | RealSense camera simulated in sim and RGBD data publishing operational |
+| 7/10  | RealSense simulation or RGBD publishing mostly working |
+| 5/10  | RealSense simulation started or partial RGBD publishing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** RealSense camera simulated in sim with basic RGBD data publishing
+
+2. **Object detection and keyboard localization**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Object detection and keyboard localization implemented |
+| 7/10  | Object detection or keyboard localization partially working |
+| 5/10  | Basic object detection in camera feed |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic object detection in camera feed
+
+3. **SLAM with RealSense**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | SLAM pipeline running with RealSense, producing usable maps/localization |
+| 7/10  | SLAM partially working with RealSense |
+| 5/10  | SLAM integration started with RealSense |
+| 0/10  | No progress |
+
+**Minimum Requirements:** SLAM pipeline integrated with RealSense with initial mapping results
+
+#### Interfacing
+
+1. **CAN package management**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | CAN package management system developed |
+| 5/10  | Partial system developed |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic CAN package management workflow in place
+
+2. **Deployment**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Deployment system built to support system scaling |
+| 5/10  | Partial deployment system |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic deployment framework for software components
+
+#### Embedded
+
+1. **PID**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | PID control implemented and tuned on embedded devices |
+| 5/10  | PID partially implemented or tuned |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic PID control functional on embedded devices
+
+2. **CAN message processing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Embedded devices process CAN messages reliably |
+| 5/10  | Partial CAN message processing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic CAN message processing for device communication
+
+#### Mechanical
+
+1. **Arm (integration, testing, prototyping)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Arm fully integrated, tested, and prototyped |
+| 7/10  | Arm integrated and partially tested |
+| 5/10  | Arm integration or prototyping in progress |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic arm integration with initial testing
+
+2. **Leg (integration, testing, prototyping)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Leg fully integrated, tested, and prototyped for locomotion policy training, ready for sim2real |
+| 7/10  | Leg integrated and partially tested |
+| 5/10  | Leg design, integration, or prototyping in progress |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Leg design started with initial prototyping for locomotion training
+
+3. **Power systems (integration, testing, prototyping)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | All wiring set up, powering all 7 motors at once, fully functional |
+| 5/10  | All wiring set up, powering all 7 motors at once, partially functional |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Essential wiring completed, powering all 7 motors at once with basic functionality
+
+---
+
+### Scoring Template
+
+| Quest Name | Description | Score |
+|------------|-------------|-------|
+| v1 7DOF arm with gripper fully assembled, powered and tested | v1 7DOF arm with gripper fully assembled, powered and tested |  |
+| start design on humanoid leg for locomotion policy training | Finished design on humanoid leg and a fully trained locomotion policy |  |
+| All assembly, wiring, and software setup steps fully documented | All assembly, wiring, and software setup steps fully documented |  |
+| Project demo and outreach materials prepared and presented | Project demo and outreach materials prepared and presented |  |
+| Inverse kinematics deployment on the actual arm | IK running on physical arm, end-effector reaches commanded poses reliably |  |
+| Sim2real deployment of RL policy on the arm | Trained RL policy deployed on physical arm with acceptable sim2real performance |  |
+| Locomotion policy trained in IsaacLab | Locomotion policy trained in IsaacLab with stable walking/locomotion behavior |  |
+| PID control for all joints | PID control for all joints complete |  |
+| Data collection (including VR) pipeline for the arm | End-to-end data collection pipeline operational, including VR teleop integration |  |
+| VR teleop client | VR teleop client works with hand/fingers in real-time |  |
+| ROS bridge integration | ROS bridge integration complete (server sends messages, ROS reads, fingers move) |  |
+| RealSense camera simulation and RGBD data publishing | RealSense camera simulated in sim and RGBD data publishing operational |  |
+| Object detection and keyboard localization | Object detection and keyboard localization implemented |  |
+| SLAM with RealSense | SLAM pipeline running with RealSense, producing usable maps/localization |  |
+| CAN package management | CAN package management system developed |  |
+| Deployment | Deployment system built to support system scaling |  |
+| PID | PID control implemented and tuned on embedded devices |  |
+| CAN message processing | Embedded devices process CAN messages reliably |  |
+| Arm (integration, testing, prototyping) | Arm fully integrated, tested, and prototyped |  |
+| Leg (integration, testing, prototyping) | Leg fully integrated, tested, and prototyped for locomotion policy training |  |
+| Power systems (integration, testing, prototyping) | All wiring set up, powering all 7 motors at once, fully functional |  |
