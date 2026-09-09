@@ -15,13 +15,14 @@ Assemble the complete humanoid (2 arms + 2 legs) as the primary objective of the
 	- Manipulation progress
 	- RL sim2real deployment started
 	- Successful autonomous task demo deployed
+	- Leader arm built for teleop data collection
 
 3. **Embedded / Firmware**
-	- Reliable interfacing across the system
+	- Reliable interfacing across the system (MIT control mode + CAN FD)
 	- IMU integration for locomotion
 	- 22DOF hand powered and functional
 	- Full bringup on hand, legs, and full body (where mechanically possible)
-	- Switch CAN classic to CAN FD
+	- Telemetry dashboard
 
 4. **Mechanical**
 	- Arm and leg design finalized and built for testing
@@ -104,18 +105,29 @@ Assemble the complete humanoid (2 arms + 2 legs) as the primary objective of the
 
 **Minimum Requirements:** Demo in progress with a defined task
 
-#### Embedded / Firmware
-
-1. **Reliable interfacing across the system**
+5. **Leader arm built for teleop data collection**
 
 | Score | Criteria |
 |-------|----------|
-| 10/10 | System-wide interfacing (CAN/sensor communication) reliable end-to-end |
-| 7/10  | Interfacing working with occasional issues |
-| 5/10  | Partial interfacing implemented |
+| 10/10 | Leader arm built and used to collect demonstration data for imitation learning/RL policies |
+| 7/10  | Leader arm built with teleop control, data collection in progress |
+| 5/10  | Leader arm partially built, basic teleop control implemented |
 | 0/10  | No progress |
 
-**Minimum Requirements:** Basic interfacing functional for core components
+**Minimum Requirements:** Leader arm built with basic teleop control
+
+#### Embedded / Firmware
+
+1. **Reliable interfacing across the system (MIT control mode + CAN FD)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | System-wide interfacing reliable end-to-end, using MIT control mode over CAN FD |
+| 7/10  | Interfacing working on MIT control mode + CAN FD, with occasional issues |
+| 5/10  | Partial interfacing implemented (MIT control mode or CAN FD, not both) |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic interfacing functional for core components using MIT control mode over CAN FD
 
 2. **IMU integration for locomotion**
 
@@ -148,16 +160,16 @@ Assemble the complete humanoid (2 arms + 2 legs) as the primary objective of the
 
 **Minimum Requirements:** Bringup complete on hand and legs
 
-5. **Switch CAN classic to CAN FD**
+5. **Telemetry dashboard**
 
 | Score | Criteria |
 |-------|----------|
-| 10/10 | CAN FD fully implemented and communication verified across the system |
-| 7/10  | CAN FD implemented, minor issues remaining |
-| 5/10  | CAN FD implementation in progress |
+| 10/10 | Telemetry dashboard live, displaying system-wide data (CAN, sensors, IMU, etc.) |
+| 7/10  | Telemetry dashboard functional with limited data sources |
+| 5/10  | Telemetry dashboard in progress |
 | 0/10  | No progress |
 
-**Minimum Requirements:** CAN FD implemented and verified on at least one subsystem
+**Minimum Requirements:** Telemetry dashboard displaying basic system data
 
 #### Mechanical
 
@@ -208,11 +220,12 @@ Assemble the complete humanoid (2 arms + 2 legs) as the primary objective of the
 | Manipulation progress | Manipulation policy/task demonstrated on the arm |  |
 | RL sim2real deployment started | Trained RL policy deployed on physical hardware |  |
 | Successful autonomous task demo deployed | Autonomous task demo successfully deployed and presented |  |
-| Reliable interfacing across the system | System-wide interfacing (CAN/sensor communication) reliable end-to-end |  |
+| Leader arm built for teleop data collection | Leader arm built and used to collect demonstration data for imitation learning/RL policies |  |
+| Reliable interfacing across the system (MIT control mode + CAN FD) | System-wide interfacing reliable end-to-end, using MIT control mode over CAN FD |  |
 | IMU integration for locomotion | IMU integrated and providing reliable data for locomotion |  |
 | 22DOF hand powered and functional | 22DOF hand fully powered and functional |  |
 | Full bringup on hand, legs, and full body (where mechanically possible) | Full bringup complete on hand, legs, and full body (where mechanically possible) |  |
-| Switch CAN classic to CAN FD | CAN FD fully implemented and communication verified across the system |  |
+| Telemetry dashboard | Telemetry dashboard live, displaying system-wide data (CAN, sensors, IMU, etc.) |  |
 | Arm and leg design finalized and built for testing | Arm and leg design finalized, built, and ready for testing |  |
 | Full electrical system complete | Full electrical system designed, built, and functional |  |
 | PCB designed and manufactured | PCB designed, manufactured, and tested |  |
