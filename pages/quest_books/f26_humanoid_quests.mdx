@@ -1,0 +1,231 @@
+# Humanoid Quest Book - Fall 2026 (F26)
+
+## The Great Objective: Fully Assembled Humanoid
+
+Assemble the complete humanoid (2 arms + 2 legs) as the primary objective of the term, with finalized arm/leg mechanical design and a testing setup to support it. In parallel, finish the electrical system with a manufactured custom PCB, get reliable system-wide interfacing and IMU integration for locomotion on firmware, make progress on locomotion and manipulation policies with RL sim2real work started, and power up the 22DOF hand as a secondary goal.
+
+## Term Objectives Summary
+
+1. **General & Planning**
+	- Whole humanoid fully assembled (2 arms + 2 legs)
+	- Arm and leg mechanical design finalized, testing setup built
+
+2. **Software**
+	- Locomotion policy progress
+	- Manipulation progress
+	- RL sim2real deployment started
+	- Successful autonomous task demo deployed
+	- Leader arm built for teleop data collection
+
+3. **Embedded / Firmware**
+	- Reliable interfacing across the system (MIT control mode + CAN FD)
+	- IMU integration for locomotion
+	- 22DOF hand powered and functional
+	- Full bringup on hand, legs, and full body (where mechanically possible)
+	- Telemetry dashboard
+
+4. **Mechanical**
+	- Arm and leg design finalized and built for testing
+
+5. **Power Systems / Electrical**
+	- Full electrical system complete
+	- PCB designed and manufactured
+
+---
+
+### Term Objectives and Scoring
+
+#### General & Planning
+
+1. **Whole humanoid fully assembled (2 arms + 2 legs)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Whole humanoid fully assembled with both arms and both legs |
+| 7/10  | Humanoid assembled with arms and legs, minor integration issues remaining |
+| 5/10  | Partial assembly (e.g. arms or legs only) |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Both arms and both legs mechanically mounted to the body
+
+2. **Arm and leg mechanical design finalized, testing setup built**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Arm and leg design finalized, testing setup built and in use |
+| 7/10  | Design finalized, testing setup partially built |
+| 5/10  | Design mostly finalized, testing setup planned |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Arm and leg design finalized
+
+#### Software
+
+1. **Locomotion policy progress**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Locomotion policy trained in sim with stable walking behavior |
+| 7/10  | Locomotion policy training in progress with partial walking behavior |
+| 5/10  | Locomotion training environment set up |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Locomotion training environment set up
+
+2. **Manipulation progress**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Manipulation policy/task demonstrated on the arm |
+| 7/10  | Manipulation policy training in progress |
+| 5/10  | Manipulation task and environment defined |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Manipulation task and environment defined
+
+3. **RL sim2real deployment started**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Trained RL policy deployed on physical hardware |
+| 7/10  | Sim2real deployment attempted, notable gap remaining |
+| 5/10  | Sim2real pipeline set up, deployment not yet attempted |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Sim2real pipeline set up
+
+4. **Successful autonomous task demo deployed**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Autonomous task demo successfully deployed and presented |
+| 7/10  | Demo working with minor issues |
+| 5/10  | Demo in progress |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Demo in progress with a defined task
+
+5. **Leader arm built for teleop data collection**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Leader arm built and used to collect demonstration data for imitation learning/RL policies |
+| 7/10  | Leader arm built with teleop control, data collection in progress |
+| 5/10  | Leader arm partially built, basic teleop control implemented |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Leader arm built with basic teleop control
+
+#### Embedded / Firmware
+
+1. **Reliable interfacing across the system (MIT control mode + CAN FD)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | System-wide interfacing reliable end-to-end, using MIT control mode over CAN FD |
+| 7/10  | Interfacing working on MIT control mode + CAN FD, with occasional issues |
+| 5/10  | Partial interfacing implemented (MIT control mode or CAN FD, not both) |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Basic interfacing functional for core components using MIT control mode over CAN FD
+
+2. **IMU integration for locomotion**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | IMU integrated and providing reliable data for locomotion |
+| 5/10  | IMU integration partially complete |
+| 0/10  | No progress |
+
+**Minimum Requirements:** IMU publishing data to the system
+
+3. **22DOF hand powered and functional**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | 22DOF hand fully powered and functional |
+| 5/10  | Hand partially powered, some DOFs working |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Hand powers on with basic joint movement
+
+4. **Full bringup on hand, legs, and full body (where mechanically possible)**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Full bringup complete on hand, legs, and full body (where mechanically possible) |
+| 7/10  | Bringup complete on hand and legs, full body bringup in progress |
+| 5/10  | Bringup complete on hand or legs only |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Bringup complete on hand and legs
+
+5. **Telemetry dashboard**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Telemetry dashboard live, displaying system-wide data (CAN, sensors, IMU, etc.) |
+| 7/10  | Telemetry dashboard functional with limited data sources |
+| 5/10  | Telemetry dashboard in progress |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Telemetry dashboard displaying basic system data
+
+#### Mechanical
+
+1. **Arm and leg design finalized and built for testing**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Arm and leg design finalized, built, and ready for testing |
+| 7/10  | Design finalized, build in progress |
+| 5/10  | Design mostly finalized |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Arm and leg design finalized
+
+#### Power Systems / Electrical
+
+1. **Full electrical system complete**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Full electrical system designed, built, and functional |
+| 7/10  | Electrical system built, minor issues remaining |
+| 5/10  | Electrical system partially built |
+| 0/10  | No progress |
+
+**Minimum Requirements:** Core electrical system functional
+
+2. **PCB designed and manufactured**
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | PCB designed, manufactured, and tested |
+| 7/10  | PCB manufactured, testing in progress |
+| 5/10  | PCB design complete, sent for manufacturing |
+| 0/10  | No progress |
+
+**Minimum Requirements:** PCB design complete
+
+---
+
+### Scoring Template
+
+| Quest Name | Description | Score |
+|------------|-------------|-------|
+| Whole humanoid fully assembled (2 arms + 2 legs) | Whole humanoid fully assembled with both arms and both legs |  |
+| Arm and leg mechanical design finalized, testing setup built | Arm and leg design finalized, testing setup built and in use |  |
+| Locomotion policy progress | Locomotion policy trained in sim with stable walking behavior |  |
+| Manipulation progress | Manipulation policy/task demonstrated on the arm |  |
+| RL sim2real deployment started | Trained RL policy deployed on physical hardware |  |
+| Successful autonomous task demo deployed | Autonomous task demo successfully deployed and presented |  |
+| Leader arm built for teleop data collection | Leader arm built and used to collect demonstration data for imitation learning/RL policies |  |
+| Reliable interfacing across the system (MIT control mode + CAN FD) | System-wide interfacing reliable end-to-end, using MIT control mode over CAN FD |  |
+| IMU integration for locomotion | IMU integrated and providing reliable data for locomotion |  |
+| 22DOF hand powered and functional | 22DOF hand fully powered and functional |  |
+| Full bringup on hand, legs, and full body (where mechanically possible) | Full bringup complete on hand, legs, and full body (where mechanically possible) |  |
+| Telemetry dashboard | Telemetry dashboard live, displaying system-wide data (CAN, sensors, IMU, etc.) |  |
+| Arm and leg design finalized and built for testing | Arm and leg design finalized, built, and ready for testing |  |
+| Full electrical system complete | Full electrical system designed, built, and functional |  |
+| PCB designed and manufactured | PCB designed, manufactured, and tested |  |
