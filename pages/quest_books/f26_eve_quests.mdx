@@ -1,0 +1,133 @@
+# Eve Quest Book - Fall 2026 (F26)
+
+## The Great Objective: Level 5 Robo-taxi Around Campus
+
+WATonomous aims to achieve a fully autonomous Level 5 robo-taxi capable of navigating the University of Waterloo campus by the end of Fall 2026. This involves integrating hardware, software, and cognition systems to enable decision-making directly within the car. Achieving this milestone establishes the groundwork for advanced autonomous vehicle research and real-world applications.
+
+## Term Objectives Summary
+
+The objectives for Fall 2026 focus on developing lane detection using the existing BEVFusion implementation for perception, developing refined vehicel dynamics for action, simulation in the loop, lots of testing around ring road, and preparing the platform for autonomous operation.
+
+1. **Hardware Integration**
+   - Hardware Quality of Life
+
+2. **Software Modules**
+   - BEVFusion
+   - Prediction
+   - HD Map
+   - Localization
+   - Local Planner (builds a collision-aware spline)
+   - Simulation
+   - Controller (MPPI, MPC)
+
+---
+
+### Term Objectives and Scoring
+
+#### Hardware Integration
+
+
+1. **Hardware Quality of Life**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | No more hardware issues with clean cable management, a tidy car, and documentation. |
+| 4/10  | Add additional E-stop to center dashboard. |
+| 3/10  | E-stop no longer engages parking brake when in normal drive mode. |
+| 0/10  | No e-stop improvement. |
+
+**Minimum Requirements:** Add additional E-stop to center dashboard 4/10.
+
+#### Software Modules (All must be on the main branch)
+
+1. **BEVFusion with Lane lines**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Fine-tuning BEVFusion with our own dataset from Wato-World annotations. |
+| 5/10  | Basic BEVFusion setup with lane line segmentation. |
+| 0/10  | No BEVFusion lane line head implementation. |
+
+**Minimum Requirements:** Basic BEVFusion setup with lane line segmentation.
+
+2. **Prediction**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Fully tested prediction on the test track. |
+| 7/10  | Fix up and integrate prediction with BEVFusion. |
+| 0/10  | No prediction improvements. |
+
+**Minimum Requirements:** Fix up and integrate prediction with BEVFusion 7/10.
+
+3. **HD Map**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Constructed Ring Road Lanelet2 map with lane connectivity, traffic lights, stop signs, and other regulatory elements. |
+| 4/10  | Automatically construct a valid Lanelet2 map from recorded sensor data, including lane boundaries and lanelets. |
+| 1/10  | Basic ring road HD map loading and visualization (manually drawn). |
+
+**Minimum Requirements:** Automatically construct a valid Lanelet2 map from recorded sensor data, including lane boundaries and lanelets. 4/10.
+
+4. **Localization**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Reliable Multi-sensor localization on ring road. |
+| 4/10  | Multi-sensor localization functional on ring road. |
+| 0/10  | Basic localization without GPS on the test track. |
+
+**Minimum Requirements:** Multi-sensor localization functional on ring road for a score of 4/10.
+
+5. **Local Planner**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Full HD-map aware elastic trajectory planner tested on the test track. |
+| 4/10  | Basic (naive) elastic trajectory planner tested on the test track. |
+| 0/10  | No local planner improvements. |
+
+**Minimum Requirements:** Basic (naive) elastic trajectory planner tested on the test track for a score of 4/10.
+
+6. **Simulation**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Full vehicle tested in simulation (SIL) with less than 5% sim2real control discrepency. |
+| 4/10  | Tested controller in simulation and improved vehicle dynamics (sim2real). |
+| 0/10  | No simulation improvements. |
+
+**Minimum Requirements:** Tested controller in simulation and improved vehicle dynamics (sim2real) for a score of 4/10.
+
+7. **Controller**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Full controller tested on test track with improved vehicle dynamics. |
+| 4/10  | Improvements of Adaptive Pure Pursuit. |
+| 0/10  | No controller improvements. |
+
+**Minimum Requirements:** Basic controller for a score of 4/10.
+
+---
+
+### Scoring Template
+
+#### Hardware Integration
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| Hardware Quality of Life | No more hardware issues with clean cable management, a tidy car, and documentation |        |
+
+#### Software Modules
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| BEVFusion               | BEVFusion with Lane lines.                            |        |
+| Prediction              | Fully tested prediction on the test track             |        |
+| HD Map                  | Load custom HD maps with regulatory elements          |        |
+| Localization            | Multi-sensor localization with cm accuracy            |        |
+| Local Planner           | Dynamic obstacle avoidance and smooth navigation      |        |
+| Simulation              | SIL integration and sim2real development              |        |
+| Controller              | Adaptive Pure Pursuit and improved vehicle dynamics   |        |
