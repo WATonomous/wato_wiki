@@ -1,0 +1,123 @@
+# Micro Quest Book - Fall 2026 (F26)
+
+## The Great Objective: Competition Ready 
+
+This term, Micro aims to improve competition of our MVP stack, optimize existing algorithms and start work on micro-BEV.
+
+## Term Objectives Summary
+
+[Brief overview of what will be accomplished this term, organized into categories.]
+
+1. **Hardware**
+   - Integrate the Orin Nx 
+   - Car Maintenance
+
+2. **Software**
+   - MPC Controller
+   - GPU-Accelerated Particle Filter
+   - Object Detection pipeline
+   - semantic segmentation pipeline
+
+---
+
+### Term Objectives and Scoring
+
+#### Hardware
+
+1. **Nvidia Jetson Nx Setup**
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 7/7 | Mounted to the car with all packages installed, sensors hooked up and software stack running|
+| 4/7 | all packages and stack installed and setup |
+| 0/7 | No progress made / was unable to buy NX |
+
+**Minimum Requirements:**  
+
+2. **Car Maintenance**
+
+| Score | Criteria |
+|-------|----------|
+| 3/3 | New platform plate mounted to the car, replacing the broken one |
+| 2/3 | New platform plate printed |
+| 0/3 | No progress made |
+
+**Minimum Requirements:** New platform plate printed for score of 2/3
+
+#### Software
+
+1. MPC Trajectory-Tracking Controller
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Deployed on car, real-time validated, tuned race-ready |
+| 8/10  | Runs on the car in closed loop, tracks reasonably, but not yet race-tuned / edge cases (solver failure, infeasibility) not fully handled |
+| 6/10  | Closed-loop in sim with real state estimation + reference generator integrated; warm-starting and fallback logic in place |
+| 5/10  | Closed-loop in sim, tracks reference, respects constraints, stable |
+| 3/10  | Full problem formulated in the library API, solves repeatedly, but loop/reference not yet wired |
+| 2/10  | Correct single-step solution from a valid formulation |
+| 0/10  | No functional MPC |
+
+**Minimum Requirements:** Full problem formulated in the library API, solves repeatedly, but loop/reference not yet wired
+
+2. GPU-Accelerated Particle Filter
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | CUDA PF deployed on Jetson, hits ≥50 Hz at target particle count, Jetson-optimized (unified/pinned memory, fused kernels, FP16 where valid, power/clock profile tuned), localization accuracy at parity with CPU reference, running live in the loop |
+| 8/10 | CUDA PF runs on Jetson in the localization loop at real-time rates but below the 50 Hz target, or hits 50 Hz on desktop GPU but not yet Jetson-optimized; accuracy verified against CPU |
+| 6/10 | Full CUDA acceleration (sample, weight, resample on GPU) working with a measured, meaningful speedup over the Python GPU baseline; accuracy matches CPU version; not yet ported/tuned for Jetson |
+| 5/10 | Partial GPU acceleration — hottest stages (e.g. weighting) moved to CUDA, rest on CPU; correctness held, speedup demonstrated |
+| 4/10 | CPU PF profiled and benchmarked; bottlenecks identified and GPU port planned; CUDA scaffolding/build set up |
+| 3/10 | CPU PF complete and running in the localization loop at parity with reference accuracy, serving as the correctness baseline |
+| 2/10 | CPU PF implemented (predict, update, resample) and tracking correctly on recorded/offline data |
+| 0/10 | No functional particle filter |
+
+**Minimum Requirements:** CPU PF complete and running in the localization loop at parity with reference accuracy, serving as the correctness baseline
+
+3. Object Detection Pipeline
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Deployed on car, real-time on live feed, latency-optimized (TensorRT/quantization), detections tracked with stable IDs, robust across lighting/weather |
+| 8/10 | Real-time on live camera feed, all target classes, integrated into stack with defined output contract (bbox + class + confidence + timestamp), but not latency-optimized and no cross-frame tracking |
+| 6/10 | Runs online on live feed at usable rate, all target classes, output published to the stack but contract/format not finalized |
+| 5/10 | Runs offline on recorded data, detects all target classes reliably, output visualized |
+| 3/10 | Runs offline, detects a subset of classes, visualized but accuracy inconsistent |
+| 2/10 | Model loads and produces detections on a single frame/image |
+| 0/10 | No functional detection pipeline |
+
+**Minimum Requirements:** Model loads and produces detections on a single frame/image
+
+4. Semantic Segmentation Pipeline (Free Space) + Camera Projection
+
+| Score | Criteria |
+|-------|----------|
+| 10/10 | Deployed on car, real-time free-space segmentation, projection validated against ground truth, temporally consistent masks, graceful under calibration drift |
+| 8/10 | Real-time free-space segmentation with mask projected into ground/vehicle frame producing a usable free-space region, integrated into stack, but not temporally smoothed or ground-truth-validated |
+| 6/10 | Real-time segmentation on live feed, projection implemented (IPM/calibration-based) but not yet validated for metric accuracy |
+| 5/10 | Free-space masks produced online at usable rate, projection prototyped offline |
+| 3/10 | Segmentation model produces free-space masks offline on recorded frames, no projection |
+| 2/10 | Model loads and produces a segmentation mask on a single frame |
+| 0/10 | No functional segmentation pipeline |
+
+**Minimum Requirements:** Model loads and produces a segmentation mask on a single frame
+
+---
+
+### Scoring Template
+
+#### Hardware
+
+| Quest Name              | Description                                           | Score  |
+|-------------------------|-------------------------------------------------------|--------|
+| Nvidia Jetson Nx Setup | Mount the Jetson Nx to the car with all packages installed, sensors hooked up and the software stack running |  |
+| Car Maintenance | Print a new platform plate and mount it to the car, replacing the broken one |  |
+
+#### Software
+| Quest Name | Description | Score |
+|---|---|---|
+| MPC Trajectory-Tracking Controller | Build an MPC controller that tracks the reference trajectory in closed loop, deployed on the car and tuned race-ready |  |
+| GPU-Accelerated Particle Filter | Port the particle filter to CUDA and optimize it for the Jetson, hitting ≥50 Hz with accuracy at parity with the CPU reference |  |
+| Object Detection Pipeline | Build a real-time, latency-optimized object detection pipeline on the live camera feed with tracked detections integrated into the stack |  |
+| Semantic Segmentation Pipeline (Free Space) + Camera Projection | Build a real-time free-space segmentation pipeline with the mask projected into the vehicle frame and validated against ground truth |  |
