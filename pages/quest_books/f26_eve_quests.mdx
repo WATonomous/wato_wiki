@@ -60,18 +60,7 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 **Minimum Requirements:** Fix up and integrate prediction with BEVFusion 7/10.
 
-3. **HD Map**
-
-| Score | Criteria                                                                 |
-|-------|-------------------------------------------------------------------------|
-| 10/10 | Construct a valid HD map plus traffic lights, stop signs, and other regulatory elements from recorded sensor data while driving the car. |
-| 7/10  | Fully tested HD map constructed by driving the car around. |
-| 4/10  | Construct a valid HD map with only lanes and lane boundaries from recorded sensor data while driving the car. |
-| 1/10  | Basic ring road HD map loading and visualization (manually drawn). |
-
-**Minimum Requirements:** Construct a valid HD map with only lanes and lane boundaries from recorded sensor data while driving the car. 4/10.
-
-4. **Localization**
+3. **Localization**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -81,7 +70,7 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 **Minimum Requirements:** Multi-sensor localization functional on ring road for a score of 4/10.
 
-5. **Local Planner**
+4. **Local Planner**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -91,7 +80,7 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 **Minimum Requirements:** Basic (naive) elastic trajectory planner tested on the test track for a score of 4/10.
 
-6. **Simulation**
+5. **Simulation**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -101,7 +90,7 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 **Minimum Requirements:** Tested controller in simulation and improved vehicle dynamics (sim2real) for a score of 4/10.
 
-7. **Controller**
+6. **Controller**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -127,7 +116,6 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 |-------------------------|-------------------------------------------------------|--------|
 | BEVFusion               | BEVFusion with Lane lines.                            |        |
 | Prediction              | Fully tested prediction on the test track             |        |
-| HD Map                  | Load custom HD maps with regulatory elements          |        |
 | Localization            | Multi-sensor localization with cm accuracy            |        |
 | Local Planner           | Dynamic obstacle avoidance and smooth navigation      |        |
 | Simulation              | SIL integration and sim2real development              |        |
