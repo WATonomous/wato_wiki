@@ -44,11 +44,12 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
-| 10/10 | Fine-tuning BEVFusion with our own dataset from Wato-World annotations. |
-| 5/10  | Basic BEVFusion setup with lane line segmentation. |
+| 10/10 | Pipeline setup for training/fine-tuning BEVFusion 3D Object Detection. |
+| 8/10  | Optimized segmentation head that runs easily alongside 3D Object Detection. |
+| 6/10  | Basic BEVFusion setup with lane line segmentation. |
 | 0/10  | No BEVFusion lane line head implementation. |
 
-**Minimum Requirements:** Basic BEVFusion setup with lane line segmentation.
+**Minimum Requirements:** Basic BEVFusion setup with lane line segmentation 6/10.
 
 2. **Prediction**
 
@@ -60,18 +61,7 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 **Minimum Requirements:** Fix up and integrate prediction with BEVFusion 7/10.
 
-3. **HD Map**
-
-| Score | Criteria                                                                 |
-|-------|-------------------------------------------------------------------------|
-| 10/10 | Construct a valid HD map plus traffic lights, stop signs, and other regulatory elements from recorded sensor data while driving the car. |
-| 7/10  | Fully tested HD map constructed by driving the car around. |
-| 4/10  | Construct a valid HD map with only lanes and lane boundaries from recorded sensor data while driving the car. |
-| 1/10  | Basic ring road HD map loading and visualization (manually drawn). |
-
-**Minimum Requirements:** Construct a valid HD map with only lanes and lane boundaries from recorded sensor data while driving the car. 4/10.
-
-4. **Localization**
+3. **Localization**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -81,7 +71,7 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 **Minimum Requirements:** Multi-sensor localization functional on ring road for a score of 4/10.
 
-5. **Local Planner**
+4. **Local Planner**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -91,17 +81,17 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 
 **Minimum Requirements:** Basic (naive) elastic trajectory planner tested on the test track for a score of 4/10.
 
-6. **Simulation**
+5. **Simulation**
 
-| Score | Criteria                                                                 |
-|-------|-------------------------------------------------------------------------|
-| 10/10 | Full vehicle tested in simulation (SIL) with less than 5% sim2real control discrepency. |
-| 4/10  | Tested controller in simulation and improved vehicle dynamics (sim2real). |
-| 0/10  | No simulation improvements. |
+| Score | Criteria |
+| --- | --- |
+| 10/10 | Create a Ring Road digital twin environment where we can test the car. |
+| 4/10 | Make controller tests **easy** to launch on the oval using EVE’s vehicle parameters. |
+| 0/10 | No simulation improvements merged into main. |
 
-**Minimum Requirements:** Tested controller in simulation and improved vehicle dynamics (sim2real) for a score of 4/10.
+**Minimum Requirements:** Achieve 4/10, with another member able to reproduce the tests. All completed work must be merged into main.
 
-7. **Controller**
+6. **Controller**
 
 | Score | Criteria                                                                 |
 |-------|-------------------------------------------------------------------------|
@@ -127,7 +117,6 @@ The objectives for Fall 2026 focus on developing lane detection using the existi
 |-------------------------|-------------------------------------------------------|--------|
 | BEVFusion               | BEVFusion with Lane lines.                            |        |
 | Prediction              | Fully tested prediction on the test track             |        |
-| HD Map                  | Load custom HD maps with regulatory elements          |        |
 | Localization            | Multi-sensor localization with cm accuracy            |        |
 | Local Planner           | Dynamic obstacle avoidance and smooth navigation      |        |
 | Simulation              | SIL integration and sim2real development              |        |
