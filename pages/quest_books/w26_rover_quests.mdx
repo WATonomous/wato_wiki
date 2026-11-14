@@ -1,0 +1,76 @@
+# WATonomous Quest Book - Winter 2025 (W25)
+
+## The Great Objective: Improve Upon Object Detection Model
+
+The Rover Team is working on improving the object detection model for the [UW Robotics Team](https://github.com/uwrobotics)'s [URC 2026](https://urc.marssociety.org/home/requirements-guidelines) rover. We hope to pass the [System Acceptance Review](https://urc.marssociety.org/home/requirements-guidelines/system-acceptance-review) and do well in next year's competition.
+
+## Term Objectives Summary
+
+The objectives for Winter 2026 focus on integrating hardware, improving the object detection model, and preparing the platform for autonomous operation. These include:
+
+1. **Hardware Integration**
+   - Interfacing with UWRT's hardware interface to begin autonomous control of the rover.
+   - Transferring simulated camera logic to real cameras and begin testing of costmap in the real world.
+   - Testing the object detection model on the rover.
+
+2. **Software Modules**
+   - Control module: Implementing the control module for the physical rover.
+   - Refine ML model for more refined object detection.
+
+---
+
+### Term Objectives and Scoring
+
+1. Talk to UWRT Interface to begin control of the rover.
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Rover is able to move autonomously from point A to point B. |
+| 5/10  | Partially integrated with basic rover movement (not reliable autonomy). |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** At least basic functionality implemented and tested for a score above 5/10.
+
+2. Model Optimization and Inference Pipeline
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 10/10 | Model running on target hardware and reliably predicting objects. |
+| 5/10  | Model running on target hardware but unreliably predicting objects. |
+| 0/10  | No progress.                                                            |
+
+**Minimum Requirements:** Model running on target hardware for a score above 5/10.
+
+3. Dataset Robustness & Environmental Augmentation
+
+| Score | Criteria                                                                 |
+|-------|-------------------------------------------------------------------------|
+| 5/5   | Data is trained on a variety of environments and is robust to changes in lighting, weather, and other environmental factors. |
+| 3/5   | Data is trained on a variety of environments but is not robust to changes in lighting, weather, and other environmental factors. |
+| 1/5   | Data is trained on a single environment and is not robust to changes in lighting, weather, and other environmental factors. |
+| 0/5   | No progress.                                                            |
+
+**Minimum Requirements:** Data is trained on a single environment for a score above 1/5.
+
+### Blogs (BONUS)
+4. Blogs
+
+| Score |                       Criteria                            |  
+|-------|----------------------------------------------------------|
+| 5/5 | Three blogs have been written on simulating software for the rover. |
+| 4/5 | Two blogs have been written on simulating software for the rover. |
+| 2/5 | One blog has been written on simulating software for the rover. |
+| 0/5  | No blogs have been written on simulating software for the rover. |
+---
+
+### Scoring Template
+
+| Quest Name              | Description                                           | Due Date  | Score  |
+|-------------------------|-------------------------------------------------------|-----------|--------|
+| UWRT Interface             | Rover autonomous movement from Point A to Point B. | | /10       |
+| Sensor Drivers          | Target hardware inference and prediction reliability.  | |  /10      |
+| Mounts                 | Environmental augmentation and lighting resilience.      | |  /5      |
+| Perception Stack        | Documentation on simulating software for the rover.         | |  /5    |
+
+### Comments
+This term was heavily influenced by a struggle to get pre-commit working as well as issues later in the term when it came to building and testing the project.
